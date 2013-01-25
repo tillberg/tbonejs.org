@@ -11,70 +11,27 @@ TBone is designed to scale with your application, enabling simple re-use of data
 
 At AppNeta, we've used TBone to eliminate a set of custom page events corresponding such as "refresh data" and "add filter"; with a large application, it becomes difficult to manage what exactly needs to be refreshed when something changes.  While Backbone is a critical step toward reducing this complexity, TBone enables us to do so without even thinking about event binding; every view and model stays in sync by design and without unnecessary work.
 
-<div style="display:none">
-
 {% highlight html %}
 <div tbone="inline onMyDesk">
     My <stapler><%=stapler.color%> <%=stapler.brand%> stapler</stapler>.
-    <% _.each(staplers, function (stapler) { %>
-      <stapler><%=stapler.color%> </stapler>
-    <% }); %>
 </div>
 It is <input type="text" tbone="view input" data-value="stapler.color" />
 {% endhighlight %}
 
-<div tbone="inline onMyDesk">
-    My <stapler><%=stapler.color%> <%=stapler.brand%> stapler</stapler>.
-</div>
-It is <input type="text" tbone="view input" data-value="stapler.color" />
-
-</div>
-
-h2. By Example
-
-Let's create a model:
-
 {% highlight javascript %}
-tbone.createModel('stapler').singleton();
-{% endhighlight %}
-
-This creates a new Backbone.Model with a .name of stapler as well as an instance
-of that Model at tbone.data.stapler.
-
-{% highlight javascript %}
-tbone.data.stapler.set('brand', 'Swingline');
-{% endhighlight %}
-
-Now, let's create a template:
-
-{% highlight javascript %}
-tbone.addTemplate('onMyDesk', 'My <%=stapler.color%> <%=stapler.brand%> stapler.');
-{% endhighlight %}
-
-We can augment this with a view to add "document.ready" style JS after-processing.
-
-{% highlight javascript %}
-tbone.createView('onMyDesk', function () {
-  this.$el.css('background', tbone.lookup('stapler.color'));
+tbone.createView('onMyDesk', function() {
+    this.$('stapler').css('background', tbone('stapler.color'));
 });
-var $el = jQuery('<div tmpl="onMyDesk"></div>').appendTo('body');
-tbone.render($el);
 {% endhighlight %}
 
-What do we get?
+<section class="example">
+  <div tbone="inline onMyDesk">
+      My <stapler><%=stapler.color%> <%=stapler.brand%> stapler</stapler>.
+  </div>
+  It is <input type="text" tbone="view input" data-value="stapler.color" />
+</section>
 
-{% highlight javascript %}
-My Swingline stapler.
-{% endhighlight %}
-
-Oh shoot!  We forgot to set the color.  No problem.  Just set it, and TBone rerenders
-the template and view to keep in sync with its source data.
-
-{% highlight javascript %}
-tbone.set('stapler.color', 'red');
-{% endhighlight %}
-
-"Try it out on JSFiddle":http://jsfiddle.net/dantillberg/dFbpE/
+"Try it out on JSFiddle":http://jsfiddle.net/dantillberg/msEdg/
 
 h2. License
 
