@@ -26,12 +26,12 @@ tbone.createView('onMyDesk', function() {
 
 <section class="example">
   <div tbone="inline onMyDesk">
-      My <stapler><%=stapler.color%> <%=stapler.brand%> stapler</stapler>.
+      If have a <stapler><%=stapler.color%> <%=stapler.brand%> stapler</stapler>.
   </div>
-  It is <input type="text" tbone="view input" data-value="stapler.color" />
+  It is <input type="text" tbone="view input" data-value="stapler.color">
+  "Edit JSFiddle":http://jsfiddle.net/dantillberg/msEdg/
 </section>
 
-"Try it out on JSFiddle":http://jsfiddle.net/dantillberg/msEdg/
 
 h2. License
 
