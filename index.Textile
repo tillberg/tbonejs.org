@@ -9,7 +9,7 @@ TBone removes the complexity of manually managing data dependencies in Backbone,
 
 TBone is designed to scale with your application, enabling simple re-use of data throughout your application without you needing to tell the page what to update when that data changes.
 
-At AppNeta, we've used TBone to eliminate a set of custom page events corresponding such as "refresh data" and "add filter"; with a large application, it becomes difficult to manage what exactly needs to be refreshed when something changes.  While Backbone is a critical step toward reducing this complexity, TBone enables us to do so without even thinking about event binding; every view and model stays in sync by design and without unnecessary work.
+<!-- At AppNeta, we've used TBone to eliminate a set of custom page events corresponding such as "refresh data" and "add filter"; with a large application, it becomes difficult to manage what exactly needs to be refreshed when something changes.  While Backbone is a critical step toward reducing this complexity, TBone enables us to do so without even thinking about event binding; every view and model stays in sync by design and without unnecessary work. -->
 
 {% highlight html %}
 <div tbone="inline onMyDesk">

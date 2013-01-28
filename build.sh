@@ -31,13 +31,13 @@ git fetch origin
 git tag -f master origin/master
 for tag in `git tag`; do
     echo "Building tbone $tag"
-    git checkout $tag
+    git checkout -q $tag
     OPTIMIZATION_LEVEL=ADVANCED_OPTIMIZATIONS ./compile.py > ../_cdn/tbone-$tag.min.js
     cp tbone.js ../_cdn/tbone-$tag.js
     cp build/tbone.min.js.map ../_cdn/tbone-$tag.min.js.map
     sed -i s/tbone.min.js.map/tbone-$tag.min.js.map/ ../_cdn/tbone-$tag.min.js
 done
-git checkout master
+git checkout -q master
 ../node_modules/docco-husky/bin/generate ./
 rm -rf ../docs/
 mv docs ../
@@ -52,14 +52,18 @@ find _sitegen/ -iname '*.js' -exec gzip -n {} +
 find _sitegen/ -iname '*.css' -exec gzip -n {} +
 find _sitegen/ -iname '*.gz' -exec rename 's/\.gz$//i' {} +
 
-find _cdn/ -iname '*.js' -exec gzip -n {} +
-find _cdn/ -iname '*.gz' -exec rename 's/\.gz$//i' {} +
-
-
+cd _cdn
+for name in `ls *.js | sed s/\.js//`; do
+    # for the non-gzip-encoded version to work right,
+    # we shouldn't set Content-encoding: gzip on them.
+    # cp $name.js $name.raw.js
+    gzip $name.js
+    mv $name.js.gz $name.js
+done
+cd ..
 
 cd _sitegen/
 # Make no-extension copies of all HTML files
-# XXX this won't work with gzip encoding
 mkdir tmp
 cp *.html tmp/
 rename 's/\.html//' *.html

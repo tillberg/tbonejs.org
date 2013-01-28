@@ -1,0 +1,6 @@
+    {% bundle %}
+    - //ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js
+    - //cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.3/underscore-min.js
+    - //cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.9/backbone-min.js
+    - //cdn.tbonejs.org/tbone-v0.2.min.raw.js
+    {% endbundle %}
