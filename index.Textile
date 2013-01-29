@@ -29,7 +29,7 @@ tbone.createView('onMyDesk', function() {
       If have a <stapler><%=stapler.color%> <%=stapler.brand%> stapler</stapler>.
   </div>
   It is <input type="text" tbone="view input" data-value="stapler.color">
-  "Edit JSFiddle":http://jsfiddle.net/dantillberg/msEdg/
+  "Edit JSFiddle":http://jsfiddle.net/notfunk/2Y8HX/
 </section>
 
 
