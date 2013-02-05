@@ -1,0 +1,49 @@
+<div class="page-header">
+  <h1>{{ page.title }} {% if page.tagline %} <small>{{ page.tagline }}</small>{% endif %}</h1>
+</div>
+
+<div class="row">
+  <div class="span3">
+    <ul class="api-menu">
+        <li>
+            <a href="/api/model/#">Model</a>
+            <ul>
+                <li>
+                    <a href="/api/model/#createModel">createModel</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="/api/collection/#">Collection</a>
+            <ul>
+                <li>
+                    <a href="/api/collection/#createCollection">createCollection</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="/api/view/#">View</a>
+        </li>
+        <li>
+            <a href="/api/template/#">Template</a>
+        </li>
+        <li>
+            <a href="/api/autorun/#">Autorun</a>
+        </li>
+        <li>
+            <a href="/api/internals/#">Internals</a>
+        </li>
+    </ul>
+  </div>
+  <div class="span9">
+    <p class="construction">
+        <constructionman />
+        Documentation is currently under construction (insert appropriate Web 1.0 icon here).
+        <br>
+        In the meantime, check out the <a href="/docs/tbone.js.html">annotated source</a>.
+        If you want to help, send a <a href="//github.com/appneta/tbonejs.org">pull
+        request</a> for this site!
+    </p>
+    {{ content }}
+  </div>
+</div>

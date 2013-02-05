@@ -59,7 +59,7 @@ $('.highlight .html').each(function () {
             typed += choice.charAt(0);
             T('stapler.color', typed);
             choice = choice.substr(1);
-            timer = choice ? setTimeout(another, 100 + 200 * Math.random()) : null;
+            timer = choice ? setTimeout(another, 40 + 100 * Math.random()) : null;
         }
         another();
     });
