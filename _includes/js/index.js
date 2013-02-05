@@ -46,6 +46,23 @@ $('.highlight .html').each(function () {
     tbone.createView('onMyDesk', function() {
         this.$('stapler').css('background', tbone('stapler.color'));
     });
+    var timer;
+    $('.example-1 button').click(function () {
+        if (timer) { clearTimeout(timer); timer = null; }
+        var choices = [
+            'red', 'hotpink', '#f00', '#bada55', 'rgba(255, 0, 0, 1)',
+            'aquamarine', 'hsl(0, 100%, 50%)'
+        ];
+        var choice = choices[Math.floor(choices.length * Math.random())];
+        var typed = '';
+        function another () {
+            typed += choice.charAt(0);
+            T('stapler.color', typed);
+            choice = choice.substr(1);
+            timer = choice ? setTimeout(another, 100 + 200 * Math.random()) : null;
+        }
+        another();
+    });
     tbone.render($('[tbone]'));
     $('body').addClass('tbone-ready');
 }());

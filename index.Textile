@@ -7,9 +7,9 @@ tagline: Automagic Event Binding for Backbone
 
 TBone removes the complexity of manually managing data dependencies in Backbone, enabling "live" templates as well functions that automatically re-execute when the data they reference changes.
 
-TBone is designed to scale with your application, enabling simple re-use of data throughout your application without you needing to tell the page what to update when that data changes.
+<!-- TBone is designed to scale with your application, enabling simple re-use of data throughout your application without you needing to tell the page what to update when that data changes.
 
-<!-- At AppNeta, we've used TBone to eliminate a set of custom page events corresponding such as "refresh data" and "add filter"; with a large application, it becomes difficult to manage what exactly needs to be refreshed when something changes.  While Backbone is a critical step toward reducing this complexity, TBone enables us to do so without even thinking about event binding; every view and model stays in sync by design and without unnecessary work. -->
+At AppNeta, we've used TBone to eliminate a set of custom page events corresponding such as "refresh data" and "add filter"; with a large application, it becomes difficult to manage what exactly needs to be refreshed when something changes.  While Backbone is a critical step toward reducing this complexity, TBone enables us to do so without even thinking about event binding; every view and model stays in sync by design and without unnecessary work. -->
 
 {% highlight html %}
 <div tbone="inline onMyDesk">
@@ -24,14 +24,14 @@ tbone.createView('onMyDesk', function() {
 });
 {% endhighlight %}
 
-<section class="example">
+<section class="example example-1">
   <div tbone="inline onMyDesk">
       If have a <stapler><%=stapler.color%> <%=stapler.brand%> stapler</stapler>.
   </div>
   It is <input type="text" tbone="view input" data-value="stapler.color">
+  <button>Try Me!</button>
   "Edit JSFiddle":http://jsfiddle.net/notfunk/2Y8HX/
 </section>
-
 
 h2. License
 
