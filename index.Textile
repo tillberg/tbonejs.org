@@ -5,7 +5,7 @@ tagline: Automagic Event Binding for Backbone
 ---
 {% include JB/setup %}
 
-TBone removes the complexity of manually managing data dependencies in Backbone, enabling "live" templates as well functions that automatically re-execute when the data they reference changes.
+TBone removes the complexity of manually managing data dependencies in Backbone, enabling "live" templates as well as functions that automatically re-execute when the data they reference changes.
 
 <!-- TBone is designed to scale with your application, enabling simple re-use of data throughout your application without you needing to tell the page what to update when that data changes. -->
 
