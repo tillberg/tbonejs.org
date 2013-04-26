@@ -33,7 +33,9 @@ for tag in `git tag`; do
     echo "Building tbone $tag"
     git checkout -q $tag
     OPTIMIZATION_LEVEL=ADVANCED_OPTIMIZATIONS ./compile.py > ../_cdn/tbone-$tag.min.js
-    cp tbone.js ../_cdn/tbone-$tag.js
+    # XXX compile with debug=true has the side effect of generating build/tbone.debug.js
+    TBONE_DEBUG=TRUE OPTIMIZATION_LEVEL=WHITESPACE_ONLY ./compile.py > /dev/null
+    cp build/tbone.debug.js ../_cdn/tbone-$tag.js
     cp build/tbone.min.js.map ../_cdn/tbone-$tag.min.js.map
     sed -i s/tbone.min.js.map/tbone-$tag.min.js.map/ ../_cdn/tbone-$tag.min.js
 done
