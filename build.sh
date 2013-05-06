@@ -28,6 +28,8 @@ if [ ! -d "_tbone" ]; then
 fi
 cd _tbone
 git fetch origin
+git checkout master
+git reset --hard origin/master
 git tag -f master origin/master
 for tag in `git tag`; do
     echo "Building tbone $tag"
@@ -39,10 +41,23 @@ for tag in `git tag`; do
     cp build/tbone.min.js.map ../_cdn/tbone-$tag.min.js.map
     sed -i s/tbone.min.js.map/tbone-$tag.min.js.map/ ../_cdn/tbone-$tag.min.js
 done
+git tag -d master
 git checkout -q master
-../node_modules/docco-husky/bin/generate ./
-rm -rf ../docs/
-mv docs ../
+
+cd src/
+../../node_modules/docco-husky/bin/generate ./
+rm -rf ../../docs/
+mv docs ../../
+cd ..
+
+cd test/
+npm install
+./gen-templates.js
+rm -rf ../../test/
+cp -R static/ ../../test/
+sed -i "s/tbone/http:\/\/cdn.tbonejs.org\/tbone-master/g" ../../test/index.html
+cd ..
+
 cd ..
 
 pygmentize -S default -f html > css/pygments.less
