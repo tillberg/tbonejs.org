@@ -30,10 +30,9 @@ cd _tbone
 git fetch origin
 git checkout master
 git reset --hard origin/master
-git tag -f master origin/master
-for tag in `git tag`; do
+for ref in `git ls-remote origin | grep ".*refs/[^p]" | sed "s/.*\///"`; do
     echo "Building tbone $tag"
-    git checkout -q $tag
+    git checkout -q $ref
     OPTIMIZATION_LEVEL=ADVANCED_OPTIMIZATIONS ./compile.py > ../_cdn/tbone-$tag.min.js
     # XXX compile with debug=true has the side effect of generating build/tbone.debug.js
     TBONE_DEBUG=TRUE OPTIMIZATION_LEVEL=WHITESPACE_ONLY ./compile.py > /dev/null
@@ -41,7 +40,6 @@ for tag in `git tag`; do
     cp build/tbone.min.js.map ../_cdn/tbone-$tag.min.js.map
     sed -i s/tbone.min.js.map/tbone-$tag.min.js.map/ ../_cdn/tbone-$tag.min.js
 done
-git tag -d master
 git checkout -q master
 
 cd src/
@@ -55,7 +53,7 @@ npm install
 ./gen-templates.js
 rm -rf ../../test/
 cp -R static/ ../../test/
-sed -i "s/tbone/http:\/\/cdn.tbonejs.org\/tbone-master/g" ../../test/index.html
+sed -i "s/tbone'/http:\/\/cdn.tbonejs.org\/tbone-master'/g" ../../test/*.html
 cd ..
 
 cd ..
