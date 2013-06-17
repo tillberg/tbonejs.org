@@ -1,17 +1,5 @@
 #!/usr/bin/env bash
 
-# sudo gem install jekyll
-# sudo gem install jekyll-less
-# sudo gem install therubyracer
-# sudo gem install RedCloth
-# sudo apt-get install python-pygments
-# npm install docco
-# git clone git://github.com/tillberg/pygments.rb.git
-# cd pygments.rb
-# sudo gem build pygments.rb.gemspec
-# sudo gem install --local pygments.rb-0.3.7.gem
-# cd ..
-
 : ${TBONE_S3?"Set TBONE_S3 to TBone's S3 bucket"}
 : ${TBONECDN_S3?"Set TBONECDN_S3 to TBone's CDN S3 bucket"}
 
@@ -31,14 +19,14 @@ git fetch origin
 git checkout master
 git reset --hard origin/master
 for ref in `git ls-remote origin | grep ".*refs/[^p]" | sed "s/.*\///"`; do
-    echo "Building tbone $tag"
+    echo "Building tbone $ref"
     git checkout -q $ref
-    OPTIMIZATION_LEVEL=ADVANCED_OPTIMIZATIONS ./compile.py > ../_cdn/tbone-$tag.min.js
+    OPTIMIZATION_LEVEL=ADVANCED_OPTIMIZATIONS ./compile.py > ../_cdn/tbone-$ref.min.js
     # XXX compile with debug=true has the side effect of generating build/tbone.debug.js
     TBONE_DEBUG=TRUE OPTIMIZATION_LEVEL=WHITESPACE_ONLY ./compile.py > /dev/null
-    cp build/tbone.debug.js ../_cdn/tbone-$tag.js
-    cp build/tbone.min.js.map ../_cdn/tbone-$tag.min.js.map
-    sed -i s/tbone.min.js.map/tbone-$tag.min.js.map/ ../_cdn/tbone-$tag.min.js
+    cp build/tbone.debug.js ../_cdn/tbone-$ref.js
+    cp build/tbone.min.js.map ../_cdn/tbone-$ref.min.js.map
+    sed -i s/tbone.min.js.map/tbone-$ref.min.js.map/ ../_cdn/tbone-$ref.min.js
 done
 git checkout -q master
 
@@ -59,7 +47,7 @@ cd ..
 cd ..
 
 pygmentize -S default -f html > css/pygments.less
-jekyll --no-auto --no-server ./_sitegen
+jekyll build --destination ./_sitegen
 
 # Gzip html/js/css
 find _sitegen/ -iname '*.html' -exec gzip -n {} +
