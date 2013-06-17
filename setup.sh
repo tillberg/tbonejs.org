@@ -3,6 +3,7 @@
 sudo apt-get install rubygems s3cmd python-pygments
 sudo gem install jekyll
 sudo gem install jekyll-less
+sudo rm /usr/local/bin/lessc
 sudo gem install therubyracer
 sudo gem install RedCloth
 npm install docco
