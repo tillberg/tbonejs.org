@@ -78,5 +78,5 @@ echo Syncing to S3...
 
 s3cmd sync --progress --guess-mime-type --no-preserve --acl-public --add-header 'Cache-Control: max-age=600' --add-header 'Content-Encoding:gzip' _sitegen/ s3://$TBONE_S3/ --exclude '*.*' --include '*.html' --include '*.js' --include '*.css'
 s3cmd sync --progress --guess-mime-type --no-preserve --acl-public --add-header 'Cache-Control: max-age=600' _sitegen/ s3://$TBONE_S3/ --exclude '*.html' --exclude '*.js' --exclude '*.css'
-s3cmd sync --progress --guess-mime-type --no-preserve --acl-public --add-header 'Cache-Control: max-age=3600' --add-header 'Content-Encoding:gzip' _cdn/ s3://$TBONECDN_S3/ --exclude '*.*' --include 'tbone-master.*'
-s3cmd sync --progress --guess-mime-type --no-preserve --acl-public --add-header 'Cache-Control: max-age=86400' --add-header 'Content-Encoding:gzip' _cdn/ s3://$TBONECDN_S3/ --exclude 'tbone-master.*'
+s3cmd sync --progress --guess-mime-type --no-preserve --acl-public --add-header 'Cache-Control: max-age=600' --add-header 'Content-Encoding:gzip' _cdn/ s3://$TBONECDN_S3/ --exclude '*.*' --include 'tbone-master.*'
+s3cmd sync --progress --guess-mime-type --no-preserve --acl-public --add-header 'Cache-Control: max-age=600' --add-header 'Content-Encoding:gzip' _cdn/ s3://$TBONECDN_S3/ --exclude 'tbone-master.*'
