@@ -26,7 +26,7 @@ tbone.createView('onMyDesk', function() {
 
 <section class="example example-1">
   <div tbone="inline onMyDesk">
-      If have a <stapler><%=stapler.color%> <%=stapler.brand%> stapler</stapler>.
+      I have a <stapler><%=stapler.color%> <%=stapler.brand%> stapler</stapler>.
   </div>
   It is <input type="text" tbone="view input" data-value="stapler.color">
   <button>Try Me!</button>
