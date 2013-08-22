@@ -55,9 +55,11 @@ tbone.createView('example', function () {
         var $this = $(this);
         var src = _.trim($this.html());
         var currType;
+        var name = $this.attr('name');
         var parts = {
             id: i,
-            name: $this.attr('name')
+            name: name,
+            name_safe: name.replace(/\s/g, '_')
         };
         src.replace(/~(\w+)~|([^~]+)/g, function (all, newType, newContents) {
             if (newType) {

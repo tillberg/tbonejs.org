@@ -88,12 +88,12 @@ T('stapler.color', '#f00');
 
 <script name="exampleList" type="text/tbone-tmpl">
     <% _.each(examples, function (item, i) { %>
-        <li id="<%=item.name%>" tbone="tmpl example root <%@ item %>">
+        <li id="<%=item.name_safe%>" tbone="tmpl example root <%@ item %>">
     <% }); %>
 </script>
 
 <script name="example" type="text/tbone-tmpl">
-    <h4><a href="#<%=name%>"><%=name%></a></h4>
+    <h4><a href="#<%=name_safe%>"><%=name%></a></h4>
     <% if (html) { %>
         <fragment>
             <h3>HTML</h3>
