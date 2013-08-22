@@ -10,13 +10,19 @@ tbone.createView('example', function () {
         var margin = (height / 2) - 13;// 13 is the width / 2
         $this.children('h3').css({
             width: height,
-            marginLeft: -margin,
+            marginLeft: -margin - 8,
             marginTop: margin
         });
     }
     self.$('fragment').each(updateFragmentHeaderStyle);
+    self.query('reloadCount');
+    self.$el.on('click', 'a.update', function () {
+        self.query('reloadCount', (self.query('reloadCount') || 0) + 1);
+        return false;
+    });
     window.demoCallbacks[self.query('id')] = function (op, data) {
         if (op === 'init') {
+            self.$('icon').removeClass('icon-refresh-animate');
             return {
                 html: self.query('html'),
                 javascript: self.query('javascript')
@@ -50,7 +56,8 @@ tbone.createView('example', function () {
         var src = _.trim($this.html());
         var currType;
         var parts = {
-            id: i
+            id: i,
+            name: $this.attr('name')
         };
         src.replace(/~(\w+)~|([^~]+)/g, function (all, newType, newContents) {
             if (newType) {

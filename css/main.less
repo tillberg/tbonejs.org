@@ -105,10 +105,17 @@ section.example {
 .exampleList {
     li {
         list-style: none;
+        padding: 8px;
+        margin: 8px;
+        border: 8px #eee solid;
+        border-radius: 1em;
     }
 
     fragment {
+        display: block;
         position: relative;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
     }
 
     h3 {
@@ -121,11 +128,20 @@ section.example {
         -ms-transform: rotate(-90deg);
         -o-transform: rotate(-90deg);
         text-align: center;
+        border-bottom-left-radius: 0.5em;
+        border-bottom-right-radius: 0.5em;
+    }
+
+    h4 {
+        padding-left: 2em;
     }
 
     section {
         z-index: 1;
         padding-left: 26px;
+    }
+    pre {
+        margin: 0;
     }
     code {
         // background: #ddd !important;
@@ -137,4 +153,22 @@ section.example {
         min-height: 50px;
         margin: 0.5em;
     }
+
+    a.update {
+        position: absolute;
+        top: 6px;
+        left: -33px;
+    }
+}
+
+.icon-refresh-animate {
+    animation-name: rotateThis;
+    animation-duration: .5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes rotateThis {
+    from { transform: scale( 1 ) rotate( 0deg );   }
+    to   { transform: scale( 1 ) rotate( 360deg ); }
 }

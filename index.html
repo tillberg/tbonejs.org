@@ -13,7 +13,24 @@ tagline: Automagic Event Binding for Backbone
 
 <ul tbone="tmpl exampleList"></ul>
 
-<script type="text/example">
+<script name="Full Name" type="text/example">
+
+~javascript~
+T(function () {
+    $('body').text(T('name.full'));
+});
+T('name.full', function () {
+    return T('name.first') + ' ' + T('name.last');
+});
+T('name.first', 'Sally');
+setTimeout(function () {
+    T('name.last', 'Smith');
+}, 1000);
+
+</script>
+
+
+<script name="Red Stapler" type="text/example">
 
 ~html~
 <div tbone="tmpl onMyDesk"></div>
@@ -68,19 +85,23 @@ T('stapler.color', '#f00');
 
 </script>
 
+
 <script name="exampleList" type="text/tbone-tmpl">
     <% _.each(examples, function (item, i) { %>
-        <li tbone="tmpl example root <%@ item %>">
+        <li id="<%=item.name%>" tbone="tmpl example root <%@ item %>">
     <% }); %>
 </script>
 
 <script name="example" type="text/tbone-tmpl">
-    <fragment>
-        <h3>HTML</h3>
-        <section>
-            <pre><code class="html"><%=html_hl%></pre></code>
-        </section>
-    </fragment>
+    <h4><a href="#<%=name%>"><%=name%></a></h4>
+    <% if (html) { %>
+        <fragment>
+            <h3>HTML</h3>
+            <section>
+                <pre><code class="html"><%=html_hl%></pre></code>
+            </section>
+        </fragment>
+    <% } %>
     <fragment>
         <h3>JS</h3>
         <section>
@@ -88,12 +109,14 @@ T('stapler.color', '#f00');
         </section>
     </fragment>
     <fragment>
+        <a class="update" href="#"><icon class="icon-refresh icon-refresh-animate"></icon></a>
         <h3>Demo</h3>
         <section>
             <iframe src="demo.html?callback=<%=id%>"></iframe>
         </section>
     </fragment>
 </script>
+
 
 <p>TBone is freely redistributable under the <a href="https://github.com/appneta/tbone/blob/master/LICENSE">MIT License</a>.</p>
 
