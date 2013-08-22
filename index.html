@@ -11,6 +11,8 @@ tagline: Automagic Event Binding for Backbone
 
 <!-- At AppNeta, we've used TBone to eliminate a set of custom page events corresponding such as "refresh data" and "add filter"; with a large application, it becomes difficult to manage what exactly needs to be refreshed when something changes.  While Backbone is a critical step toward reducing this complexity, TBone enables us to do so without even thinking about event binding; every view and model stays in sync by design and without unnecessary work. -->
 
+<ul tbone="tmpl exampleList"></ul>
+
 <script type="text/example">
 
 [html]
@@ -26,6 +28,24 @@ tbone.createView('onMyDesk', function() {
 
 </script>
 
+<script name="exampleList" type="text/tbone-tmpl">
+    <% _.each(examples, function (item, i) { %>
+        <li tbone="tmpl example root <%@ item %>">
+    <% }); %>
+</script>
 
-<h4>License</h4>
-<p>TBone is freely redistributable under the "MIT License":https://github.com/appneta/tbone/blob/master/LICENSE.</p>
+<script name="example" type="text/tbone-tmpl">
+    <fragment>
+        <h3>HTML</h3>
+        <pre><code class="html"><%=html_hl%></pre></code>
+    </fragment>
+    <fragment>
+        <h3>JS</h3>
+        <pre><code class="javascript"><%=javascript_hl%></pre></code>
+    </fragment>
+    <demo>
+
+    </demo>
+</script>
+
+<p>TBone is freely redistributable under the <a href="https://github.com/appneta/tbone/blob/master/LICENSE">MIT License</a>.</p>

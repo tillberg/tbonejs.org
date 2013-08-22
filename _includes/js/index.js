@@ -1,6 +1,7 @@
 ;
 
 (function () {
+    return;
     tbone.createModel('stapler').singleton();
     tbone('stapler.brand', 'Swingline');
     tbone.createView('input', function () {
@@ -44,7 +45,36 @@
     $('body').addClass('tbone-ready');
 }());
 
+tbone.createView('example', function () {
+    this.$('fragment').each(function () {
+        var $this = $(this);
+        var height = $this.children('pre').height();
+        var margin = (height / 2) - 13;// 13 is the width / 2
+        $this.children('h3').css({
+            width: height,
+            marginLeft: -margin,
+            marginTop: margin
+        });
+    });
+});
+
 (function () {
+    function highlightInlineJS(s) {
+        return s.replace(/&lt;\%(-|=|@|)(.+?)\%&gt;/g, function (all, op, js) {
+            return [
+                '<span class="erb">',
+                '&lt;%' + op,
+                '</span>',
+                '<span class="inline-js">',
+                hljs.highlight('javascript', js).value,
+                '</span>',
+                '<span class="erb">',
+                '%&gt;',
+                '</span>'
+            ].join('');
+        });
+    }
+
     $('script[type="text/example"]').each(function () {
         var $this = $(this);
         var src = _.trim($this.html());
@@ -55,7 +85,15 @@
                 currType = newType;
             } else {
                 parts[currType] = _.trim(newContents);
+                var highlighted = hljs.highlightAuto(parts[currType]).value;
+                if (currType === 'html') {
+                    highlighted = highlightInlineJS(highlighted);
+                }
+                parts[currType + '_hl'] = highlighted;
             }
         });
+        T.push('examples', parts);
     });
+    $('body').addClass('tbone-ready');
+    tbone.render($('[tbone]'));
 }());
