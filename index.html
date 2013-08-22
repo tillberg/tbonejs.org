@@ -15,16 +15,56 @@ tagline: Automagic Event Binding for Backbone
 
 <script type="text/example">
 
-[html]
-<div tbone="inline onMyDesk">
-    My <stapler><%=stapler.color%> <%=stapler.brand%> stapler</stapler>.
-</div>
-It is <input type="text" tbone="view input" data-value="stapler.color">
+~html~
+<div tbone="tmpl onMyDesk"></div>
+<scrpt name="onMyDesk" type="text/tbone-tmpl">
+    My <stapler><%=stapler.brand%> stapler is <%=stapler.color%></stapler>.
+    <div>
+        It is <input type="text" tbone="view input" data-value="stapler.color">
+        <button>Click Me!</button>
+    </div>
+</scrpt>
 
-[javascript]
+~javascript~
+var typingTimer;
 tbone.createView('onMyDesk', function() {
     this.$('stapler').css('background', tbone('stapler.color'));
+    this.$('button').click(function () {
+        if (typingTimer) { clearTimeout(typingTimer); typingTimer = null; }
+        var choices = [
+            'red', 'hotpink', '#f00', '#bada55', 'rgba(255, 0, 0, 1)',
+            'aquamarine', 'hsl(0, 100%, 50%)'
+        ];
+        var choice = choices[Math.floor(choices.length * Math.random())];
+        var typed = '';
+        function another () {
+            typed += choice.charAt(0);
+            T('stapler.color', typed);
+            choice = choice.substr(1);
+            typingTimer = choice ? setTimeout(another, 40 + 100 * Math.random()) : null;
+        }
+        another();
+    });
 });
+tbone.createView('input', function () {
+    var $this = this.$el;
+    var prop = this.$el.data().value;
+    var interacting;
+    tbone(function () {
+        var value = tbone(prop);
+        if (!interacting) {
+            $this.val(value || '');
+        }
+        interacting = false;
+    });
+    function update() {
+        interacting = true;
+        tbone(prop, $this.val());
+    }
+    $this.keydown(update).keyup(update).change(update).blur(update);
+});
+T('stapler.brand', 'Swingline');
+T('stapler.color', '#f00');
 
 </script>
 
@@ -37,15 +77,26 @@ tbone.createView('onMyDesk', function() {
 <script name="example" type="text/tbone-tmpl">
     <fragment>
         <h3>HTML</h3>
-        <pre><code class="html"><%=html_hl%></pre></code>
+        <section>
+            <pre><code class="html"><%=html_hl%></pre></code>
+        </section>
     </fragment>
     <fragment>
         <h3>JS</h3>
-        <pre><code class="javascript"><%=javascript_hl%></pre></code>
+        <section>
+            <pre><code class="javascript"><%=javascript_hl%></pre></code>
+        </section>
     </fragment>
-    <demo>
-
-    </demo>
+    <fragment>
+        <h3>Demo</h3>
+        <section>
+            <iframe src="demo.html?callback=<%=id%>"></iframe>
+        </section>
+    </fragment>
 </script>
 
 <p>TBone is freely redistributable under the <a href="https://github.com/appneta/tbone/blob/master/LICENSE">MIT License</a>.</p>
+
+<script type="text/javascript">
+  {% include js/index.js %}
+</script>

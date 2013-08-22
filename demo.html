@@ -1,0 +1,18 @@
+<style>
+body, html { margin: 0; padding: 0;}
+</style>
+<script src="/assets/lib.js"></script>
+<div tbone="tmpl demoTemplate"></div>
+<script type="text/javascript">
+    var demoId = location.search.split('=')[1]; // really hacky way of reading ?callback=<id>
+    function callParent() {
+        return window.parent.demoCallbacks[demoId].apply(this, arguments);
+    }
+    var demo = callParent('init');
+    tbone.addTemplate('demoTemplate', demo.html);
+    eval(demo.javascript);
+    tbone.render($('[tbone]'));
+    callParent('setcss', {
+        height: $('div.demoTemplate').height() + 6
+    });
+</script>
