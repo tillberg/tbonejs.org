@@ -1,27 +1,4 @@
 ;
-$('.highlight .html').each(function () {
-    var $highlight =  $(this);
-    var $starts = $highlight.find('.nx');
-    $starts.filter(function () {
-        return !$(this).text().match(/_|each/);
-    }).each(function () {
-        var $start = $(this);
-        if ($start.parent().is('.underscore')) { return; }
-        var els = [this];
-        $start.find('~ span').each(function () {
-            if (!$(this).is('.nx') && $(this).text() !== '.') {
-                return false;
-            } else {
-                els.push(this);
-            }
-        });
-        var $wrapper = $('<span class="underscore"></span>');
-        if ($start.prev().prev().is('.kd')) {
-            $wrapper.addClass('closure');
-        }
-        $(els).wrapAll($wrapper);
-    });
-});
 
 (function () {
     tbone.createModel('stapler').singleton();
@@ -65,4 +42,20 @@ $('.highlight .html').each(function () {
     });
     tbone.render($('[tbone]'));
     $('body').addClass('tbone-ready');
+}());
+
+(function () {
+    $('script[type="text/example"]').each(function () {
+        var $this = $(this);
+        var src = _.trim($this.html());
+        var currType;
+        var parts = {};
+        src.replace(/\[(\w+)\]|([^\[]+)/g, function (all, newType, newContents) {
+            if (newType) {
+                currType = newType;
+            } else {
+                parts[currType] = _.trim(newContents);
+            }
+        });
+    });
 }());

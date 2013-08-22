@@ -22,11 +22,19 @@ for ref in `git ls-remote origin | grep ".*refs/[^p]" | sed "s/.*\///"`; do
     echo "Building tbone $ref"
     git checkout -q $ref
     OPTIMIZATION_LEVEL=ADVANCED_OPTIMIZATIONS ./compile.py > ../_cdn/tbone-$ref.min.js
-    # XXX compile with debug=true has the side effect of generating build/tbone.debug.js
+    # compile with debug=true has the side effect of generating build/tbone.debug.js
     TBONE_DEBUG=TRUE OPTIMIZATION_LEVEL=WHITESPACE_ONLY ./compile.py > /dev/null
     cp build/tbone.debug.js ../_cdn/tbone-$ref.js
     cp build/tbone.min.js.map ../_cdn/tbone-$ref.min.js.map
     sed -i s/tbone.min.js.map/tbone-$ref.min.js.map/ ../_cdn/tbone-$ref.min.js
+    if [ -f "package.json" ]; then
+        mkdir -p tbone/
+        cp build/tbone.debug.js tbone/tbone.js
+        cp package.json LICENSE README.md tbone/
+        sed -i "s/build\/tbone\.debug\.js/tbone\.js/" tbone/package.json
+        tar czf ../_cdn/tbone-$ref.tgz tbone/
+        rm -rf tbone/
+    fi
 done
 git checkout -q master
 
