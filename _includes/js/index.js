@@ -41,6 +41,8 @@ tbone.createView('example', function () {
 (function () {
     function highlightInlineJS(s) {
         return s.replace(/&lt;\%(-|=|@|)(.+?)\%&gt;/g, function (all, op, js) {
+            // Strip HTML-highlighting from the JS
+            js = $('<div>').html(js).text();
             return [
                 '<span class="erb">',
                 '&lt;%' + op,
