@@ -33,17 +33,18 @@ label {
 ~html~
 <div>
     <label>ajax fetched:</label>
-    <% _.each(_.range(10), function (i) { %>
-        <span<% if (T('fetched.' + i)) { %> class="fetched"<% } %> >
+    <% _.each(fetched, function (wasfetched, i) { %>
+        <span<% if (wasfetched) { %> class="fetched"<% } %> >
             <%=i%>
         </span>
     <% }); %>
+    Total ajax requests: <%=numAjaxReqs%>
 </div>
 <div>
     <label> </label>
-    <% _.each(_.range(10), function (i) { %>
-        <% if (i >= 3 && i < 7) { %>
-            <span tbone="value-<%=i%>"><%=T('ajaxModels.' + i)%></span>
+    <% _.each(ajaxModels, function (resp, i) { %>
+        <% if (i >= 2 && i < 6) { %>
+            <span><%=resp%></span>
         <% } else { %>
             <span> - </span>
         <% } %>
@@ -54,6 +55,7 @@ label {
 var ajaxModel = tbone.models.ajax.extend({
     ajax: function (opts) {
         T('fetched.' + this.id, true);
+        T.increment('numAjaxReqs');
         opts.success('\u2603');
     },
     url: function () {
@@ -62,6 +64,7 @@ var ajaxModel = tbone.models.ajax.extend({
 });
 _.each(_.range(10), function (i) {
     T.push('ajaxModels', ajaxModel.make({ id: i }));
+    T.push('fetched', false);
 });
 
 </script>

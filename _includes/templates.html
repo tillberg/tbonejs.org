@@ -6,11 +6,9 @@
 </script>
 
 <script name="exampleListAbbrev" type="text/tbone-tmpl">
-    <% if (showAbbrevExampleList) { %>
-        <% _.each(examples, function (item, i) { %>
-            <li><a href="#<%=item.name_safe%>"><%=item.name%></a></li>
-        <% }); %>
-    <% } %>
+    <% _.each(examples, function (item, i) { %>
+        <li><a href="#<%=item.name_safe%>"><%=item.name%></a></li>
+    <% }); %>
 </script>
 
 <script name="demo" type="text/tbone-tmpl">
@@ -20,7 +18,9 @@
             view code
         </a>
     <% } %>
-    <ul tbone="tmpl exampleListAbbrev"></ul>
+    <% if (showAbbrevExampleList) { %>
+        <ul tbone="tmpl exampleListAbbrev"></ul>
+    <% } %>
 </script>
 
 <script name="example" type="text/tbone-tmpl">
