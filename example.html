@@ -56,7 +56,7 @@ a.full-version {
                 return example.name_safe === hash;
             });
             T('showAbbrevExampleList', !demo);
-            T('linkToFullVersion', demo ? '/#' + demo.name_safe : null);
+            T('currDemoSafeName', demo ? demo.name_safe : null);
             if (demo) {
                 if (demo.html) {
                     tbone.addTemplate('demoTemplate', demo.html);

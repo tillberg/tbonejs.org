@@ -22,7 +22,7 @@ tbone.createView('example', function () {
         return false;
     });
     self.$el.on('click', 'a.show_source', function () {
-        self.query('show_source', !self.query('show_source'));
+        T.toggle('showSource.' + self.query('name_safe'));
         return false;
     });
     T(function () {
@@ -42,6 +42,8 @@ tbone.createView('example', function () {
         }
     };
 });
+
+T('showSource', tbone.models.localStorage.make({ key: 'showSource' }))
 
 (function () {
     function highlightInlineJS(s) {

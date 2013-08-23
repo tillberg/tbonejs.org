@@ -13,14 +13,22 @@
 
 <script name="demo" type="text/tbone-tmpl">
     <div tbone="tmpl demoTemplate" data-cache-bust="<%=Math.random()%>"></div>
-    <% if (linkToFullVersion) { %>
-        <a class="full-version" target="_blank" href="<%=linkToFullVersion%>">
+    <% if (currDemoSafeName) { %>
+        <a class="full-version" target="_blank" href="/#<%=currDemoSafeName%>">
             view code
         </a>
     <% } %>
     <% if (showAbbrevExampleList) { %>
         <ul tbone="tmpl exampleListAbbrev"></ul>
     <% } %>
+</script>
+
+<script type="text/javascript">
+tbone.createView('demo', function () {
+    this.$el.off('click').on('click', 'a.full-version', function () {
+        T('showSource.' + T('currDemoSafeName'), true);
+    });
+});
 </script>
 
 <script name="example" type="text/tbone-tmpl">
@@ -30,7 +38,7 @@
     <% if (desc) { %>
         <p>desc</p>
     <% } %>
-    <% if (show_source) { %>
+    <% if (T('showSource.' + name_safe)) { %>
         <% if (html) { %>
             <fragment>
                 <h3>HTML</h3>
@@ -60,7 +68,7 @@
             <div>
                 <a class="update" href="#"><icon class="icon-refresh icon-refresh-animate"></icon></a>
                 <a class="show_source" href="#">
-                    <%=show_source ? 'hide' : 'show'%> source
+                    <%=T('showSource.' + name_safe) ? 'hide' : 'show'%> source
                 </a>
             </div>
             <iframe src="/example/#callback=<%=id%>"></iframe>
