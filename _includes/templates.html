@@ -24,33 +24,45 @@
 </script>
 
 <script name="example" type="text/tbone-tmpl">
-    <h4><a href="#<%=name_safe%>"><%=name%></a></h4>
-    <% if (html) { %>
-        <fragment>
-            <h3>HTML</h3>
-            <section>
-                <pre><code class="html"><%=html_hl%></pre></code>
-            </section>
-        </fragment>
+    <h4>
+        <a href="#<%=name_safe%>"><%=name%></a>
+    </h4>
+    <% if (desc) { %>
+        <p>desc</p>
     <% } %>
-    <% if (css) { %>
+    <% if (show_source) { %>
+        <% if (html) { %>
+            <fragment>
+                <h3>HTML</h3>
+                <section>
+                    <pre><code class="html"><%=html_hl%></pre></code>
+                </section>
+            </fragment>
+        <% } %>
+        <% if (css) { %>
+            <fragment>
+                <h3>CSS</h3>
+                <section>
+                    <pre><code class="css"><%=css_hl%></pre></code>
+                </section>
+            </fragment>
+        <% } %>
         <fragment>
-            <h3>CSS</h3>
+            <h3>JS</h3>
             <section>
-                <pre><code class="css"><%=css_hl%></pre></code>
+                <pre><code class="javascript"><%=javascript_hl%></pre></code>
             </section>
         </fragment>
     <% } %>
     <fragment>
-        <h3>JS</h3>
-        <section>
-            <pre><code class="javascript"><%=javascript_hl%></pre></code>
-        </section>
-    </fragment>
-    <fragment>
-        <a class="update" href="#"><icon class="icon-refresh icon-refresh-animate"></icon></a>
         <h3>Demo</h3>
         <section>
+            <div>
+                <a class="update" href="#"><icon class="icon-refresh icon-refresh-animate"></icon></a>
+                <a class="show_source" href="#">
+                    <%=show_source ? 'hide' : 'show'%> source
+                </a>
+            </div>
             <iframe src="/example/#callback=<%=id%>"></iframe>
         </section>
     </fragment>

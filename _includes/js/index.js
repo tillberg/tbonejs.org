@@ -16,8 +16,13 @@ tbone.createView('example', function () {
     }
     self.$('fragment').each(updateFragmentHeaderStyle);
     self.query('reloadCount');
+    self.$el.off('click');
     self.$el.on('click', 'a.update', function () {
         self.query('reloadCount', (self.query('reloadCount') || 0) + 1);
+        return false;
+    });
+    self.$el.on('click', 'a.show_source', function () {
+        self.query('show_source', !self.query('show_source'));
         return false;
     });
     T(function () {
