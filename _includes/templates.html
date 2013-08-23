@@ -5,6 +5,24 @@
     <% }); %>
 </script>
 
+<script name="exampleListAbbrev" type="text/tbone-tmpl">
+    <% if (showAbbrevExampleList) { %>
+        <% _.each(examples, function (item, i) { %>
+            <li><a href="#<%=item.name_safe%>"><%=item.name%></a></li>
+        <% }); %>
+    <% } %>
+</script>
+
+<script name="demo" type="text/tbone-tmpl">
+    <div tbone="tmpl demoTemplate" data-cache-bust="<%=Math.random()%>"></div>
+    <% if (linkToFullVersion) { %>
+        <a class="full-version" target="_blank" href="<%=linkToFullVersion%>">
+            view code
+        </a>
+    <% } %>
+    <ul tbone="tmpl exampleListAbbrev"></ul>
+</script>
+
 <script name="example" type="text/tbone-tmpl">
     <h4><a href="#<%=name_safe%>"><%=name%></a></h4>
     <% if (html) { %>
@@ -33,7 +51,7 @@
         <a class="update" href="#"><icon class="icon-refresh icon-refresh-animate"></icon></a>
         <h3>Demo</h3>
         <section>
-            <iframe src="/demo/?callback=<%=id%>"></iframe>
+            <iframe src="/example/#callback=<%=id%>"></iframe>
         </section>
     </fragment>
 </script>

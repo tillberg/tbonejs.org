@@ -9,29 +9,65 @@ body {
     margin: 0;
     padding: 4px 0 0 4px;
 }
+a.full-version {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    text-decoration: none;
+    font-size: 80%;
+}
 </style>
+<style class="democss"></style>
 <script src="/assets/lib.js"></script>
-<div tbone="tmpl demoTemplate"></div>
+<div tbone="tmpl demo"></div>
 {% include examples.html %}
 {% include templates.html %}
 
 <script type="text/javascript">
 {% include js/index.js %}
     T('location', tbone.models.location.make());
+    var isDemoLoaded;
     T(function () {
-        var demoName = (T('location.hash') || '').substring(1);
-        var demo = _.find(T('examples') || [], function (example) {
-            return example.name_safe === demoName;
-        });
-        if (demo) {
+        if (isDemoLoaded) {
+            location.reload();
+            return;
+        }
+        var hash = (T('location.hash') || '').substring(1);
+        if (hash.match(/^callback=/)) {
+            var demoId = location.hash.split('=')[1]; // hacky way of reading callback=<id>
+            function callParent() {
+                return window.parent.demoCallbacks[demoId].apply(this, arguments);
+            }
+            var demo = callParent('init');
             if (demo.html) {
                 tbone.addTemplate('demoTemplate', demo.html);
             }
             if (demo.css) {
-                $('<style>').html(demo.css).appendTo('head');
+                $('.democss').html(demo.css);
             }
             eval(demo.javascript);
-            tbone.render($('[tbone]'));
+            _.defer(function () {
+                callParent('setcss', {
+                    height: $('html').height() + 4
+                });
+            });
+        } else {
+            var demo = _.find(T('examples') || [], function (example) {
+                return example.name_safe === hash;
+            });
+            T('showAbbrevExampleList', !demo);
+            T('linkToFullVersion', demo ? '/#' + demo.name_safe : null);
+            if (demo) {
+                if (demo.html) {
+                    tbone.addTemplate('demoTemplate', demo.html);
+                }
+                if (demo.css) {
+                    $('.democss').html(demo.css);
+                }
+                eval(demo.javascript);
+            }
         }
+        isDemoLoaded = true;
     });
+    tbone.render($('[tbone]'));
 </script>

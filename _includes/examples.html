@@ -54,7 +54,7 @@ label {
 var ajaxModel = tbone.models.ajax.extend({
     ajax: function (opts) {
         T('fetched.' + this.id, true);
-        opts.success('☃');
+        opts.success('\u2603');
     },
     url: function () {
         return '/things/' + this.id;
