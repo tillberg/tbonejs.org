@@ -1,0 +1,39 @@
+
+<script name="exampleList" type="text/tbone-tmpl">
+    <% _.each(examples, function (item, i) { %>
+        <li id="<%=item.name_safe%>" tbone="tmpl example root <%@ item %>">
+    <% }); %>
+</script>
+
+<script name="example" type="text/tbone-tmpl">
+    <h4><a href="#<%=name_safe%>"><%=name%></a></h4>
+    <% if (html) { %>
+        <fragment>
+            <h3>HTML</h3>
+            <section>
+                <pre><code class="html"><%=html_hl%></pre></code>
+            </section>
+        </fragment>
+    <% } %>
+    <% if (css) { %>
+        <fragment>
+            <h3>CSS</h3>
+            <section>
+                <pre><code class="css"><%=css_hl%></pre></code>
+            </section>
+        </fragment>
+    <% } %>
+    <fragment>
+        <h3>JS</h3>
+        <section>
+            <pre><code class="javascript"><%=javascript_hl%></pre></code>
+        </section>
+    </fragment>
+    <fragment>
+        <a class="update" href="#"><icon class="icon-refresh icon-refresh-animate"></icon></a>
+        <h3>Demo</h3>
+        <section>
+            <iframe src="/demo/?callback=<%=id%>"></iframe>
+        </section>
+    </fragment>
+</script>

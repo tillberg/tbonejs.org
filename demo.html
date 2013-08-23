@@ -1,5 +1,14 @@
+---
+---
 <style>
-body, html { margin: 0; padding: 0;}
+html {
+    margin: 0;
+    padding: 0;
+}
+body {
+    margin: 0;
+    padding: 4px 0 0 4px;
+}
 </style>
 <script src="/assets/lib.js"></script>
 <div tbone="tmpl demoTemplate"></div>
@@ -18,6 +27,6 @@ body, html { margin: 0; padding: 0;}
     eval(demo.javascript);
     tbone.render($('[tbone]'));
     callParent('setcss', {
-        height: $('div.demoTemplate').height() + 6
+        height: $('html').height() + 4
     });
 </script>

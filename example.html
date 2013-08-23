@@ -1,0 +1,37 @@
+---
+---
+<style>
+html {
+    margin: 0;
+    padding: 0;
+}
+body {
+    margin: 0;
+    padding: 4px 0 0 4px;
+}
+</style>
+<script src="/assets/lib.js"></script>
+<div tbone="tmpl demoTemplate"></div>
+{% include examples.html %}
+{% include templates.html %}
+
+<script type="text/javascript">
+{% include js/index.js %}
+    T('location', tbone.models.location.make());
+    T(function () {
+        var demoName = (T('location.hash') || '').substring(1);
+        var demo = _.find(T('examples') || [], function (example) {
+            return example.name_safe === demoName;
+        });
+        if (demo) {
+            if (demo.html) {
+                tbone.addTemplate('demoTemplate', demo.html);
+            }
+            if (demo.css) {
+                $('<style>').html(demo.css).appendTo('head');
+            }
+            eval(demo.javascript);
+            tbone.render($('[tbone]'));
+        }
+    });
+</script>

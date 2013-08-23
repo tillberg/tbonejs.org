@@ -20,6 +20,10 @@ tbone.createView('example', function () {
         self.query('reloadCount', (self.query('reloadCount') || 0) + 1);
         return false;
     });
+    T(function () {
+        self.$('iframe').css(self.$('iframecss') || {});
+        updateFragmentHeaderStyle.call(self.$('iframe').closest('fragment')[0]);
+    });
     window.demoCallbacks[self.query('id')] = function (op, data) {
         if (op === 'init') {
             self.$('icon').removeClass('icon-refresh-animate');
@@ -29,8 +33,7 @@ tbone.createView('example', function () {
                 javascript: self.query('javascript')
             };
         } else if (op === 'setcss') {
-            self.$('iframe').css(data);
-            updateFragmentHeaderStyle.call(self.$('iframe').closest('fragment')[0]);
+            self.$('iframecss', data);
         }
     };
 });
@@ -76,6 +79,4 @@ tbone.createView('example', function () {
         });
         T.push('examples', parts);
     });
-    $('body').addClass('tbone-ready');
-    tbone.render($('[tbone]'));
 }());
