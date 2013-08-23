@@ -9,7 +9,12 @@ body, html { margin: 0; padding: 0;}
         return window.parent.demoCallbacks[demoId].apply(this, arguments);
     }
     var demo = callParent('init');
-    tbone.addTemplate('demoTemplate', demo.html);
+    if (demo.html) {
+        tbone.addTemplate('demoTemplate', demo.html);
+    }
+    if (demo.css) {
+        $('<style>').html(demo.css).appendTo('head');
+    }
     eval(demo.javascript);
     tbone.render($('[tbone]'));
     callParent('setcss', {

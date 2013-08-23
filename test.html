@@ -1,0 +1,31 @@
+<style>
+body, html { margin: 0; padding: 0;}
+</style>
+<script src="/assets/lib.js"></script>
+
+<div tbone="tmpl body"></div>
+
+<script name="body" type="text/tbone-tmpl">
+    <%=namefull('')%>
+</script>
+
+<script type="text/javascript">
+T.Name = 'tbone';
+
+T('name.first', tbone.models.base.make({ Name: 'name.first' }));
+T('name.last', tbone.models.base.make({ Name: 'name.last' }));
+
+var namefirst = T.queryModel('name.first');
+var namelast = T.queryModel('name.last');
+T('name.full', function () {
+    return namefirst('') + ' ' + namelast('');
+});
+var namefull = T.queryModel('name.full');
+T.queryModel('name.full').Name = 'name.full';
+T('name.first', 'Sally');
+T('name.last', 'Smith');
+
+tbone.dontPatch('namefull');
+tbone.render($('[tbone]'));
+</script>
+

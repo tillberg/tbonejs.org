@@ -29,6 +29,57 @@ setTimeout(function () {
 
 </script>
 
+<script name="Sandman" type="text/example">
+
+~css~
+span, label {
+    display: inline-block;
+}
+span {
+    width: 20px;
+}
+span.fetched {
+    background: green;
+}
+label {
+    width: 80px;
+}
+
+~html~
+<div>
+    <label>ajax fetched:</label>
+    <% _.each(_.range(10), function (i) { %>
+        <span<% if (T('fetched.' + i)) { %> class="fetched"<% } %> >
+            <%=i%>
+        </span>
+    <% }); %>
+</div>
+<div>
+    <label> </label>
+    <% _.each(_.range(10), function (i) { %>
+        <% if (i >= 3 && i < 7) { %>
+            <span tbone="value-<%=i%>"><%=T('ajaxModels.' + i)%></span>
+        <% } else { %>
+            <span> - </span>
+        <% } %>
+    <% }); %>
+</div>
+
+~javascript~
+var ajaxModel = tbone.models.ajax.extend({
+    ajax: function (opts) {
+        T('fetched.' + this.id, true);
+        opts.success('☃');
+    },
+    url: function () {
+        return '/things/' + this.id;
+    }
+});
+_.each(_.range(10), function (i) {
+    T.push('ajaxModels', ajaxModel.make({ id: i }));
+});
+
+</script>
 
 <script name="Red Stapler" type="text/example">
 
@@ -99,6 +150,14 @@ T('stapler.color', '#f00');
             <h3>HTML</h3>
             <section>
                 <pre><code class="html"><%=html_hl%></pre></code>
+            </section>
+        </fragment>
+    <% } %>
+    <% if (css) { %>
+        <fragment>
+            <h3>CSS</h3>
+            <section>
+                <pre><code class="css"><%=css_hl%></pre></code>
             </section>
         </fragment>
     <% } %>

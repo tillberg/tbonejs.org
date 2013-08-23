@@ -25,6 +25,7 @@ tbone.createView('example', function () {
             self.$('icon').removeClass('icon-refresh-animate');
             return {
                 html: self.query('html'),
+                css: self.query('css'),
                 javascript: self.query('javascript')
             };
         } else if (op === 'setcss') {
