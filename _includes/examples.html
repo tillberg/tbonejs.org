@@ -1,5 +1,12 @@
 <script name="Full Name" type="text/example">
 
+~desc~
+<p>
+    In this simple example, we bind the text of the page to `name.full`, then bind
+    `name.full` to `name.first` + ' ' + `name.last` in order to demonstrate
+    the core features of TBone.
+</p>
+
 ~javascript~
 T(function () {
     $('body').text(T('name.full'));
@@ -79,19 +86,21 @@ _.each(_.range(6), function (i) {
 
 <script name="Red Stapler" type="text/example">
 
+~desc~
+<p>
+    This demonstrates how to bind an &lt;input&gt; element to a TBone property.
+</p>
+
 ~html~
-<div tbone="tmpl onMyDesk"></div>
-<scrpt name="onMyDesk" type="text/tbone-tmpl">
-    My <stapler><%=stapler.brand%> stapler is <%=stapler.color%></stapler>.
-    <div>
-        It is <input type="text" tbone="view input" data-value="stapler.color">
-        <button>Click Me!</button>
-    </div>
-</scrpt>
+My <stapler><%=stapler.brand%> stapler is <%=stapler.color%></stapler>.
+<div>
+    It is <input type="text" tbone="view input" data-value="stapler.color">
+    <button>Click Me!</button>
+</div>
 
 ~javascript~
 var typingTimer;
-tbone.createView('onMyDesk', function() {
+tbone.createView('exampleView', function() {
     this.$('stapler').css('background', tbone('stapler.color'));
     this.$('button').click(function () {
         if (typingTimer) { clearTimeout(typingTimer); typingTimer = null; }

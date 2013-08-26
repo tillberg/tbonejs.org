@@ -41,7 +41,7 @@ a.full-version {
             }
             var demo = callParent('init');
             if (demo.html) {
-                tbone.addTemplate('demoTemplate', demo.html);
+                tbone.addTemplate('exampleView', demo.html);
             }
             if (demo.css) {
                 $('.democss').html(demo.css);
@@ -60,7 +60,7 @@ a.full-version {
             T('currDemoSafeName', demo ? demo.name_safe : null);
             if (demo) {
                 if (demo.html) {
-                    tbone.addTemplate('demoTemplate', demo.html);
+                    tbone.addTemplate('exampleView', demo.html);
                 }
                 if (demo.css) {
                     $('.democss').html(demo.css);
