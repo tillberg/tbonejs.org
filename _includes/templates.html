@@ -36,7 +36,11 @@ tbone.createView('demo', function () {
         <a href="#<%=name_safe%>"><%=name%></a>
     </h4>
     <% if (desc) { %>
-        <p>desc</p>
+        <fragment>
+            <section class="desc">
+                <%=desc%>
+            </section>
+        </fragment>
     <% } %>
     <% if (T('showSource.' + name_safe)) { %>
         <% if (html) { %>
