@@ -26,7 +26,7 @@ tbone.createView('example', function () {
         return false;
     });
     T(function () {
-        self.$('iframe').css(self.$('iframecss') || {});
+        self.$('iframe').css(self.query('iframecss') || {});
         updateFragmentHeaderStyle.call(self.$('iframe').closest('fragment')[0]);
     });
     window.demoCallbacks[self.query('id')] = function (op, data) {
@@ -38,7 +38,7 @@ tbone.createView('example', function () {
                 javascript: self.query('javascript')
             };
         } else if (op === 'setcss') {
-            self.$('iframecss', data);
+            self.query('iframecss', data);
         }
     };
 });
