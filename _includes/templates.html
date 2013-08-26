@@ -70,6 +70,9 @@ tbone.createView('demo', function () {
                 <a class="show_source" href="#">
                     <%=T('showSource.' + name_safe) ? 'hide' : 'show'%> source
                 </a>
+                <a class="open_alone" target="_blank" href="/example/#<%=name_safe%>">
+                    open in new tab
+                </a>
             </div>
             <iframe src="/example/#callback=<%=id%>"></iframe>
         </section>

@@ -43,7 +43,7 @@ label {
 <div>
     <label> </label>
     <% _.each(ajaxModels, function (resp, i) { %>
-        <% if (i >= 2 && i < 6) { %>
+        <% if (i >= 1 && i <= 3) { %>
             <span><%=resp%></span>
         <% } else { %>
             <span> - </span>
@@ -59,10 +59,10 @@ var ajaxModel = tbone.models.ajax.extend({
         opts.success('\u2603');
     },
     url: function () {
-        return '/things/' + this.id;
+        return '/snowman/' + this.id;
     }
 });
-_.each(_.range(10), function (i) {
+_.each(_.range(6), function (i) {
     T.push('ajaxModels', ajaxModel.make({ id: i }));
     T.push('fetched', false);
 });

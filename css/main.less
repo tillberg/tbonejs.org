@@ -3,6 +3,10 @@
 @import "bootstrap";
 @import "highlight_googlecode";
 
+* {
+    box-sizing: border-box;
+}
+
 body {
     color: hsl(0, 0%, 20%);
     font: 15px/22.5px "Helvetica Neue", HelveticaNeue, Helvetica, Arial, sans-serif;
@@ -142,7 +146,7 @@ section.example {
         height: 50px;
         min-height: 50px;
         margin: 0.3em;
-        width: 90%;
+        width: 100%;
     }
 
     a.update {
@@ -153,6 +157,11 @@ section.example {
 
     a.show_source {
         font-size: 90%;
+    }
+
+    a.open_alone {
+        font-size: 80%;
+        float: right;
     }
 
 }
