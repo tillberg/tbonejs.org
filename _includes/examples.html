@@ -41,6 +41,30 @@ tbone.createView('itemView', function () {
 
 </script>
 
+<script name="Pass each item of a list to a view" type="text/example">
+
+~desc~
+<p>
+    To render a list of items as a list of subviews, you can pass each item
+    directly to the subview by using the special `&lt;%@...%&gt;` token.
+    If the item is not a model, a model will be created on the fly as
+    temporary storage for your data.
+</p>
+
+~javascript~
+T('myFriends', [{ name: 'Moe' }, { name: 'Larry' }, { name: 'Curly' }]);
+tbone.createView('friendView', function () {
+    this.$el.text('My name is ' + this.query('name'));
+});
+
+~html~
+<ul>
+    <% _.each(myFriends, function (friend) { %>
+        <li tbone="view friendView root <%@friend%>"></li>
+    <% }); %>
+</ul>
+
+</script>
 
 <script name="The Sleeping XHR" type="text/example">
 
