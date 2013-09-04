@@ -21,6 +21,27 @@ setTimeout(function () {
 
 </script>
 
+<script name="Bind a Model to a View" type="text/example">
+
+~desc~
+<p>
+    Here, we create a model, set a property on it, and bind it to a view.
+    All queries to that view will be proxied to the view`s model.
+</p>
+
+~javascript~
+T('myModelInstance', tbone.models.base.make());
+T('myModelInstance.prop', 'hello world');
+tbone.createView('itemView', function () {
+    this.$el.text(this.query('prop'));
+});
+
+~html~
+<div tbone="view itemView root myModelInstance"></div>
+
+</script>
+
+
 <script name="The Sleeping XHR" type="text/example">
 
 ~desc~

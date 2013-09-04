@@ -6,7 +6,7 @@ tbone.createView('example', function () {
     var self = this;
     function updateFragmentHeaderStyle () {
         var $this = $(this);
-        var height = $this.children('section').height();
+        var height = $this.children('section').outerHeight();
         var margin = (height / 2) - 13;// 13 is the width / 2
         $this.children('h3').css({
             width: height,
