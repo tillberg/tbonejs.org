@@ -38,11 +38,9 @@ for ref in `git ls-remote origin | grep ".*refs/[^p]" | sed "s/.*\///"`; do
 done
 git checkout -q master
 
-cd src/
-../../node_modules/docco-husky/bin/generate ./
-rm -rf ../../docs/
-mv docs ../../
-cd ..
+../node_modules/docco-husky/bin/generate src/
+rm -rf ../docs/
+mv docs ../
 
 cd test/
 npm install
