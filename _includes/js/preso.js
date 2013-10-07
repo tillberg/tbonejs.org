@@ -41,6 +41,8 @@ $(document).on('keydown', function (e) {
         if (newSlideNumber < T('slides.length')) {
             T('location.hash', '#' + newSlideNumber);
         }
+    } else if (key === 90) { // z
+        T.toggle('zoom');
     }
 });
 
@@ -62,6 +64,9 @@ tbone.createView('preso', function () {
             _.defer(function () {
             })
         });
+    });
+    T(function () {
+        self.$el.toggleClass('zoom', !!T('zoom'));
     });
     _.defer(function () {
         $slides.addClass('anim');

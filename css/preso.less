@@ -2,23 +2,54 @@ html, body {
     padding: 0;
     margin: 0;
     overflow: hidden;
+    height: 100%;
+    width: 100%;
 }
 * {
     box-sizing: border-box;
 }
-.transition-left (@prop: left 0.4s cubic-bezier(0.445, 0.05, 0.55, 0.95);) {
-    -webkit-transition: @prop;
-    -moz-transition: @prop;
-    -o-transition: @prop;
-    -ms-transition: @prop;
-    transition: @prop;
+.transition-props(...) {
+    @props: ~`"@{arguments}".replace(/[\[\]]/g, '')`;
+    -webkit-transition-property: @props;
+    -moz-transition-property: @props;
+    -o-transition-property: @props;
+    -ms-transition-property: @props;
+    transition-property: @props;
+
+    -webkit-transition-duration: 0.4s;
+    -webkit-transition-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+
+    -moz-transition-duration: 0.4s;
+    -moz-transition-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+
+    -ms-transition-duration: 0.4s;
+    -ms-transition-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+
+    -o-transition-duration: 0.4s;
+    -o-transition-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+
+    transition-duration: 0.4s;
+    transition-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
 }
+.preso {
+    position: relative;
+    .transition-props(zoom, left, top);
+    zoom: 1;
+    left: 0;
+    top: 0;
+    &.zoom {
+        zoom: 0.25;
+        left: 37.5%;
+        top: 37.5%;
+    }
+}
+
 .slide {
-    position: fixed;
+    position: absolute;
     top: 0;
     margin: 4px;
 
     &.anim {
-        .transition-left();
+        .transition-props(left);
     }
 }
