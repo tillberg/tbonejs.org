@@ -8,3 +8,4 @@ node_modules
 /pygments.rb
 /docs
 /_asset_bundler_cache
+.gutignore

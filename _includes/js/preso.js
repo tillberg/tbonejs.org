@@ -61,8 +61,6 @@ tbone.createView('preso', function () {
             $slides.each(function (i) {
                 $(this).css('left', (i - slideNumber) * width);
             });
-            _.defer(function () {
-            })
         });
     });
     T(function () {
