@@ -1,7 +1,7 @@
 ;
 
 (function () {
-    $('script[type="text/slide"]').each(function (i) {
+    $('slide').each(function (i) {
         var $this = $(this);
         var src = _.trim($this.html());
         var currType;
@@ -46,7 +46,7 @@ $(document).on('keydown', function (e) {
 
 tbone.createView('preso', function () {
     var self = this;
-    var $slides = self.$('slide');
+    var $slides = self.$('.slide');
     T(function () {
         var width = T('screen.width');
         var height = T('screen.height');
@@ -59,7 +59,12 @@ tbone.createView('preso', function () {
             $slides.each(function (i) {
                 $(this).css('left', (i - slideNumber) * width);
             });
+            _.defer(function () {
+            })
         });
+    });
+    _.defer(function () {
+        $slides.addClass('anim');
     });
 });
 
@@ -77,4 +82,5 @@ tbone.createView('preso', function () {
 }());
 
 T('location', tbone.models.location.make());
+tbone.drain();
 tbone.render($('[tbone]'));

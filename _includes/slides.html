@@ -1,21 +1,21 @@
 <script name="preso" type="text/tbone-tmpl">
     <% _.each(slides, function (slide) { %>
-        <slide tbone="tmpl <%=slide.name%>"></slide>
+        <div class="slide" tbone="tmpl <%=slide.name%>"></div>
     <% }); %>
 </script>
 
-<script type="text/slide">
+<slide>
 
 ~html~
-<p>
-    First slide
-</p>
+<h1>
+    TBone
+</h1>
 
 ~javascript~
 
-</script>
+</slide>
 
-<script type="text/slide">
+<slide>
 
 ~html~
 <p>
@@ -24,9 +24,9 @@
 
 ~javascript~
 
-</script>
+</slide>
 
-<script type="text/slide">
+<slide>
 
 ~html~
 <p>
@@ -35,4 +35,4 @@
 
 ~javascript~
 
-</script>
+</slide>
