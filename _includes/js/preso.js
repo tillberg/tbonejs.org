@@ -4,7 +4,7 @@
     $('slide').each(function (i) {
         var $this = $(this);
         var src = _.trim($this.html());
-        var currType;
+        var currType = 'html';
         var name = 'slide_' + i;
         var parts = {
             id: i,
@@ -36,6 +36,8 @@ T('loadedSlides', function () {
         return memo;
     }, {});
 });
+
+T('alwaysShowSource', true); // force example source to be visible
 
 $(document).on('keydown', function (e) {
     var key = e.keyCode;

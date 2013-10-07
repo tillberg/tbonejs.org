@@ -23,28 +23,20 @@
     <% } %>
 </script>
 
-<script type="text/javascript">
-tbone.createView('demo', function () {
-    this.$el.off('click').on('click', 'a.full-version', function () {
-        T('showSource.' + T('currDemoSafeName'), true);
-    });
-});
-</script>
-
 <script name="example" type="text/tbone-tmpl">
-    <h4>
+    <h4 class="name">
         <a href="#<%=name_safe%>"><%=name%></a>
     </h4>
     <% if (desc) { %>
-        <fragment>
+        <fragment class="desc">
             <section class="desc">
                 <%=desc%>
             </section>
         </fragment>
     <% } %>
-    <% if (T('showSource.' + name_safe)) { %>
+    <% if (T('alwaysShowSource') || T('showSource.' + name_safe)) { %>
         <% if (html) { %>
-            <fragment>
+            <fragment class="html">
                 <h3>HTML</h3>
                 <section>
                     <pre><code class="html"><%=html_hl%></pre></code>
@@ -52,7 +44,7 @@ tbone.createView('demo', function () {
             </fragment>
         <% } %>
         <% if (css) { %>
-            <fragment>
+            <fragment class="css">
                 <h3>CSS</h3>
                 <section>
                     <pre><code class="css"><%=css_hl%></pre></code>

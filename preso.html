@@ -8,8 +8,11 @@
     <style>slide { display: none; }</style>
     <div tbone="tmpl preso"></div>
 
+    {% include examples.html %}
+    {% include templates.html %}
     {% include slides.html %}
     <script type="text/javascript">
+    {% include js/index.js %}
     {% include js/preso.js %}
     </script>
 </body>

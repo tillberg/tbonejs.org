@@ -43,6 +43,12 @@ tbone.createView('example', function () {
     };
 });
 
+tbone.createView('demo', function () {
+    this.$el.off('click').on('click', 'a.full-version', function () {
+        T('showSource.' + T('currDemoSafeName'), true);
+    });
+});
+
 T('showSource', tbone.models.localStorage.make({ key: 'showSource' }))
 
 (function () {
@@ -69,10 +75,11 @@ T('showSource', tbone.models.localStorage.make({ key: 'showSource' }))
         var src = _.trim($this.html());
         var currType;
         var name = $this.attr('name');
+        var name_safe = name.replace(/\s/g, '_');
         var parts = {
             id: i,
             name: name,
-            name_safe: name.replace(/\s/g, '_')
+            name_safe: name_safe
         };
         src.replace(/~(\w+)~|([^~]+)/g, function (all, newType, newContents) {
             if (newType) {
@@ -87,5 +94,7 @@ T('showSource', tbone.models.localStorage.make({ key: 'showSource' }))
             }
         });
         T.push('examples', parts);
+        T('examplesByName.' + name, parts);
+        T('examplesByName.' + name_safe, parts);
     });
 }());
