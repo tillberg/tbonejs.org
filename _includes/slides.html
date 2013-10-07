@@ -1,6 +1,12 @@
+<script name="slide" type="text/tbone-tmpl">
+    <% if (T('loadedSlides.' + id)) { %>
+        <div class="contents" tbone="tmpl <%=name%>"></div>
+    <% } %>
+</script>
+
 <script name="preso" type="text/tbone-tmpl">
     <% _.each(slides, function (slide) { %>
-        <div class="slide" tbone="tmpl <%=slide.name%>"></div>
+        <div tbone="tmpl slide root <%@slide%>"></div>
     <% }); %>
 </script>
 
@@ -29,11 +35,9 @@
 <slide>
 
 ~html~
-
-
-<p>
-    Second slide
-</p>
+    <h1>
+        Another slide
+    </h1>
 
 ~javascript~
 
@@ -42,9 +46,31 @@
 <slide>
 
 ~html~
-<p>
-    Third slide
-</p>
+    <h1>
+        Another slide
+    </h1>
+
+~javascript~
+
+</slide>
+
+<slide>
+
+~html~
+    <h1>
+        Another slide
+    </h1>
+
+~javascript~
+
+</slide>
+
+<slide>
+
+~html~
+    <h1>
+        Another slide
+    </h1>
 
 ~javascript~
 

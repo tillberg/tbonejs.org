@@ -29,6 +29,14 @@ T('slideNumber', function () {
     return parseFloat((T('location.hash') || '#0').replace(/^#/, ''));
 });
 
+T('loadedSlides', function () {
+    var slideNumber = T('slideNumber') || 0;
+    return _.reduce(T('slides') || [], function (memo, slide) {
+        memo[slide.id] = Math.abs(slideNumber - slide.id) < 3;
+        return memo;
+    }, {});
+});
+
 $(document).on('keydown', function (e) {
     var key = e.keyCode;
     if (key === 37) { // left
@@ -48,7 +56,7 @@ $(document).on('keydown', function (e) {
 
 tbone.createView('preso', function () {
     var self = this;
-    var $slides = self.$('.slide');
+    var $slides = self.$el.children();
     T(function () {
         var width = T('screen.width');
         var height = T('screen.height');
