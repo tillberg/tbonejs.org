@@ -1,6 +1,17 @@
 ;
 
 (function () {
+    var baseSlideView = tbone.createView('slideBase', {
+        postReady: function () {
+            this.$('pre').each(function(i, e) {
+                var $this = $(this);
+                var orig = _.trim($this.html());
+                var highlighted = hljs.highlight('javascript', orig).value;
+                $this.empty();
+                $('<code>').html(highlighted).appendTo($this);
+            });
+        }
+    });
     $('slide').each(function (i) {
         var $this = $(this);
         var src = _.trim($this.html());
@@ -17,9 +28,8 @@
                 parts[currType] = _.trim(newContents).replace(/scrpt/g, 'script');
             }
         });
-        if (parts.javascript) {
-            tbone.createView(name, new Function(parts.javascript));
-        }
+        var readyFn = parts.javascript ? new Function(parts.javascript) : function () {};
+        tbone.createView(name, baseSlideView, readyFn);
         tbone.addTemplate(name, parts.html);
         T.push('slides', parts);
     }).remove();
@@ -29,13 +39,37 @@ T('slideNumber', function () {
     return parseFloat((T('location.hash') || '#0').replace(/^#/, ''));
 });
 
+(function () {
+    var delayedSlideNumberInitialized;
+    T(function () {
+        var newSlideNumber = T('slideNumber');
+        if (newSlideNumber != null) {
+            if (delayedSlideNumberInitialized) {
+                setTimeout(function () {
+                    T('delayedSlideNumber', newSlideNumber);
+                }, 800);
+            } else {
+                T('delayedSlideNumber', newSlideNumber);
+                delayedSlideNumberInitialized = true;
+            }
+        }
+    });
+}());
+
 T('loadedSlides', function () {
-    var slideNumber = T('slideNumber') || 0;
-    return _.reduce(T('slides') || [], function (memo, slide) {
-        var distance = T('zoom') ? 2 : 1;
-        memo[slide.id] = Math.abs(slideNumber - slide.id) <= distance;
-        return memo;
-    }, {});
+    var delayedSlideNumber = T('delayedSlideNumber');
+    var slideNumber = T('slideNumber');
+    if (delayedSlideNumber != null && slideNumber != null) {
+        return _.reduce(T('slides') || [], function (memo, slide) {
+            var distance = T('zoom') ? 2 : 1;
+            memo[slide.id] = (
+                slideNumber === slide.id ||
+                Math.abs(delayedSlideNumber - slide.id) <= distance);
+            return memo;
+        }, {});
+    } else {
+        return {};
+    }
 });
 
 T('alwaysShowSource', true); // force example source to be visible

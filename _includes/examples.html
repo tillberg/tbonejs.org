@@ -33,7 +33,7 @@ setTimeout(function () {
 T(function () {
     $('body').text(T('now'));
 });
-setInterval(function update () {
+setInterval(function () {
     T('now', new Date());
 }, 100);
 
@@ -57,7 +57,7 @@ T('formattedNow', function () {
                   _.pad(now.getMinutes(), 2, '0') + ':' +
                   _.pad(now.getSeconds(), 2, '0')) : '';
 });
-setInterval(function update () {
+setInterval(function () {
     T('now', new Date());
 }, 100);
 
@@ -81,7 +81,7 @@ T('formattedNow', function () {
                   _.pad(now.getMinutes(), 2, '0') + ':' +
                   _.pad(now.getSeconds(), 2, '0')) : '';
 });
-setInterval(function update () {
+setInterval(function () {
     T('now', new Date());
 }, 100);
 
@@ -109,7 +109,7 @@ T('formattedNow', function () {
     var now = T('now');
     return now ? (_.pad(now.getMilliseconds(), 3, '0')) : '';
 });
-setInterval(function update () {
+setInterval(function () {
     T('now', new Date());
 }, 1);
 

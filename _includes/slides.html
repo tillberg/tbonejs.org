@@ -62,9 +62,84 @@
 
 <slide>
     <h1>
-        Another slide
+        Four Tenets of TBone
     </h1>
+    <ul>
+        <li>Get: T(prop)</li>
+        <li>Set: T(prop, value)</li>
+        <li>Set w/fn: T(prop, fn)</li>
+        <li>Run: T(fn)</li>
+    </ul>
+</slide>
 
-~javascript~
+<slide>
+    <h1>
+        Get: T(prop)
+    </h1>
+    <pre>
+T('activeStep');
+T('user.name.first');
+T('widgets.4.price');
+    </pre>
+    <p>
+        TBone evaluates each of these by splitting the string and doing a
+        recursive lookup in a for loop.
+    </p>
+    <p>
+        In addition to returning the current value, TBone binds the
+        current-executing T-function (more on that in a couple slides...)
+        to changes in that value.
+    </p>
+</slide>
 
+<slide>
+    <h1>
+        Set: T(prop, value)
+    </h1>
+    <pre>
+T('activeStep', 5);
+T('user.name.first', 'Bob');
+T('widgets.4', {
+    price: '$3.99',
+    num: 5
+});
+    </pre>
+    <p>
+        These change the value and fire change events accordingly.
+    </p>
+    <p>
+        TBone does what you might expect here:
+    </p>
+    <pre>
+T('widgets.4');     // &rarr; { price: '$3.99', num: 5 }
+T('widgets.4.num'); // &rarr; 5
+T('user.name');     // &rarr; { first: 'Bob' }
+    </pre>
+</slide>
+
+<slide>
+    <h1>
+        Set w/fn: T(prop, fn)
+    </h1>
+</slide>
+
+<slide>
+    <h1>
+        Run: T(fn)
+    </h1>
+</slide>
+
+<slide>
+    <ul>
+        <li>T-set</li>
+        <li>T-get</li>
+        <li>T-functions</li>
+        <li>T-set w/ function</li>
+        <li>T is a model</li>
+        <li></li>
+        <li>Template auto-instrumenting magic?</li>
+        <li></li>
+        <li>Ajax sleepy-time</li>
+
+    </ul>
 </slide>
