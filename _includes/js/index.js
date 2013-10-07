@@ -35,7 +35,8 @@ tbone.createView('example', function () {
             return {
                 html: self.query('html'),
                 css: self.query('css'),
-                javascript: self.query('javascript')
+                javascript: self.query('javascript'),
+                zoom: window.EXAMPLE_ZOOM || 1
             };
         } else if (op === 'setcss') {
             self.query('iframecss', data);

@@ -61,17 +61,28 @@ body {
     float: left;
     overflow-x: hidden;
     overflow-y: auto;
+    font-size: 20px;
+    line-height: 27px;
 
     ul {
         margin-top: 12px;
     }
 
     li {
-        font-size: 24px;
-        line-height: 32px;
+        font-size: 36px;
+        line-height: 48px;
 
         margin-left: 10%;
     }
+
+    // copied & 1.5x'ed values from bootstrap.less:
+    h1{font-size:45px;line-height:54px;}
+    h2{font-size:36px;line-height:54px;}
+    h3{line-height:40px;font-size:27px;}
+    h4,h5,h6{line-height:27px;}
+    h4{font-size:21px;}
+    h5{font-size:18px;}
+    h6{font-size:17px;}
 
     h1, h2, h3, h4, h5, h6 {
         text-align: center;
@@ -87,16 +98,19 @@ body {
 
     p {
         margin: 0.5em 15%;
-        font-size: 18px;
-        line-height: 24px;
+        font-size: 27px;
+        line-height: 36px;
     }
 }
 
-.tbone-title {
+.tbone-logo {
+    overflow: hidden;
+    text-indent: -9999px;
     background-image: url(/assets/8bit-bone.png);
     background-repeat: no-repeat;
-    background-position: center 10px;
-    padding-top: 66px;
+    background-position: center 0;
+    height: 52px;
+    zoom: 2;
 }
 .appneta-logo {
     overflow: hidden;
@@ -105,7 +119,7 @@ body {
     background-repeat: no-repeat;
     background-position: center 0px;
     height: 45px;
-    zoom: 0.6;
+    zoom: 1.2;
 }
 
 @import "example";
@@ -120,7 +134,7 @@ body {
 
     a.open_alone {
         position: absolute;
-        right: 4px;
-        top: -16px;
+        right: 8px;
+        top: -28px;
     }
 }

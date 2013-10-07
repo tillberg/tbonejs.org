@@ -50,9 +50,10 @@ var TBONE_DEBUG = !location.hash || !location.hash.match(/^callback=/);
                 $('.democss').html(demo.css);
             }
             eval(demo.javascript);
+            $('body').css('zoom', demo.zoom);
             _.defer(function () {
                 callParent('setcss', {
-                    height: $('html').height() + 4
+                    height: $('html').height() + 8
                 });
             });
         } else {
