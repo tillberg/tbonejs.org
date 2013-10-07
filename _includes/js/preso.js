@@ -29,6 +29,21 @@ T('slideNumber', function () {
     return parseFloat((T('location.hash') || '#0').replace(/^#/, ''));
 });
 
+$(document).on('keydown', function (e) {
+    var key = e.keyCode;
+    if (key === 37) { // left
+        var newSlideNumber = T('slideNumber') - 1;
+        if (newSlideNumber >= 0) {
+            T('location.hash', '#' + newSlideNumber);
+        }
+    } else if (key === 39) { // right
+        var newSlideNumber = T('slideNumber') + 1;
+        if (newSlideNumber < T('slides.length')) {
+            T('location.hash', '#' + newSlideNumber);
+        }
+    }
+});
+
 tbone.createView('preso', function () {
     var self = this;
     var $slides = self.$('slide');
