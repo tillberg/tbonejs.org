@@ -21,6 +21,72 @@ setTimeout(function () {
 
 </script>
 
+<script name="Current Time" type="text/example">
+
+~desc~
+<p>
+    Here, we create a live datasource with the current time, and use it to
+    display the current date.
+</p>
+
+~javascript~
+T(function () {
+    $('body').text(T('now'));
+});
+setInterval(function update () {
+    T('now', new Date());
+}, 100);
+
+</script>
+
+<script name="Current Time Formatted" type="text/example">
+
+~desc~
+<p>
+    Here, we create a live datasource with the current time, and use it to
+    display the current date formatted to show just the time.
+</p>
+
+~javascript~
+T(function () {
+    $('body').text(T('formattedNow'));
+});
+T('formattedNow', function () {
+    var now = T('now');
+    return now ? (_.pad(now.getHours(), 2, '0') + ':' +
+                  _.pad(now.getMinutes(), 2, '0') + ':' +
+                  _.pad(now.getSeconds(), 2, '0')) : '';
+});
+setInterval(function update () {
+    T('now', new Date());
+}, 100);
+
+</script>
+
+<script name="Current Time Formatted View" type="text/example">
+
+~desc~
+<p>
+    Here, we create a live datasource with the current time, and use it to
+    display the current date formatted to show just the time.
+</p>
+
+~html~
+<%-formattedNow%>
+
+~javascript~
+T('formattedNow', function () {
+    var now = T('now');
+    return now ? (_.pad(now.getHours(), 2, '0') + ':' +
+                  _.pad(now.getMinutes(), 2, '0') + ':' +
+                  _.pad(now.getSeconds(), 2, '0')) : '';
+});
+setInterval(function update () {
+    T('now', new Date());
+}, 100);
+
+</script>
+
 <script name="Bind a Model to a View" type="text/example">
 
 ~desc~

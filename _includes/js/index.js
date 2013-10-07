@@ -10,7 +10,7 @@ tbone.createView('example', function () {
         var margin = (height / 2) - 13;// 13 is the width / 2
         $this.children('h3').css({
             width: height,
-            marginLeft: -margin - 8,
+            marginLeft: -margin - 9,
             marginTop: margin
         });
     }
@@ -85,8 +85,19 @@ T('showSource', tbone.models.localStorage.make({ key: 'showSource' }))
             if (newType) {
                 currType = newType;
             } else {
-                parts[currType] = _.trim(newContents).replace(/scrpt/g, 'script');
-                var highlighted = hljs.highlightAuto(parts[currType]).value;
+                var contents = _.trim(newContents).replace(/scrpt/g, 'script');
+                parts[currType] = contents;
+                if (currType === 'html' && window.WRAP_EXAMPLE_HTML) {
+                    contents = [
+                        '<scr', 'ipt name="exampleView" type="text/tbone-tmpl">\n',
+                        _.map(contents.split('\n'), function (line) {
+                            return '    ' + line;
+                        }).join('\n') , '\n',
+                        '</scr', 'ipt>\n',
+                        '<div tbone="tmpl exampleView"></div>'
+                    ].join('');
+                }
+                var highlighted = hljs.highlightAuto(contents).value;
                 if (currType === 'html') {
                     highlighted = highlightInlineJS(highlighted);
                 }
