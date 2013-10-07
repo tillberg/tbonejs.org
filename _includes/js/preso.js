@@ -56,19 +56,22 @@ tbone.createView('preso', function () {
             width: width,
             height: height
         });
+        self.$el.css({
+            width: T('slides.length') * width,
+            height: height
+        });
         T(function () {
             var slideNumber = T('slideNumber') || 0;
-            $slides.each(function (i) {
-                $(this).css('left', (i - slideNumber) * width);
-            });
+            self.$el.css('left', -width * slideNumber);
         });
     });
-    T(function () {
-        self.$el.toggleClass('zoom', !!T('zoom'));
-    });
     _.defer(function () {
-        $slides.addClass('anim');
+        self.$el.addClass('anim');
     });
+});
+
+T(function () {
+    $('body').toggleClass('zoom', !!T('zoom'));
 });
 
 (function () {

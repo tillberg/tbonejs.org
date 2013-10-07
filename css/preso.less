@@ -1,10 +1,13 @@
 html, body {
     padding: 0;
     margin: 0;
-    overflow: hidden;
     height: 100%;
     width: 100%;
 }
+html {
+    overflow: hidden;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -32,26 +35,28 @@ html, body {
     transition-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
 }
 .preso {
-    position: relative;
-    .transition-props(zoom, left, top);
+    position: absolute;
     zoom: 1;
-    left: 0;
-    top: 0;
+    &.anim {
+        .transition-props(left);
+    }
+}
+
+body {
+    .transition-props(transform);
+
     &.zoom {
-        zoom: 0.25;
-        left: 37.5%;
-        top: 37.5%;
+        -moz-transform: scale(0.3);
+        -webkit-transform: scale(0.3);
+        -o-transform: scale(0.3);
+        -ms-transform: scale(0.3);
+        transform: scale(0.3);
     }
 }
 
 .slide {
-    position: absolute;
-    top: 0;
-    margin: 4px;
-
-    &.anim {
-        .transition-props(left);
-    }
+    float: left;
+    padding: 0.5em;
 }
 
 h1, h2, h3, h4, h5, h6 {
