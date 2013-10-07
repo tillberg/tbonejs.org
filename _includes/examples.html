@@ -68,7 +68,7 @@ setInterval(function update () {
 ~desc~
 <p>
     Here, we create a live datasource with the current time, and use it to
-    display the current date formatted to show just the time.
+    display the current date formatted to show just the time in a view.
 </p>
 
 ~html~
@@ -86,6 +86,35 @@ setInterval(function update () {
 }, 100);
 
 </script>
+
+<script name="Current Time Formatted View Many" type="text/example">
+
+~desc~
+<p>
+    Here, we create a live datasource with the current time, and use it to
+    display the current date formatted to show just the time in a repeated
+    series of views.
+</p>
+
+~html~
+<% _.each(_.range(20), function () { %>
+    <span tbone="tmpl time"></span>
+<% }); %>
+<scrpt name="time" type="text/tbone-tmpl">
+    <%-formattedNow%>
+</scrpt>
+
+~javascript~
+T('formattedNow', function () {
+    var now = T('now');
+    return now ? (_.pad(now.getMilliseconds(), 3, '0')) : '';
+});
+setInterval(function update () {
+    T('now', new Date());
+}, 1);
+
+</script>
+
 
 <script name="Bind a Model to a View" type="text/example">
 

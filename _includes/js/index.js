@@ -85,17 +85,34 @@ T('showSource', tbone.models.localStorage.make({ key: 'showSource' }))
             if (newType) {
                 currType = newType;
             } else {
-                var contents = _.trim(newContents).replace(/scrpt/g, 'script');
+                var contents = _.trim(newContents);
+                // extract script tbone-tmpl tags from the html; rename scrpt to script
+                // and append to the DOM directly (at load time)
+                contents = contents.replace(/<scrpt(.*?)>((.|\n)*?)<\/scrpt>/g, function (_, scrptAttrs, contents) {
+                    var scriptTag = [
+                        '<scr', 'ipt', scrptAttrs, '>',
+                        contents, //.replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                        '</scr', 'ipt>'
+                    ].join('');
+                    $(scriptTag).appendTo('head');
+                    return '';
+                });
                 parts[currType] = contents;
                 if (currType === 'html' && window.WRAP_EXAMPLE_HTML) {
+                    var contentsParts = contents.match(/^((.|\n)+?)(<script(.|\n)+)?$/);
+                    var exampleViewContents = contentsParts[1] || '';
+                    var remainder = contentsParts[3] || '';
                     contents = [
                         '<scr', 'ipt name="exampleView" type="text/tbone-tmpl">\n',
-                        _.map(contents.split('\n'), function (line) {
+                        _.map(exampleViewContents.split('\n'), function (line) {
                             return '    ' + line;
                         }).join('\n') , '\n',
                         '</scr', 'ipt>\n',
+                        remainder + '\n',
                         '<div tbone="tmpl exampleView"></div>'
                     ].join('');
+                    // remove extra empty lines (kludgy but whatever):
+                    contents = contents.replace(/(\n\s*\n)/g, '\n');
                 }
                 var highlighted = hljs.highlightAuto(contents).value;
                 if (currType === 'html') {

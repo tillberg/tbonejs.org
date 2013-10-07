@@ -22,7 +22,7 @@
         }
         tbone.addTemplate(name, parts.html);
         T.push('slides', parts);
-    });
+    }).remove();
 }());
 
 T('slideNumber', function () {
@@ -32,7 +32,8 @@ T('slideNumber', function () {
 T('loadedSlides', function () {
     var slideNumber = T('slideNumber') || 0;
     return _.reduce(T('slides') || [], function (memo, slide) {
-        memo[slide.id] = Math.abs(slideNumber - slide.id) < 3;
+        var distance = T('zoom') ? 2 : 1;
+        memo[slide.id] = Math.abs(slideNumber - slide.id) <= distance;
         return memo;
     }, {});
 });
