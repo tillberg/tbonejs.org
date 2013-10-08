@@ -1,6 +1,7 @@
 <script name="slide" type="text/tbone-tmpl">
     <% if (T('loadedSlides.' + id)) { %>
         <style tbone="tmpl reveal" data-id="<%-id%>"></style>
+        <corner><%-id + 1%> of <%-T('slides.length')%></corner>
         <div class="contents" tbone="tmpl <%=name%>"></div>
     <% } %>
 </script>
