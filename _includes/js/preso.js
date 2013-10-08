@@ -23,6 +23,7 @@ function gotoPreviousSlide () {
                 var $this = $(this);
                 var orig = _.trim($this.html());
                 var highlighted = hljs.highlight('javascript', orig).value;
+                highlighted = highlighted.replace(/&amp;/g, '&');
                 $this.empty();
                 $('<code>').html(highlighted).appendTo($this);
             });
@@ -83,7 +84,7 @@ T('slideNumber', function () {
 }());
 
 T('revealed', function () {
-    return _.map(_.range(T('slides.length')), function (i) {
+    return _.map(_.range(T('slides.length') || 0), function (i) {
         var num = T('reveal.' + i);
         return num == null ? 10 : num;
     });

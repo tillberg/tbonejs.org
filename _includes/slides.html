@@ -76,7 +76,7 @@
         TBone's second purpose:
     </h3>
     <p class="reveal-1">
-        Use the dependency graph of models to put determine which models are actually used in the UI, and to put the others to sleep.  Out of 70 models in our app, only 10-20 typically are active on the page at any one time.
+        Use the dependency graph of models to put determine which models are actually used in the UI, and to <strong>put the others to sleep</strong>.  Out of 70 models in our app, only 10-20 typically are active on the page at any one time.
     </p>
     <p>
         <img class="reveal-2 bedtime-1" src="/assets/tbone_bedtime_stories_figure_1.png">
@@ -169,8 +169,8 @@
     <ul class="large">
         <li>Get: T(prop)</li>
         <li>Set: T(prop, value)</li>
-        <li>Set w/fn: T(prop, fn)</li>
         <li>Run: T(fn)</li>
+        <li>Set w/fn: T(prop, fn)</li>
     </ul>
 </slide>
 
@@ -221,28 +221,103 @@ T('user.name');     // &rarr; { first: 'Bob' }
 
 <slide>
     <h1>
+        Run: T(fn)
+    </h1>
+</slide>
+
+<slide>
+    <h1>
+        Run: Nested T(fn)
+    </h1>
+</slide>
+
+<slide>
+    <h1>
         Set w/fn: T(prop, fn)
     </h1>
 </slide>
 
 <slide>
     <h1>
-        Run: T(fn)
+        T is a Model
     </h1>
 </slide>
 
 <slide>
-    <ul>
-        <li>T-set</li>
-        <li>T-get</li>
-        <li>T-functions</li>
-        <li>Nested T-functions</li>
-        <li>T-set w/ function</li>
-        <li>T is a model</li>
-        <li></li>
-        <li>Template auto-instrumenting magic?</li>
-        <li></li>
-        <li>Ajax sleepy-time</li>
+    <h1>
+        Set w/model: T(prop, model)
+    </h1>
+</slide>
 
-    </ul>
+<slide>
+    <h1>
+        Template auto-instrumenting magic
+    </h1>
+    <p>
+        TBone includes a Regex-based partial JS parser that will auto-instrument live TBone references in templates passed to it as a string.
+    </p>
+    <pre class="reveal-1">
+> tbone.addTemplate('myTmpl', '&lt;%- template %&gt; text &lt;%= here %&gt;')
+> // force template init:
+> tbone.render($('&lt;div tbone="tmpl myTmpl"&gt;'))
+> tbone.templates.myTmpl.parsed
+&rarr; '&lt;%-view.denullText( view.query(2, "template") )%&gt; text &lt;%=view.denullText( view.query(2, "here") )%&gt;'
+    </pre>
+    <p>
+        You can opt out of this by passing a template function instead of a string.
+    </p>
+</slide>
+
+<slide>
+    <h1>
+        Ajax sleepy-time
+    </h1>
+</slide>
+
+<slide>
+    <h1>
+
+    </h1>
+</slide>
+
+<slide>
+    <h1>
+        Thanks!
+    </h1>
+    <br>
+    <h3>
+        Questions?
+    </h3>
+    <br>
+    <br>
+    <h5>
+        Want more?
+    </h5>
+    <h5>
+        <a href="http://tbonejs.org/">tbonejs.org</a>
+    </h5>
+    <h5>
+        <a href="https://github.com/appneta/tbone/">github.com/appneta/tbone</a>
+    </h5>
+    <h5>
+        <a href="https://github.com/appneta/bbvis/">github.com/appneta/bbvis</a>
+    </h5>
+    <br>
+    <br>
+    <a href="/">
+        <h1 class="tbone-logo">
+            TBone
+        </h1>
+    </a>
+    <a href="http://tillberg.us/about">
+        <h3 class="author">
+            Dan Tillberg
+        </h3>
+    </a>
+    <a href="http://dev.appneta.com" target="_blank">
+        <h3 class="appneta-logo">
+            AppNeta
+        </h3>
+    </a>
+
 </slide>
