@@ -1,5 +1,6 @@
 <script name="slide" type="text/tbone-tmpl">
     <% if (T('loadedSlides.' + id)) { %>
+        <style tbone="tmpl reveal" data-id="<%-id%>"></style>
         <div class="contents" tbone="tmpl <%=name%>"></div>
     <% } %>
 </script>
@@ -7,6 +8,14 @@
 <script name="preso" type="text/tbone-tmpl">
     <% _.each(slides, function (slide) { %>
         <div tbone="tmpl slide root <%@slide%>"></div>
+    <% }); %>
+</script>
+
+<script name="reveal" type="text/tbone-tmpl">
+    <% _.each(_.range((T('reveal.' + view.$el.data('id')) || 0) + 1, 10), function (i) { %>
+        .slide-<%-view.$el.data('id')%> .reveal-<%- i %> {
+            display: none;
+        }
     <% }); %>
 </script>
 
@@ -69,9 +78,9 @@
     </h1>
     <ul>
         <li>Get: T(prop)</li>
-        <li>Set: T(prop, value)</li>
-        <li>Set w/fn: T(prop, fn)</li>
-        <li>Run: T(fn)</li>
+        <li class="reveal-1">Set: T(prop, value)</li>
+        <li class="reveal-2">Set w/fn: T(prop, fn)</li>
+        <li class="reveal-3">Run: T(fn)</li>
     </ul>
 </slide>
 
@@ -79,16 +88,16 @@
     <h1>
         Get: T(prop)
     </h1>
-    <pre>
-T('activeStep');
-T('user.name.first');
-T('widgets.4.price');
-    </pre>
     <p>
+        <pre>T('activeStep');</pre>
+        <pre class="reveal-1">T('user.name.first');</pre>
+        <pre class="reveal-2">T('widgets.4.price');</pre>
+    </p>
+    <p class="reveal-3">
         TBone evaluates each of these by splitting the string and doing a
         recursive lookup in a for loop.
     </p>
-    <p>
+    <p class="reveal-4">
         In addition to returning the current value, TBone binds the
         current-executing T-function (more on that in a couple slides...)
         to changes in that value.
@@ -99,21 +108,21 @@ T('widgets.4.price');
     <h1>
         Set: T(prop, value)
     </h1>
-    <pre>
-T('activeStep', 5);
-T('user.name.first', 'Bob');
-T('widgets.4', {
+    <pre>T('activeStep', 5);</pre>
+    <pre class="reveal-1">T('user.name.first', 'Bob');</pre>
+    <pre class="reveal-2">
+T('widgets.5', {
     price: '$3.99',
     num: 5
 });
     </pre>
-    <p>
+    <p class="reveal-3">
         These change the value and fire change events accordingly.
     </p>
-    <p>
+    <p class="reveal-4">
         TBone does what you might expect here:
     </p>
-    <pre>
+    <pre class="reveal-4">
 T('widgets.4');     // &rarr; { price: '$3.99', num: 5 }
 T('widgets.4.num'); // &rarr; 5
 T('user.name');     // &rarr; { first: 'Bob' }

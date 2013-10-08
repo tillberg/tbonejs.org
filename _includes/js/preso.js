@@ -1,14 +1,34 @@
 ;
 
+function gotoNextSlide () {
+    var newSlideNumber = T('slideNumber') + 1;
+    if (newSlideNumber < T('slides.length')) {
+        T('location.hash', '#' + newSlideNumber);
+    }
+}
+
+function gotoPreviousSlide () {
+    var newSlideNumber = T('slideNumber') - 1;
+    if (newSlideNumber >= 0) {
+        T('location.hash', '#' + newSlideNumber);
+    }
+}
+
 (function () {
     var baseSlideView = tbone.createView('slideBase', {
         postReady: function () {
-            this.$('pre').each(function(i, e) {
+            var self = this;
+            self.$el.addClass('slide-' + self.slideId);
+            self.$('pre').each(function(i, e) {
                 var $this = $(this);
                 var orig = _.trim($this.html());
                 var highlighted = hljs.highlight('javascript', orig).value;
                 $this.empty();
                 $('<code>').html(highlighted).appendTo($this);
+            });
+            T(function () {
+                var reveal = (T('reveal.' + self.slideId) || 0) + 1;
+                T('gotoNextSlideOnSpace.' + self.slideId, self.$('.reveal-' + reveal).length === 0);
             });
         }
     });
@@ -29,7 +49,10 @@
             }
         });
         var readyFn = parts.javascript ? new Function(parts.javascript) : function () {};
-        tbone.createView(name, baseSlideView, readyFn);
+        tbone.createView(name, baseSlideView, {
+            slideId: i,
+            ready: readyFn
+        });
         tbone.addTemplate(name, parts.html);
         T.push('slides', parts);
     }).remove();
@@ -77,17 +100,18 @@ T('alwaysShowSource', true); // force example source to be visible
 $(document).on('keydown', function (e) {
     var key = e.keyCode;
     if (key === 37) { // left
-        var newSlideNumber = T('slideNumber') - 1;
-        if (newSlideNumber >= 0) {
-            T('location.hash', '#' + newSlideNumber);
-        }
+        gotoPreviousSlide();
     } else if (key === 39) { // right
-        var newSlideNumber = T('slideNumber') + 1;
-        if (newSlideNumber < T('slides.length')) {
-            T('location.hash', '#' + newSlideNumber);
-        }
+        gotoNextSlide();
     } else if (key === 90) { // z
         T.toggle('zoom');
+    } else if (key === 32) { // space
+        if (T('gotoNextSlideOnSpace.' + T('slideNumber'))) {
+            gotoNextSlide();
+        } else {
+            T.increment('reveal.' + T('slideNumber'));
+        }
+        return false;
     }
 });
 
