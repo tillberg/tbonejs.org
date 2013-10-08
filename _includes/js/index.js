@@ -89,12 +89,14 @@ T('showSource', tbone.models.localStorage.make({ key: 'showSource' }))
                 var contents = _.trim(newContents);
                 // extract script tbone-tmpl tags from the html; rename scrpt to script
                 // and append to the DOM directly (at load time)
+                var scriptTags = [];
                 contents = contents.replace(/<scrpt(.*?)>((.|\n)*?)<\/scrpt>/g, function (_, scrptAttrs, contents) {
                     var scriptTag = [
                         '<scr', 'ipt', scrptAttrs, '>',
                         contents, //.replace(/</g, '&lt;').replace(/>/g, '&gt;')
                         '</scr', 'ipt>'
                     ].join('');
+                    scriptTags.push(scriptTag + '\n');
                     $(scriptTag).appendTo('head');
                     return '';
                 });
@@ -103,7 +105,7 @@ T('showSource', tbone.models.localStorage.make({ key: 'showSource' }))
                     var contentsParts = contents.match(/^((.|\n)+?)(<script(.|\n)+)?$/);
                     var exampleViewContents = contentsParts[1] || '';
                     var remainder = contentsParts[3] || '';
-                    contents = [
+                    contents = scriptTags.join('') + [
                         '<scr', 'ipt name="exampleView" type="text/tbone-tmpl">\n',
                         _.map(exampleViewContents.split('\n'), function (line) {
                             return '    ' + line;

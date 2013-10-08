@@ -105,20 +105,60 @@
 
 <slide>
     <h1>
-        Quick Start
+        Why is reactive programming so awesome?
+    </h1>
+    <p class="reveal-1">
+        Conquer async.  No async callbacks.  Instead, just write everything idempotently and TBone will rerun functions, models, and views as necessary.
+    </p>
+</slide>
+
+<slide>
+    <h1>
+        Why else is reactive programming so awesome?
+    </h1>
+    <p class="reveal-1">
+        The hardest UI bugs often look something like:
+    </p>
+    <ul class="reveal-1 small">
+        <li>Why the heck does that li have a class of active?</li>
+        <li>Why on earth is the value this function is passed '$3.14' instead of 314?</li>
+    </ul>
+    <p class="reveal-2">
+        Live templating already empowers you trace where each HTML element, attribute, and piece of text comes from in your data.
+    </p>
+    <p class="reveal-2">
+        Reactive programming empowers you trace the path of your data as well.
+    </p>
+    <p class="reveal-3">
+        It's similar to functional programming in this way, though with reactive programming you can see and inspect the intermediate data; it's more akin to message-passing.
+    </p>
+</slide>
+
+<slide>
+    <h1>
+        Crash Preview
     </h1>
     <div tbone="tmpl example root examplesByName.Current_Time"></div>
 </slide>
 
 <slide>
+    <h3>
+        Add in a formatting step...
+    </h3>
     <div tbone="tmpl example root examplesByName.Current_Time_Formatted"></div>
 </slide>
 
 <slide>
+    <h3>
+        Now with a View
+    </h3>
     <div tbone="tmpl example root examplesByName.Current_Time_Formatted_View"></div>
 </slide>
 
 <slide>
+    <h3>
+        Or with nested Views
+    </h3>
     <div tbone="tmpl example root examplesByName.Current_Time_Formatted_View_Many"></div>
 </slide>
 
@@ -126,11 +166,11 @@
     <h1>
         Four Tenets of TBone
     </h1>
-    <ul>
+    <ul class="large">
         <li>Get: T(prop)</li>
-        <li class="reveal-1">Set: T(prop, value)</li>
-        <li class="reveal-2">Set w/fn: T(prop, fn)</li>
-        <li class="reveal-3">Run: T(fn)</li>
+        <li>Set: T(prop, value)</li>
+        <li>Set w/fn: T(prop, fn)</li>
+        <li>Run: T(fn)</li>
     </ul>
 </slide>
 
