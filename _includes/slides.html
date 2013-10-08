@@ -355,17 +355,125 @@ timer();
     <h1>
         Set w/fn: T(prop, fn)
     </h1>
-</slide>
+    <p>
+        TBone models don't store functions as values.  If you set a TBone property to a function, instead that property will be <strong>live-bound</strong> to the return value of the function.
+    </p>
+    <pre>
+T('screen.totalPixels', function () {
+    return T('screen.width') * T('screen.height');
+});
 
-<slide>
-    <h1>
-        T is a Model
-    </h1>
+T('formattedNow', function () {
+    var now = T('now');
+    return now ? (_.pad(now.getHours(), 2, '0') + ':' +
+                  _.pad(now.getMinutes(), 2, '0') + ':' +
+                  _.pad(now.getSeconds(), 2, '0')) : '';
+});
+    </pre>
 </slide>
 
 <slide>
     <h1>
         Set w/model: T(prop, model)
+    </h1>
+    <p>
+        These are equivalent:
+    </p>
+    <pre>
+T('screen.totalPixels', function () {
+    return T('screen.width') * T('screen.height');
+});
+
+T('screen.totalPixels', tbone.models.bound.make({
+    state: function () {
+        return T('screen.width') * T('screen.height');
+    }
+}));
+    </pre>
+    <p>
+        Setting to a function creates a 'bound' TBone model on the fly and assigns that model to the property.
+    </p>
+    <p>
+        When you get a property, e.g. T('screen.totalPixels'), TBone will recurse into the child model and return its value instead of returning the model itself.
+    </p>
+</slide>
+
+<slide>
+    <h1>
+        Backbone Support
+    </h1>
+    <p>
+        TBone was originally built on top of Backbone, and it still supports nesting Backbone models inside of TBone models.
+    </p>
+    <pre>
+> var user = new Backbone.Model();
+> T('user', user);
+> T('user.name', 'Bob');
+> user.get('name')
+&rarr; "Bob"
+    </pre>
+</slide>
+
+<slide>
+    <h1>
+        Divergence from Backbone
+    </h1>
+    <p>
+        TBone now has its own implementation of Views and Models, and it runs with or without Backbone.
+    </p>
+    <p>
+        The biggest difference is that TBone supports setting a model to any value, not just a single-level hashmap.
+    </p>
+    <pre>
+> var model = tbone.models.base.make();
+> // '' means "root of model":
+> model('', [{ name: "Sally" }, { name: "Susan" }]);
+> model('1.name')
+&rarr; "Susan"
+> model('', 42);
+> model('');
+&rarr; 42
+    </pre>
+</slide>
+
+<slide>
+    <h1>
+        Ajax models
+    </h1>
+</slide>
+
+<slide>
+    <h1>
+        Location Model
+    </h1>
+    <p>
+        This model can read &amp; write the location.hash property:
+    </p>
+    <pre>
+tbone.models.location = tbone.models.base.extend({
+    initialize: function () {
+        var self = this;
+        $(window).bind('hashchange', function () {
+            self('hash', location.hash);
+        });
+        self('hash', location.hash);
+        self(function () {
+            if (location.hash !== self('hash')) {
+                location.hash = self('hash');
+            }
+        });
+    }
+});
+    </pre>
+    <p>
+        Try it out!  This presentation creates an instance at T('location').
+    </p>
+</slide>
+
+
+<slide>
+    <h1>
+        T is a Model
     </h1>
 </slide>
 
