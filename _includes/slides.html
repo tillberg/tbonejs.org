@@ -94,11 +94,7 @@
         TBone's third (and now primary) purpose:
     </h3>
     <br>
-    <br>
-    <blockquote class="reveal-1">
-        <em>A simple, general-purpose reactive programming library that can be used both
-        to build applications directly and to build other libraries on top of it.</em>
-    </blockquote>
+    <blockquote class="reveal-1">A simple, general-purpose reactive programming platform as a platform for applications and as plumbing for other JS libraries.</blockquote>
 </slide>
 
 <slide>
@@ -110,7 +106,7 @@
         Conquer async.
     </p>
     <p class="reveal-2">
-        No async callbacks.  Instead, just write everything idempotently and TBone will rerun functions, models, and views as necessary.
+        No async callbacks.  Instead, just write everything <strong>idempotently</strong> and TBone will rerun functions, models, and views as necessary.
     </p>
 </slide>
 
@@ -401,6 +397,27 @@ T('screen.totalPixels', tbone.models.bound.make({
 
 <slide>
     <h1>
+        T is a Model
+    </h1>
+    <p>
+        And you can make more of them!
+    </p>
+    <pre class="reveal-1">
+var myModel = tbone.models.base.make();
+// "var myModel = tbone.make()" would also work
+myModel(function () {
+    var count = myModel('user.count');
+    var price = T('row.price');
+    $('#total').text('$' + (count * price));
+});
+    </pre>
+    <p class="reveal-2">
+        If you don't like using <strong>T</strong>, you can use <strong>tbone</strong>, or make your own and call it whatever you want.
+    </p>
+</slide>
+
+<slide>
+    <h1>
         Backbone Support
     </h1>
     <p>
@@ -465,11 +482,50 @@ tbone.models.location = tbone.models.base.extend({
     </p>
 </slide>
 
+<slide>
+    <h1>
+        Ajax models
+    </h1>
+    <div tbone="tmpl example root examplesByName.Ajax_Requests"></div>
+</slide>
 
 <slide>
     <h1>
-        T is a Model
+        Ajax sleepy-time
     </h1>
+    <div tbone="tmpl example root examplesByName.The_Sleeping_XHR" class="sleeping-xhr"></div>
+</slide>
+
+<slide>
+    <h1>
+        Views
+    </h1>
+    <p>
+        Back to basics...  Live templates &amp; views.
+    </p>
+    <p class="reveal-1">
+        TBone Views combine template rendering and a view "ready" function (kind of a "DOM-fragment-ready" callback) into a T-function scope.
+    </p>
+    <pre class="reveal-2" data-language="xml">
+<scrpt name="myTmpl" type="text/tbone-tmpl">
+    The <%-noun%> is <span class="result"></span>.
+</scrpt>
+    </pre>
+    <br>
+    <pre class="reveal-2">
+tbone.createView('myTmpl', {
+    ready: function () {
+        this.$('.result').text(T('theResult'));
+    }
+});
+    </pre>
+</slide>
+
+<slide>
+    <h1>
+        View &amp; Template Example
+    </h1>
+    <div tbone="tmpl example root examplesByName.View_and_Template"></div>
 </slide>
 
 <slide>
@@ -492,23 +548,29 @@ tbone.models.location = tbone.models.base.extend({
 </slide>
 
 <slide>
-    <h1>
-        Ajax models
-    </h1>
-    <div tbone="tmpl example root examplesByName.Ajax_Requests"></div>
-</slide>
-
-<slide>
-    <h1>
-        Ajax sleepy-time
-    </h1>
-    <div tbone="tmpl example root examplesByName.The_Sleeping_XHR" class="sleeping-xhr"></div>
-</slide>
-
-<slide>
-    <h1>
-
-    </h1>
+    <h3>
+        Dependencies
+    </h3>
+    <ul>
+        <li>Underscore</li>
+        <li>JQuery or Zepto</li>
+    </ul>
+    <h3>
+        Browsers
+    </h3>
+    <p>
+        <a href="/test/" target="_blank">Unit tests</a> pass in IE7+, Chrome, Firefox, Opera, and Safari.  Unit tests cover the reactive programming stuff well, and the view stuff a little less so.  There may be some rough edges in IEs, particularly with the view/template stuff.
+    </p>
+    <h3>
+        Size
+    </h3>
+    <p>
+        TBone builds using the Google Closure Compiler in Advanced mode for production builds.
+    </p>
+    <ul>
+        <li>Dev version, with comments: 28kiB gzipped</li>
+        <li>Prod version: 7kiB gzipped</li>
+    </ul>
 </slide>
 
 <slide>

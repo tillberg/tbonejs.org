@@ -21,8 +21,9 @@ function gotoPreviousSlide () {
             self.$el.addClass('slide-' + self.slideId);
             self.$('pre').each(function(i, e) {
                 var $this = $(this);
-                var orig = _.trim($this.html());
-                var highlighted = hljs.highlight('javascript', orig).value;
+                var orig = _.trim($this.html()).replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+                var lang = $this.data('language') || 'javascript';
+                var highlighted = hljs.highlight(lang, orig).value;
                 highlighted = highlighted.replace(/&amp;/g, '&');
                 $this.empty();
                 $('<code>').html(highlighted).appendTo($this);

@@ -296,3 +296,24 @@ T('last', tbone.models.ajax.make({
 }));
 </script>
 
+<script name="View and Template" type="text/example">
+
+~desc~
+<p>
+    This shows a basic template with a view and DOM-fragment-ready function.
+</p>
+
+~html~
+<div tbone="tmpl myTmpl"></div>
+<scrpt name="myTmpl" type="text/tbone-tmpl">
+    The <%-noun%> is <span class="result"></span>.
+</scrpt>
+
+~javascript~
+tbone.createView('myTmpl', function () {
+    this.$('.result').text(T('theResult'));
+});
+T('noun', 'answer');
+T('theResult', 42);
+
+</script>
