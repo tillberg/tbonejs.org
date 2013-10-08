@@ -28,7 +28,7 @@ function gotoPreviousSlide () {
             });
             T(function () {
                 var reveal = (T('reveal.' + self.slideId) || 0) + 1;
-                T('gotoNextSlideOnSpace.' + self.slideId, self.$('.reveal-' + reveal).length === 0);
+                T('slideFullyRevealed.' + self.slideId, self.$('.reveal-' + reveal).length === 0);
             });
         }
     });
@@ -106,9 +106,7 @@ $(document).on('keydown', function (e) {
     } else if (key === 90) { // z
         T.toggle('zoom');
     } else if (key === 32) { // space
-        if (T('gotoNextSlideOnSpace.' + T('slideNumber'))) {
-            gotoNextSlide();
-        } else {
+        if (!T('slideFullyRevealed.' + T('slideNumber'))) {
             T.increment('reveal.' + T('slideNumber'));
         }
         return false;
