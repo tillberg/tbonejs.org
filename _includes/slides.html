@@ -55,6 +55,56 @@
 
 <slide>
     <h1>
+        What is this thing?
+    </h1>
+    <h3>
+        TBone's original purpose:
+    </h3>
+    <p class="reveal-1">
+        Provide live templates on top of Backbone.
+    </p>
+    <p class="reveal-2">
+        Because who doesn't need another live templating library?
+    </p>
+</slide>
+
+<slide>
+    <h1>
+        What is this thing?
+    </h1>
+    <h3>
+        TBone's second purpose:
+    </h3>
+    <p class="reveal-1">
+        Use the dependency graph of models to put determine which models are actually used in the UI, and to put the others to sleep.  Out of 70 models in our app, only 10-20 typically are active on the page at any one time.
+    </p>
+    <p>
+        <img class="reveal-2 bedtime-1" src="/assets/tbone_bedtime_stories_figure_1.png">
+        <img class="reveal-3 bedtime-2" src="/assets/tbone_bedtime_stories_figure_2.png">
+    </p>
+    <p class="reveal-4">
+        <img class="lots-of-models" src="/assets/lots_of_models_graph.png">
+    </p>
+</slide>
+
+<slide>
+    <h1>
+        What is this thing?
+    </h1>
+    <h3>
+        TBone's third purpose:
+    </h3>
+    <p class="reveal-1">
+        A simple, general-purpose reactive programming library that can be used both
+        to build applications directly and to build other libraries on top of it.
+    </p>
+    <p class="reveal-2">
+        We're mostly going to talk about this here.
+    </p>
+</slide>
+
+<slide>
+    <h1>
         Quick Start
     </h1>
     <div tbone="tmpl example root examplesByName.Current_Time"></div>
@@ -146,6 +196,7 @@ T('user.name');     // &rarr; { first: 'Bob' }
         <li>T-set</li>
         <li>T-get</li>
         <li>T-functions</li>
+        <li>Nested T-functions</li>
         <li>T-set w/ function</li>
         <li>T is a model</li>
         <li></li>
