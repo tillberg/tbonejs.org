@@ -137,7 +137,11 @@ body {
     .reveal-7,
     .reveal-8,
     .reveal-9 {
-        .transition-props(opacity, filter);
+        .transition-props(opacity); // filter
+    }
+
+    .sleeping-xhr fragment.css {
+        display: none;
     }
 }
 

@@ -14,8 +14,8 @@
 <script name="reveal" type="text/tbone-tmpl">
     <% _.each(_.range((T('revealed.' + view.$el.data('id')) || 0) + 1, 10), function (i) { %>
         .slide-<%-view.$el.data('id')%> .reveal-<%- i %> {
-            -webkit-filter: grayscale(0.7) blur(4px);
-            opacity: 0.08;
+            /*-webkit-filter: grayscale(0.7) blur(4px);*/
+            opacity: 0.04;
         }
     <% }); %>
 </script>
@@ -439,12 +439,6 @@ T('screen.totalPixels', tbone.models.bound.make({
 
 <slide>
     <h1>
-        Ajax models
-    </h1>
-</slide>
-
-<slide>
-    <h1>
         Location Model
     </h1>
     <p>
@@ -499,8 +493,16 @@ tbone.models.location = tbone.models.base.extend({
 
 <slide>
     <h1>
+        Ajax models
+    </h1>
+    <div tbone="tmpl example root examplesByName.Ajax_Requests"></div>
+</slide>
+
+<slide>
+    <h1>
         Ajax sleepy-time
     </h1>
+    <div tbone="tmpl example root examplesByName.The_Sleeping_XHR" class="sleeping-xhr"></div>
 </slide>
 
 <slide>

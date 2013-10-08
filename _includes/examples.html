@@ -182,12 +182,12 @@ span.fetched {
     background: green;
 }
 label {
-    width: 80px;
+    width: 70px;
 }
 
 ~html~
 <div>
-    <label>ajax fetched:</label>
+    <label>Fetched:</label>
     <% _.each(fetched, function (wasfetched, i) { %>
         <span<% if (wasfetched) { %> class="fetched"<% } %> >
             <%=i%>
@@ -195,8 +195,7 @@ label {
     <% }); %>
     Total ajax requests: <%=numAjaxReqs%>
 </div>
-<div>
-    <label> </label>
+<div><label> </label>
     <% _.each(ajaxModels, function (resp, i) { %>
         <% if (i >= 1 && i <= 3) { %>
             <span><%=resp%></span>
@@ -208,13 +207,10 @@ label {
 
 ~javascript~
 var ajaxModel = tbone.models.ajax.extend({
-    ajax: function (opts) {
+    url: function () {
         T('fetched.' + this.id, true);
         T.increment('numAjaxReqs');
-        opts.success('\u2603');
-    },
-    url: function () {
-        return '/snowman/' + this.id;
+        return '/assets/ajax/snowman';
     }
 });
 _.each(_.range(6), function (i) {
@@ -280,3 +276,23 @@ T('stapler.brand', 'Swingline');
 T('stapler.color', '#f00');
 
 </script>
+
+<script name="Ajax Requests" type="text/example">
+
+~desc~
+<p>
+    This demonstrates how to combine two ajax requests in a view.
+</p>
+
+~html~
+My first name is <%-first%>, and my last name is <%-last%>.
+
+~javascript~
+T('first', tbone.models.ajax.make({
+    url: function () { return '/assets/ajax/first'; }
+}));
+T('last', tbone.models.ajax.make({
+    url: function () { return '/assets/ajax/last'; }
+}));
+</script>
+
