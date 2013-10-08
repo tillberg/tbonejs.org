@@ -12,7 +12,7 @@
 </script>
 
 <script name="reveal" type="text/tbone-tmpl">
-    <% _.each(_.range((T('reveal.' + view.$el.data('id')) || 0) + 1, 10), function (i) { %>
+    <% _.each(_.range((T('revealed.' + view.$el.data('id')) || 0) + 1, 10), function (i) { %>
         .slide-<%-view.$el.data('id')%> .reveal-<%- i %> {
             display: none;
         }

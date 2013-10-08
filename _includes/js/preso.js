@@ -27,8 +27,11 @@ function gotoPreviousSlide () {
                 $('<code>').html(highlighted).appendTo($this);
             });
             T(function () {
-                var reveal = (T('reveal.' + self.slideId) || 0) + 1;
-                T('slideFullyRevealed.' + self.slideId, self.$('.reveal-' + reveal).length === 0);
+                var reveal = T('reveal.' + self.slideId);
+                if (reveal != null) {
+                    var next = reveal + 1;
+                    T('slideFullyRevealed.' + self.slideId, self.$('.reveal-' + next).length === 0);
+                }
             });
         }
     });
@@ -79,6 +82,13 @@ T('slideNumber', function () {
     });
 }());
 
+T('revealed', function () {
+    return _.map(_.range(T('slides.length')), function (i) {
+        var num = T('reveal.' + i);
+        return num == null ? 10 : num;
+    });
+});
+
 T('loadedSlides', function () {
     var delayedSlideNumber = T('delayedSlideNumber');
     var slideNumber = T('slideNumber');
@@ -103,10 +113,14 @@ $(document).on('keydown', function (e) {
         gotoPreviousSlide();
     } else if (key === 39) { // right
         gotoNextSlide();
+    } else if (key === 82) { // r
+        _.each(_.range(T('slides.length')), function (i) {
+            T('reveal.' + i, 0);
+        });
     } else if (key === 90) { // z
         T.toggle('zoom');
     } else if (key === 32) { // space
-        if (!T('slideFullyRevealed.' + T('slideNumber'))) {
+        if (!T('slideFullyRevealed.' + T('slideNumber')) && T('reveal.' + T('slideNumber')) != null) {
             T.increment('reveal.' + T('slideNumber'));
         }
         return false;
