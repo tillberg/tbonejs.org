@@ -16,7 +16,7 @@
     <% _.each(_.range((T('revealed.' + view.$el.data('id')) || 0) + 1, 10), function (i) { %>
         .slide-<%-view.$el.data('id')%> .reveal-<%- i %> {
             /*-webkit-filter: grayscale(0.7) blur(4px);*/
-            opacity: 0.04;
+            opacity: 0.03;
         }
     <% }); %>
 </script>
@@ -76,7 +76,7 @@
         TBone's second purpose:
     </h3>
     <p class="reveal-1">
-        Use the dependency graph of models to put determine which models are actually used in the UI, and to <strong>put the others to sleep</strong>.  Out of 70 models in our app, only 10-20 typically are active on the page at any one time.
+        Use the dependency graph of models to determine which models are actually used in the UI, and to <strong>put the others to sleep</strong>.  Out of 70 models in our app, only 10-20 typically are active on the page at any one time.
     </p>
     <p>
         <img class="reveal-2 bedtime-1" src="/assets/tbone_bedtime_stories_figure_1.png">
@@ -187,7 +187,7 @@
     </p>
     <p class="reveal-4">
         In addition to returning the current value, TBone binds the
-        current-executing T-function (more on that in a couple slides...)
+        currently-executing T-function (more on that in a couple slides...)
         to changes in that value.
     </p>
 </slide>
@@ -405,7 +405,6 @@ T('screen.totalPixels', tbone.models.bound.make({
     </p>
     <pre class="reveal-1">
 var myModel = tbone.models.base.make();
-// "var myModel = tbone.make()" would also work
 myModel(function () {
     var count = myModel('user.count');
     var price = T('row.price');
@@ -413,7 +412,10 @@ myModel(function () {
 });
     </pre>
     <p class="reveal-2">
-        If you don't like using <strong>T</strong>, you can use <strong>tbone</strong>, or make your own and call it whatever you want.
+        If you don't like <strong>T</strong>, you can use <strong>tbone</strong>.
+    </p>
+    <p class="reveal-2">
+        Or make your own and call it whatever you want.
     </p>
 </slide>
 
@@ -556,22 +558,25 @@ tbone.createView('myTmpl', {
         <li>Underscore</li>
         <li>JQuery or Zepto</li>
     </ul>
-    <h3>
+    <h3 class="reveal-1">
         Browsers
     </h3>
-    <p>
+    <p class="reveal-1">
         <a href="/test/" target="_blank">Unit tests</a> pass in IE7+, Chrome, Firefox, Opera, and Safari.  Unit tests cover the reactive programming stuff well, and the view stuff a little less so.  There may be some rough edges in IEs, particularly with the view/template stuff.
     </p>
-    <h3>
+    <h3 class="reveal-2">
         Size
     </h3>
-    <p>
-        TBone builds using the Google Closure Compiler in Advanced mode for production builds.
-    </p>
-    <ul>
+    <ul class="reveal-2">
         <li>Dev version, with comments: 28kiB gzipped</li>
         <li>Prod version: 7kiB gzipped</li>
     </ul>
+    <h3 class="reveal-3">
+        License
+    </h3>
+    <p  class="reveal-3" style="text-align: center">
+        <a href="https://github.com/appneta/tbone/blob/master/LICENSE" target="_blank">MIT</a>
+    </p>
 </slide>
 
 <slide>
@@ -579,8 +584,12 @@ tbone.createView('myTmpl', {
         This presentation uses TBone
     </h1>
     <p>
-        You can see this presentation online at <a href="http://tbonejs.org/preso/" target="_blank">tbonejs.org/preso</a> and read the source at <a href="https://github.com/appneta/tbonejs.org/" target="_blank">github.com/appneta/tbonejs.org</a>.
+        You can see this presentation online at <a href="http://tbonejs.org/preso/" target="_blank">tbonejs.org/preso</a>.
     </p>
+    <p>
+        Source at <a href="https://github.com/appneta/tbonejs.org/" target="_blank">github.com/appneta/tbonejs.org</a>.
+    </p>
+    <br>
     <p class="reveal-1">
         <img class="tbone-preso-bbvis" src="/assets/tbone_preso_bbvis.png">
     </p>
