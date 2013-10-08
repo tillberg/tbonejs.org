@@ -43,9 +43,7 @@ var TBONE_DEBUG = !location.hash || !location.hash.match(/^callback=/);
                 return window.parent.demoCallbacks[demoId].apply(this, arguments);
             }
             var demo = callParent('init');
-            if (demo.html) {
-                tbone.addTemplate('exampleView', demo.html);
-            }
+            tbone.addTemplate('exampleView', demo.html || '');
             if (demo.css) {
                 $('.democss').html(demo.css);
             }
@@ -63,9 +61,7 @@ var TBONE_DEBUG = !location.hash || !location.hash.match(/^callback=/);
             T('showAbbrevExampleList', !demo);
             T('currDemoSafeName', demo ? demo.name_safe : null);
             if (demo) {
-                if (demo.html) {
-                    tbone.addTemplate('exampleView', demo.html);
-                }
+                tbone.addTemplate('exampleView', demo.html || '');
                 if (demo.css) {
                     $('.democss').html(demo.css);
                 }

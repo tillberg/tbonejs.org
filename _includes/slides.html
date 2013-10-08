@@ -23,13 +23,13 @@
 <slide>
     <br>
     <br>
-    <a href="/">
+    <a href="/" target="_blank">
         <h1 class="tbone-logo">
             TBone
         </h1>
     </a>
     <h1 class="tbone-title">
-        <a href="/">TBone</a>
+        <a href="/" target="_blank">TBone</a>
     </h1>
     <br>
     <h3>
@@ -39,7 +39,7 @@
     <br>
     <br>
     <h3 class="author">
-        <a href="http://tillberg.us/about">Dan Tillberg</a>
+        <a href="http://tillberg.us/about" target="_blank">Dan Tillberg</a>
     </h3>
     <a href="http://dev.appneta.com" target="_blank">
         <h3 class="appneta-logo">
@@ -48,7 +48,7 @@
     </a>
     <br>
     <h5>
-        Follow along at <a href="http://tbonejs.org/preso">http://tbonejs.org/preso</a>
+        Follow along at <a href="http://tbonejs.org/preso" target="_blank">http://tbonejs.org/preso</a>
     </h5>
 </slide>
 
@@ -332,7 +332,7 @@ T(function () { $('body').text('It is ' + T('now')); });
     <p>
         We can set up a data source for the current screen dimensions:
     </p>
-    <pre>
+    <pre class="reveal-1">
 function update () {
     T('screen.width', $(window).width());
     T('screen.height', $(window).height());
@@ -344,10 +344,10 @@ function timer () {
 }
 timer();
 </pre>
-    <p class="reveal-1">
-        This updates both whenever the window resize event triggers, and every second.
+    <p class="reveal-2">
+        This updates both whenever the window resize event triggers, and also every second.
     </p>
-    <p class="reveal-1">
+    <p class="reveal-3">
         We use this in our app to make some Views "responsive."  Just add a reference to T('screen') and the View will re-render when the browser is resized.
     </p>
 </slide>
@@ -380,7 +380,7 @@ T('formattedNow', function () {
     <p>
         These are equivalent:
     </p>
-    <pre>
+    <pre class="reveal-1">
 T('screen.totalPixels', function () {
     return T('screen.width') * T('screen.height');
 });
@@ -391,10 +391,10 @@ T('screen.totalPixels', tbone.models.bound.make({
     }
 }));
     </pre>
-    <p class="reveal-1">
+    <p class="reveal-2">
         Setting to a function creates a 'bound' TBone model on the fly and assigns that model to the property.
     </p>
-    <p class="reveal-1">
+    <p class="reveal-3">
         When you get a property, e.g. T('screen.totalPixels'), TBone will recurse into the child model and return its value instead of returning the model itself.
     </p>
 </slide>
@@ -450,7 +450,7 @@ T('screen.totalPixels', tbone.models.bound.make({
     <p>
         This model can read &amp; write the location.hash property:
     </p>
-    <pre>
+    <pre class="reveal-1">
 tbone.models.location = tbone.models.base.extend({
     initialize: function () {
         var self = this;
@@ -466,7 +466,7 @@ tbone.models.location = tbone.models.base.extend({
     }
 });
     </pre>
-    <p class="reveal-1">
+    <p class="reveal-2">
         Try it out!  This presentation creates an instance at T('location').
     </p>
 </slide>
@@ -511,6 +511,18 @@ tbone.models.location = tbone.models.base.extend({
 
 <slide>
     <h1>
+        This presentation uses TBone
+    </h1>
+    <p>
+        You can see this presentation online at <a href="http://tbonejs.org/preso/" target="_blank">tbonejs.org/preso</a> and read the source at <a href="https://github.com/appneta/tbonejs.org/" target="_blank">github.com/appneta/tbonejs.org</a>.
+    </p>
+    <p class="reveal-1">
+        <img class="tbone-preso-bbvis" src="/assets/tbone_preso_bbvis.png">
+    </p>
+</slide>
+
+<slide>
+    <h1>
         Thanks!
     </h1>
     <br>
@@ -520,22 +532,22 @@ tbone.models.location = tbone.models.base.extend({
     <br>
     <br>
     <h4>
-        Slides at <a href="http://tbonejs.org/preso/">tbonejs.org/preso</a>
+        Slides at <a href="http://tbonejs.org/preso/" target="_blank">tbonejs.org/preso</a>
     </h4>
     <br>
     <h4>
-        <a href="https://github.com/appneta/tbone/">github.com/appneta/tbone</a>
+        <a href="https://github.com/appneta/tbone/" target="_blank">github.com/appneta/tbone</a>
     </h4>
     <h4>
-        <a href="https://github.com/appneta/bbvis/">github.com/appneta/bbvis</a>
+        <a href="https://github.com/appneta/bbvis/" target="_blank">github.com/appneta/bbvis</a>
     </h4>
     <br>
-    <a href="/">
+    <a href="/" target="_blank">
         <h1 class="tbone-logo">
             TBone
         </h1>
     </a>
-    <a href="http://tillberg.us/about">
+    <a href="http://tillberg.us/about" target="_blank">
         <h3 class="author">
             Dan Tillberg
         </h3>
