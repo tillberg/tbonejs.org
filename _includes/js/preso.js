@@ -110,19 +110,30 @@ T('alwaysShowSource', true); // force example source to be visible
 
 $(document).on('keydown', function (e) {
     var key = e.keyCode;
+    if (e.altKey || e.metaKey || e.shiftKey || e.ctrlKey) {
+        return;
+    }
     if (key === 37) { // left
         gotoPreviousSlide();
+        return false;
     } else if (key === 39) { // right
         gotoNextSlide();
+        return false;
     } else if (key === 82) { // r
         _.each(_.range(T('slides.length')), function (i) {
             T('reveal.' + i, 0);
         });
     } else if (key === 90) { // z
         T.toggle('zoom');
-    } else if (key === 32) { // space
+    } else if (key === 32 || key === 40) { // space or down
         if (!T('slideFullyRevealed.' + T('slideNumber')) && T('reveal.' + T('slideNumber')) != null) {
             T.increment('reveal.' + T('slideNumber'));
+        }
+        return false;
+    } else if (key === 38) { // up
+        var curr = T('reveal.' + T('slideNumber'));
+        if (curr != 0 && curr != null) {
+            T.increment('reveal.' + T('slideNumber'), -1);
         }
         return false;
     }

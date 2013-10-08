@@ -14,7 +14,8 @@
 <script name="reveal" type="text/tbone-tmpl">
     <% _.each(_.range((T('revealed.' + view.$el.data('id')) || 0) + 1, 10), function (i) { %>
         .slide-<%-view.$el.data('id')%> .reveal-<%- i %> {
-            display: none;
+            -webkit-filter: grayscale(0.7) blur(4px);
+            opacity: 0.08;
         }
     <% }); %>
 </script>
@@ -90,15 +91,14 @@
         What is this thing?
     </h1>
     <h3>
-        TBone's third purpose:
+        TBone's third (and now primary) purpose:
     </h3>
-    <p class="reveal-1">
-        A simple, general-purpose reactive programming library that can be used both
-        to build applications directly and to build other libraries on top of it.
-    </p>
-    <p class="reveal-2">
-        We're mostly going to talk about this here.
-    </p>
+    <br>
+    <br>
+    <blockquote class="reveal-1">
+        <em>A simple, general-purpose reactive programming library that can be used both
+        to build applications directly and to build other libraries on top of it.</em>
+    </blockquote>
 </slide>
 
 <slide>
@@ -257,7 +257,7 @@ T(function () {
     });
 });
     </pre>
-    <p>
+    <p class="reveal-1">
         T-functions can be nested.  TBone will re-run the outer scope here when 'numItems' changes, but only the inner scope when 'itemMass' changes.
     </p>
 </slide>
@@ -273,6 +273,8 @@ function updateNumberOfItems (num) {
         $('#totalMass').text('Total mass: ' + (mass * num));
     });
 }
+    </pre>
+    <pre class="reveal-1">
 // ... and somewhere else completely different:
 T(function () {
     var num = T('numItems');
@@ -280,10 +282,10 @@ T(function () {
     updateNumberOfItems(num);
 });
     </pre>
-    <p>
+    <p class="reveal-2">
         T-functions are nested dynamically, not lexically.
     </p>
-    <p>
+    <p class="reveal-3">
         This allows locally binding references without the <em>caller</em> needing to know when the <em>callee</em> should be re-executed.
     </p>
 </slide>
@@ -293,10 +295,10 @@ T(function () {
         First example, revisited:
     </h3>
     <div tbone="tmpl example root examplesByName.Current_Time"></div>
-    <p>
+    <p class="reveal-1">
         The T-function at the top runs every time T('now') changes.
     </p>
-    <p>
+    <p class="reveal-1">
         And every 100ms, we update T('now') to a new Date object.
     </p>
 </slide>
@@ -313,10 +315,10 @@ setInterval(function () {
     T('now', new Date());
 }, 100);
     </pre>
-    <p>
+    <p class="reveal-1">
         Anyone else can subscribe to it:
     </p>
-    <pre>
+    <pre class="reveal-1">
 T(function () { console.log(T('now') &amp;&amp; T('now').getTime()); });
 T(function () { $('title').text(T('now')); });
 T(function () { $('body').text('It is ' + T('now')); });
@@ -342,10 +344,10 @@ function timer () {
 }
 timer();
 </pre>
-    <p>
+    <p class="reveal-1">
         This updates both whenever the window resize event triggers, and every second.
     </p>
-    <p>
+    <p class="reveal-1">
         We use this in our app to make some Views "responsive."  Just add a reference to T('screen') and the View will re-render when the browser is resized.
     </p>
 </slide>
@@ -357,7 +359,7 @@ timer();
     <p>
         TBone models don't store functions as values.  If you set a TBone property to a function, instead that property will be <strong>live-bound</strong> to the return value of the function.
     </p>
-    <pre>
+    <pre class="reveal-1">
 T('screen.totalPixels', function () {
     return T('screen.width') * T('screen.height');
 });
@@ -389,10 +391,10 @@ T('screen.totalPixels', tbone.models.bound.make({
     }
 }));
     </pre>
-    <p>
+    <p class="reveal-1">
         Setting to a function creates a 'bound' TBone model on the fly and assigns that model to the property.
     </p>
-    <p>
+    <p class="reveal-1">
         When you get a property, e.g. T('screen.totalPixels'), TBone will recurse into the child model and return its value instead of returning the model itself.
     </p>
 </slide>
@@ -404,7 +406,7 @@ T('screen.totalPixels', tbone.models.bound.make({
     <p>
         TBone was originally built on top of Backbone, and it still supports nesting Backbone models inside of TBone models.
     </p>
-    <pre>
+    <pre class="reveal-1">
 > var user = new Backbone.Model();
 > T('user', user);
 > T('user.name', 'Bob');
@@ -420,10 +422,10 @@ T('screen.totalPixels', tbone.models.bound.make({
     <p>
         TBone now has its own implementation of Views and Models, and it runs with or without Backbone.
     </p>
-    <p>
+    <p class="reveal-1">
         The biggest difference is that TBone supports setting a model to any value, not just a single-level hashmap.
     </p>
-    <pre>
+    <pre class="reveal-2">
 > var model = tbone.models.base.make();
 > // '' means "root of model":
 > model('', [{ name: "Sally" }, { name: "Susan" }]);
@@ -464,7 +466,7 @@ tbone.models.location = tbone.models.base.extend({
     }
 });
     </pre>
-    <p>
+    <p class="reveal-1">
         Try it out!  This presentation creates an instance at T('location').
     </p>
 </slide>
@@ -490,7 +492,7 @@ tbone.models.location = tbone.models.base.extend({
 > tbone.templates.myTmpl.parsed
 &rarr; '&lt;%-view.denullText( view.query(2, "template") )%&gt; text &lt;%=view.denullText( view.query(2, "here") )%&gt;'
     </pre>
-    <p>
+    <p class="reveal-2">
         You can opt out of this by passing a template function instead of a string.
     </p>
 </slide>
