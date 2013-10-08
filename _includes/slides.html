@@ -290,6 +290,68 @@ T(function () {
 </slide>
 
 <slide>
+    <h3>
+        First example, revisited:
+    </h3>
+    <div tbone="tmpl example root examplesByName.Current_Time"></div>
+    <p>
+        The T-function at the top runs every time T('now') changes.
+    </p>
+    <p>
+        And every 100ms, we update T('now') to a new Date object.
+    </p>
+</slide>
+
+<slide>
+    <h1>
+        Live data providers
+    </h1>
+    <p>
+        This code sets up a live data source for the current date with a precision of about 100ms:
+    </p>
+    <pre>
+setInterval(function () {
+    T('now', new Date());
+}, 100);
+    </pre>
+    <p>
+        Anyone else can subscribe to it:
+    </p>
+    <pre>
+T(function () { console.log(T('now') &amp;&amp; T('now').getTime()); });
+T(function () { $('title').text(T('now')); });
+T(function () { $('body').text('It is ' + T('now')); });
+    </pre>
+</slide>
+
+<slide>
+    <h1>
+        Screen dimension data provider
+    </h1>
+    <p>
+        We can set up a data source for the current screen dimensions:
+    </p>
+    <pre>
+function update () {
+    T('screen.width', $(window).width());
+    T('screen.height', $(window).height());
+}
+$(window).bind('resize', update);
+function timer () {
+    update();
+    setTimeout(timer, 1000);
+}
+timer();
+</pre>
+    <p>
+        This updates both whenever the window resize event triggers, and every second.
+    </p>
+    <p>
+        We use this in our app to make some Views "responsive."  Just add a reference to T('screen') and the View will re-render when the browser is resized.
+    </p>
+</slide>
+
+<slide>
     <h1>
         Set w/fn: T(prop, fn)
     </h1>
