@@ -129,6 +129,8 @@ $(document).on('keydown', function (e) {
     } else if (key === 32 || key === 40) { // space or down
         if (!T('slideFullyRevealed.' + T('slideNumber')) && T('reveal.' + T('slideNumber')) != null) {
             T.increment('reveal.' + T('slideNumber'));
+        } else if (key === 32) {
+            gotoNextSlide();
         }
         return false;
     } else if (key === 38) { // up
