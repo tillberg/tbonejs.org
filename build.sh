@@ -20,11 +20,12 @@ git reset --hard origin/master
 rm -rf ../docs/
 mv docs ../
 
+grunt templates
 cd test/
 npm install
-./gen-templates.js
 rm -rf ../../test/
-cp -R static/ ../../test/
+cp -R ./ ../../test/
+sed -i "s/dist\/tbone'/http:\/\/cdn.tbonejs.org\/tbone-master'/g" ../../test/*.html
 sed -i "s/tbone'/http:\/\/cdn.tbonejs.org\/tbone-master'/g" ../../test/*.html
 cd ..
 

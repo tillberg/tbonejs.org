@@ -210,7 +210,7 @@ var ajaxModel = tbone.models.ajax.extend({
     url: function () {
         T('fetched.' + this.id, true);
         T.increment('numAjaxReqs');
-        return '/assets/ajax/snowman';
+        return '/assets/ajax/snowman.txt';
     }
 });
 _.each(_.range(6), function (i) {
@@ -289,10 +289,10 @@ My first name is <%-first%>, and my last name is <%-last%>.
 
 ~javascript~
 T('first', tbone.models.ajax.make({
-    url: function () { return '/assets/ajax/first'; }
+    url: function () { return '/assets/ajax/first.txt'; }
 }));
 T('last', tbone.models.ajax.make({
-    url: function () { return '/assets/ajax/last'; }
+    url: function () { return '/assets/ajax/last.txt'; }
 }));
 </script>
 

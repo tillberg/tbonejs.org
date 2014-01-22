@@ -6,6 +6,7 @@ sudo gem install jekyll-less
 sudo rm /usr/local/bin/lessc
 sudo gem install therubyracer
 sudo gem install RedCloth
+sudo gem install json
 npm install docco
 git clone git://github.com/tillberg/pygments.rb.git
 cd pygments.rb

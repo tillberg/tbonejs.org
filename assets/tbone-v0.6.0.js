@@ -1,4 +1,7 @@
-(function(){'use strict';
+;
+/** @define {boolean} */
+var TBONE_BUILD_RELEASE = false;
+(function(){
 
 var root;
 var _;
@@ -11,9 +14,8 @@ if (typeof exports !== 'undefined') {
     _ = root['_'];
 }
 
-
 /** @const {boolean} */
-var TBONE_DEBUG = root['TBONE_DEBUG'] !== false;
+var TBONE_DEBUG = !TBONE_BUILD_RELEASE && !!root['TBONE_DEBUG'];
 
 var models = {};
 var collections = {};
@@ -41,6 +43,16 @@ var BASE_PRIORITY_MODEL_SYNC = 3000;
 var BASE_PRIORITY_VIEW = 2000;
 /** @const */
 var BASE_PRIORITY_MODEL_ASYNC = 1000;
+
+var priority = {
+    'highest': 10000,
+    'bound': BASE_PRIORITY_MODEL_SYNC,
+    'beforeViews': BASE_PRIORITY_VIEW + 500,
+    'view': BASE_PRIORITY_VIEW,
+    'afterViews': BASE_PRIORITY_VIEW - 500,
+    'async': BASE_PRIORITY_MODEL_ASYNC,
+    'lowest': 0
+};
 
 /**
  * We also use the drainQueue to initialize models & views.  By adding this delta
@@ -130,6 +142,17 @@ function watchLog (name, level) {
     logLevels.event[name] = VERBOSE;
 }
 
+var _showRenderTrees = false;
+function showRenderTrees () {
+    _showRenderTrees = true;
+}
+
+function logRender (obj) {
+    if (TBONE_DEBUG && _showRenderTrees) {
+        console.log('render ' + _.times(renderDepth, function () { return '.'; }).join('') + obj.Name);
+    }
+}
+
 var events = [];
 
 var viewRenders = 0;
@@ -179,7 +202,7 @@ function logconsole (level, context, event, msg, data, moredata) {
         var frame = type === name ? type : (type + ' ' + name);
         var message = frame + ' / ' + event + (includeColon ? ': ' : '');
         var logfn = console[(level === ERROR ? 'error' : level === WARN ? 'warn' : 'log')];
-        if (logfn) {
+        if (logfn && logfn.call) {
             logfn.call(console, message, templated || msg || '', moredata || '');
         }
     }
@@ -338,12 +361,12 @@ var timers = [ ];
  * block of code to repeat when its own referenced properties are updated, without
  * needing to re-render the entire view.
  * @param  {Function}                       fn        Function to invoke
- * @param  {Backbone.Model|Backbone.View}   context   Context to pass on invocation
  * @param  {number}                         priority  Scheduling priority - higher = sooner
+ * @param  {Backbone.Model|Backbone.View}   context   Context to pass on invocation
  * @param  {string}                         name      Name for debugging purposes
  * @return {Scope}                                    A new Scope created to wrap this function
  */
-function autorun(fn, context, priority, name, onExecuteCb, onExecuteContext, detached) {
+function autorun(fn, priority, context, name, onExecuteCb, onExecuteContext, detached) {
     // Default priority and name if not specified.  Priority is important in
     // preventing unnecessary refreshes of views/subscopes that may be slated
     // for destruction by a parent; the parent should have priority so as
@@ -351,8 +374,8 @@ function autorun(fn, context, priority, name, onExecuteCb, onExecuteContext, det
     if (!priority) {
         priority = currentExecutingScope ? currentExecutingScope.priority - 1 : 0;
     }
-    if (!name) {
-        name = currentExecutingScope ? currentExecutingScope.name + '+' : 'unnamed';
+    if (!name && currentExecutingScope) {
+        name = currentExecutingScope.Name + '+';
     }
 
     // Create a new scope for this function
@@ -369,6 +392,16 @@ function autorun(fn, context, priority, name, onExecuteCb, onExecuteContext, det
     // Return the scope object; this is used by BaseView to destroy
     // scopes when the associated view is destroyed.
     return scope;
+}
+
+function runOnlyOnce (fn) {
+    var alreadyRun;
+    autorun(function () {
+        if (!alreadyRun) {
+            fn();
+        }
+    });
+    alreadyRun = true;
 }
 
 /**
@@ -393,7 +426,7 @@ function Scope(fn, context, priority, name, onExecuteCb, onExecuteContext) {
         fn: fn,
         context: context,
         priority: priority,
-        name: name,
+        'Name': name,
         onExecuteCb: onExecuteCb,
         onExecuteContext: onExecuteContext,
         subScopes: []
@@ -454,7 +487,7 @@ _.extend(Scope.prototype,
                      * This could be improved.  But it's better than not being able
                      * to see the errors at all.
                      */
-                    tbone.push('__errors__.' + self.name, (ex && ex.stack || ex) + '');
+                    tbone.push('__errors__.' + self['Name'], (ex && ex.stack || ex) + '');
                 }
             }
 
@@ -482,15 +515,15 @@ _.extend(Scope.prototype,
 
             if (TBONE_DEBUG) {
                 var executionTimeMs = myTimer.done();
-                log(VERBOSE, 'scheduler', 'exec', '<%=priority%> <%=duration%>ms <%=name%>', {
+                log(VERBOSE, self, 'exec', '<%=priority%> <%=duration%>ms <%=name%>', {
                     'priority': self.priority,
-                    'name': self.name,
+                    'Name': self['Name'],
                     'duration': executionTimeMs
                 });
                 if (executionTimeMs > 10) {
-                    log(VERBOSE, 'scheduler', 'slowexec', '<%=priority%> <%=duration%>ms <%=name%>', {
+                    log(VERBOSE, self, 'slowexec', '<%=priority%> <%=duration%>ms <%=name%>', {
                         'priority': self.priority,
-                        'name': self.name,
+                        'Name': self['Name'],
                         'duration': executionTimeMs
                     });
                 }
@@ -548,7 +581,7 @@ _.extend(Scope.prototype,
  * @return {string}     Unique ID assigned to this object
  */
 function uniqueId(obj) {
-    return obj['tboneid'] = obj['tboneid'] || nextId++;
+    return obj['tboneid'] = obj['tboneid'] || nextId++; // jshint ignore:line
 }
 var nextId = 1;
 
@@ -616,6 +649,8 @@ function updateIsReady () {
     if (!isReadyTimer) {
         isReadyTimer = setTimeout(function () {
             tbone['query']('__isReady__', isReady());
+            tbone['query']('__ajaxReady__', !inflight);
+            tbone['query']('__numAjaxInFlight__', inflight);
             isReadyTimer = null;
         }, 20);
     }
@@ -666,8 +701,8 @@ var frozen = false;
  * Only supported for JQuery / when scrollTop is available on $.
  */
 
-var $window = $(window);
-var origScrollTop = $.fn && $.fn.scrollTop;
+var origScrollTop = this.$ && $.fn && $.fn.scrollTop;
+var $window = origScrollTop && $(window);
 var scrollTopChangedProgrammatically;
 
 if (origScrollTop) {
@@ -714,7 +749,7 @@ function drainQueue () {
         scope.execute();
     }
     if (!remaining) {
-        log(WARN, 'scheduler', 'drainQueue', 'exceeded max drainQueue iterations');
+        log(WARN, 'scheduler', 'drainQueueOverflow', 'exceeded max drainQueue iterations');
         drainQueueTimer = _.defer(drainQueue);
     }
     log(VERBOSE, 'scheduler', 'drainQueue', 'ran for <%=duration%>ms', {
@@ -843,6 +878,8 @@ function recursiveDiff (self, evs, curr, prev, exhaustive, depth, fireAll) {
                 // something to a deep copy of itself.
                 if (isObject(prev) && isObject(curr)) {
                     exhaustive = true;
+                } else if (isDate(prev) && isDate(curr)) {
+                    changed = (prev.getTime() !== curr.getTime()) || changed;
                 } else {
                     changed = true;
                 }
@@ -888,6 +925,8 @@ function recursiveDiff (self, evs, curr, prev, exhaustive, depth, fireAll) {
                     }
                 }
             }
+        } else if (isDate(prev) && isDate(curr)) {
+            changed = prev.getTime() !== curr.getTime();
         } else if (prev !== curr) {
             // at least one of prev and curr is a primitive (i.e. not arrays/objects)
             // and they are different.  thus, we've found a change and will pass this
@@ -1177,8 +1216,13 @@ function query(flag, prop, value) {
             }
         }
 
-        if (TBONE_DEBUG && isQueryable(value) && value['Name'] == null) {
-            value['Name'] = nameProp;
+        if (TBONE_DEBUG && isQueryable(value)) {
+            if (value['Name'] == null) {
+                value['Name'] = nameProp;
+            }
+            if (value.scope && value.scope['Name'] == null) {
+                value.scope['Name'] = 'model_' + nameProp;
+            }
         }
 
         if (!_.isEmpty(parentCallbackContexts)) {
@@ -1253,7 +1297,7 @@ var baseModel = {
         // Each TBone model/collection is an augmented copy of this TBoneModel function
         var instance = function TBoneModel (arg0, arg1, arg2) {
             if (typeof arg0 === 'function') {
-                return autorun(arg0, arg1, arg2);
+                return autorun(arg0, arg1);
             } else if (typeof arg1 === 'function' && !isQueryable(arg1)) {
                 return instance['query'](arg0, boundModel.extend({ 'state': arg1 }).make());
             } else {
@@ -1352,10 +1396,21 @@ var baseModel = {
         }
     },
 
+    'runOnlyOnce': runOnlyOnce,
+
     'query': query,
 
     'queryModel': function (prop) {
         return this['query'](DONT_GET_DATA, prop);
+    },
+
+    // query `prop` without binding to changes in its value
+    'readSilent': function (prop) {
+        var tmp = recentLookups;
+        recentLookups = null;
+        var rval = this['query'](prop);
+        recentLookups = tmp;
+        return rval;
     },
 
     'idAttribute': 'id',
@@ -1471,8 +1526,9 @@ var boundModel = baseModel.extend({
          * is loaded but before anything else gets updated.  We can't do that with setTimeout
          * or _.defer because that could possibly fire after drainQueue.
          */
-        self.scope = autorun(self.update, self, self.scopePriority,
-                             'model_' + self['Name'], self.onScopeExecute, self);
+        self.scope = autorun(self.update, self.scopePriority, self,
+                             self['Name'] && 'model_' + self['Name'],
+                             self.onScopeExecute, self, true);
     },
 
     scopePriority: BASE_PRIORITY_MODEL_SYNC,
@@ -1537,6 +1593,13 @@ var boundModel = baseModel.extend({
         }
     },
 
+    'destroy': function () {
+        if (this.scope) {
+            this.scope.destroy();
+        }
+        this['unset'](QUERY_SELF);
+    },
+
     /**
      * returns the new state, synchronously
      */
@@ -1552,12 +1615,14 @@ var boundModel = baseModel.extend({
 var asyncModel = boundModel.extend({
     _update: function () {
         var self = this;
-        // XXX do we want to allow rolling updates?  i.e., instead of only
-        // allowing updates from the current generation, allow updates
-        // greater than or equal to the generation of the last update?
-        var generation = self.generation = (self.generation || 0) + 1;
+        // Allow updates that are as new or newer than the last *update* generation.
+        // This allows rolling updates, where the model may have one or more requests
+        // in flight for newer data, yet it will still accept earlier-generation
+        // data that arrives as long as it is newer than what it had before.
+        var reqGeneration = self.reqGeneration = (self.reqGeneration || 0) + 1;
         var opts = self['state'](function (value) {
-            if (generation === self.generation) {
+            if (reqGeneration >= (self.updateGeneration || 0)) {
+                self.updateGeneration = reqGeneration;
                 self.abortCallback = null;
                 self['query']('', value);
                 return true;
@@ -1678,8 +1743,8 @@ var baseCollection = baseModel.extend({
 
     // Default options, unless specified.
     _.defaults(options || (options = {}), {
-      emulateHTTP: Backbone.emulateHTTP,
-      emulateJSON: Backbone.emulateJSON
+      emulateHTTP: tbone.emulateHTTP,
+      emulateJSON: tbone.emulateJSON
     });
 
     // Default JSON-request options.
@@ -1977,7 +2042,7 @@ _.each(('break case catch continue debugger default delete do else finally for f
         'instanceof new return switch this throw try typeof var void while with ' +
         'Array Boolean Date Function Iterator Number Object RegExp String ' +
         'isFinite isNaN parseFloat parseInt Infinity JSON Math NaN undefined true false null ' +
-        '$ _ tbone T view'
+        '$ _ tbone T view window'
        ).split(' '), function (word) {
     neverLookup[word] = true;
 });
@@ -2250,6 +2315,8 @@ function getHashId(obj) {
  * dom/view/base.js
  */
 
+var renderDepth = 0;
+
 var baseView = {
     make: function (opts) {
         var instance = {};
@@ -2274,7 +2341,7 @@ var baseView = {
         self['$el'] = $(self['el']);
         self['el']['view'] = self;
         self.priority = self.domParentView ? self.domParentView.priority - 1 : BASE_PRIORITY_VIEW;
-        self.scope = autorun(self.render, self, self.priority, 'view_' + self['Name'],
+        self.scope = autorun(self.render, self.priority, self, 'view_' + self['Name'],
                              self.onScopeExecute, self, true);
     },
 
@@ -2309,6 +2376,9 @@ var baseView = {
         // This view may get a reset call at the same instant that another
         // view gets created to replace it.
         if (!self.destroyed) {
+            logRender(self);
+            renderDepth++;
+
             /**
              * Move all this view's children to another temporary DOM element.  This will be used as the
              * pseudo-parent element for the destroyDOM call.
@@ -2329,8 +2399,14 @@ var baseView = {
                     // XXX for IE compatibility, this might work:
                     // http://the-stickman.com/web-development/javascript/ ...
                     // finding-selection-cursor-position-in-a-textarea-in-internet-explorer/
-                    selectionStart = activeElement.selectionStart;
-                    selectionEnd = activeElement.selectionEnd;
+                    // Only try to get the selectionStart and selectionEnd for inputs that have
+                    // text in them.  I don't know if submit/button types are the only ones that
+                    // will fail here, so maybe it'd just be either to wrap this in a try/catch.
+                    var inputType = activeElement.getAttribute('type');
+                    if (inputType !== 'submit' && inputType !== 'button') {
+                        selectionStart = activeElement.selectionStart;
+                        selectionEnd = activeElement.selectionEnd;
+                    }
                 }
 
                 var $old = $('<div>').append(this.$el.children());
@@ -2386,6 +2462,8 @@ var baseView = {
             }
             self['postRender']();
             viewRenders++;
+
+            renderDepth--;
         }
     },
 
@@ -2677,8 +2755,9 @@ function createView(name, base, fn, opts) {
             fn.call(this);
         };
     }
-    return views[name] = base.extend(opts);
+    return views[name] = base.extend(opts); // jshint ignore:line
 }
+
 
 var tbone = baseModel.make({ 'Name': 'tbone' });
 
@@ -2699,6 +2778,7 @@ tbone['addTemplate'] = addTemplate;
 tbone['dontPatch'] = dontPatch;
 tbone['render'] = render;
 tbone['denullText'] = denullText;
+tbone['priority'] = priority;
 
 // Included in minified source, but intended for TESTING only:
 tbone['drain'] = drain;
@@ -2729,6 +2809,7 @@ views['base'] = baseView;
 
 if (TBONE_DEBUG) {
     tbone['watchLog'] = watchLog;
+    tbone['showRenderTrees'] = showRenderTrees;
     tbone['getListeners'] = getListeners;
     tbone['hasViewListener'] = hasViewListener;
     tbone['onLog'] = onLog;
@@ -2785,7 +2866,6 @@ if (Backbone) {
              * For set operations, we only want to look up the parent of the property we
              * are modifying; pop the final property we're setting from args and save it
              * for later.
-             * @type {string}
              */
             setprop = args[args.length - 1];
         }
@@ -2926,7 +3006,7 @@ if (Backbone) {
              */
             queueExec({
                 execute: function () {
-                    self.scope = autorun(self.update, self, priority, 'model_' + self['Name'],
+                    self.scope = autorun(self.update, priority, self, 'model_' + self['Name'],
                                          self.onScopeExecute, self);
                 },
                 priority: priority + PRIORITY_INIT_DELTA
