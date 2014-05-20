@@ -56,5 +56,8 @@ cd ..
 
 echo "Syncing to s3://$TBONECDN_S3/..."
 
-s3cmd sync --progress --guess-mime-type --no-preserve --acl-public --add-header 'Cache-Control: max-age=600' --add-header 'Content-Encoding:gzip' _cdn/ s3://$TBONECDN_S3/ --exclude '*.*' --include 'tbone-master.*'
-s3cmd sync --progress --guess-mime-type --no-preserve --acl-public --add-header 'Cache-Control: max-age=600' --add-header 'Content-Encoding:gzip' _cdn/ s3://$TBONECDN_S3/ --exclude 'tbone-master.*'
+aws s3 sync \
+    --cache-control "max-age=600" \
+    --content-encoding "gzip" \
+    --acl "public-read" \
+    _cdn/ s3://tbonejscdn/

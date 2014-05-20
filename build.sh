@@ -51,5 +51,15 @@ cd ..
 
 echo "Syncing to s3://$TBONE_S3/..."
 
-s3cmd sync --progress --guess-mime-type --no-preserve --acl-public --add-header 'Cache-Control: max-age=60' --add-header 'Content-Encoding:gzip' _sitegen/ s3://$TBONE_S3/ --exclude '*.*' --include '*.html' --include '*.js' --include '*.css'
-s3cmd sync --progress --guess-mime-type --no-preserve --acl-public --add-header 'Cache-Control: max-age=60' _sitegen/ s3://$TBONE_S3/ --exclude '*.html' --exclude '*.js' --exclude '*.css'
+aws s3 sync \
+    --cache-control "max-age=60" \
+    --content-encoding "gzip" \
+    --acl "public-read" \
+    _sitegen/ s3://tbonejs/ \
+    --exclude '*.*' --include '*.html' --include '*.js' --include '*.css'
+
+aws s3 sync \
+    --cache-control "max-age=60" \
+    --acl "public-read" \
+    _sitegen/ s3://tbonejs/ \
+    --exclude '*.html' --exclude '*.js' --exclude '*.css'
