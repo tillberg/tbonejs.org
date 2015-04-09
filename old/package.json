@@ -4,7 +4,8 @@
   "description": "Git-home of tbonejs.org and cdn.tbonejs.org",
   "main": "index.js",
   "dependencies": {
-    "docco-husky": "~0.3.3"
+    "docco-husky": "~0.3.3",
+    "grunt": "^0.4.5"
   },
   "devDependencies": {},
   "scripts": {

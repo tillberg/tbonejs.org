@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-: ${TBONE_S3?"Set TBONE_S3 to TBone's S3 bucket"}
-
 set -e
 rm -rf _sitegen/
 rm -rf _cdn/
@@ -19,15 +17,6 @@ git reset --hard origin/master
 ../node_modules/docco-husky/bin/generate src/
 rm -rf ../docs/
 mv docs ../
-
-grunt templates
-cd test/
-npm install
-rm -rf ../../test/
-cp -R ./ ../../test/
-sed -i "s/dist\/tbone'/http:\/\/cdn.tbonejs.org\/tbone-master'/g" ../../test/*.html
-sed -i "s/tbone'/http:\/\/cdn.tbonejs.org\/tbone-master'/g" ../../test/*.html
-cd ..
 
 cd ..
 
@@ -49,7 +38,7 @@ mv tmp/* ./
 rmdir tmp/
 cd ..
 
-echo "Syncing to s3://$TBONE_S3/..."
+echo "Syncing to s3://tbonejs/..."
 
 aws s3 sync \
     --cache-control "max-age=60" \
