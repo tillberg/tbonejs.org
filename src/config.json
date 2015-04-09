@@ -1,9 +1,9 @@
 {
   "locals": {
-    "url": "http://localhost:8080",
-    "name": "The Wintersmith's blog",
-    "owner": "Someone",
-    "description": "Ramblings of an immor(t)al demigod"
+    "url": "https://www.tbonejs.org",
+    "name": "TBone",
+    "owner": "Dan Tillberg",
+    "description": "Dataflow-Oriented Programming for JavaScript"
   },
   "plugins": [
     "./plugins/paginator.coffee"
@@ -21,6 +21,9 @@
     "smartypants": true
   },
   "paginator": {
+    "template": "blog.jade",
+    "first": "blog/index.html",
+    "filename": "blog/%d/index.html",
     "perPage": 3
   }
 }
