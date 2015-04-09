@@ -6,7 +6,8 @@
     "description": "Dataflow-Oriented Programming for JavaScript"
   },
   "plugins": [
-    "./plugins/paginator.coffee"
+    "./plugins/paginator.coffee",
+    "../node_modules/wintersmith-less"
   ],
   "require": {
     "moment": "moment",
@@ -14,7 +15,7 @@
     "typogr": "typogr"
   },
   "jade": {
-    "pretty": true
+    "pretty": false
   },
   "markdown": {
     "smartLists": true,
