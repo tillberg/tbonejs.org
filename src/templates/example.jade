@@ -1,34 +1,39 @@
----
----
-<style>
-html {
-    margin: 0;
-    padding: 0;
-}
-body {
-    margin: 0;
-    padding: 4px 0 0 4px;
-}
-a.full-version {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    text-decoration: none;
-    font-size: 80%;
-}
-</style>
-<style class="democss"></style>
-<script src="/assets/lib.js"></script>
-<script>
-var TBONE_DEBUG = !location.hash || !location.hash.match(/^callback=/);
-</script>
-<script src="/assets/tbone-v0.6.0.js"></script>
-<div tbone="tmpl demo"></div>
-{% include examples.html %}
-{% include templates.html %}
+extends layout
 
-<script type="text/javascript">
-{% include js/index.js %}
+block head
+  meta(charset='utf-8')
+  meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+  meta(name='viewport', content='width=device-width')
+  title TBone Example
+  style.
+    html {
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        margin: 0;
+        padding: 4px 0 0 4px;
+    }
+    a.full-version {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        text-decoration: none;
+        font-size: 80%;
+    }
+
+block body
+  style(class="democss")
+  script(src="/js/lib.js")
+  script var TBONE_DEBUG = !location.hash || !location.hash.match(/^callback=/);
+  script(src="https://cdn.tbonejs.org/tbone-0.6.0.min.js")
+  div(tbone="tmpl demo")
+
+  include examples.html
+  include templates.html
+
+  script(src="/js/iframe_demo.js")
+  script.
     T('location', tbone.models.location.make());
     var isDemoLoaded;
     T(function () {
@@ -71,4 +76,3 @@ var TBONE_DEBUG = !location.hash || !location.hash.match(/^callback=/);
         isDemoLoaded = true;
     });
     tbone.render($('[tbone]'));
-</script>

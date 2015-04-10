@@ -1,0 +1,26 @@
+extends layout
+
+block body
+  header.header
+    div.content-wrap
+      block header
+        div.logo
+          h1
+            a(href=locals.url)= locals.name
+          p.description= locals.description
+  div#content
+    div.content-wrap
+      block content
+        h2 Welcome to zombocom!
+  footer
+    div.content-wrap
+      block footer
+        // section.about
+        //  !=contents['about.md'].html
+        section.copy
+          p
+            | &copy; #{ new Date().getFullYear() } #{''}
+            a(href='https://www.tillberg.us/') Dan Tillberg
+            | #{''} &mdash; powered by #{''}
+            a(href='https://github.com/jnordberg/wintersmith') Wintersmith
+            //- please leave the "powered by" if you use the design
