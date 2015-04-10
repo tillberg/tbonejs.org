@@ -114,10 +114,10 @@ $(document).on('keydown', function (e) {
     if (e.altKey || e.metaKey || e.shiftKey || e.ctrlKey) {
         return;
     }
-    if (key === 37) { // left
+    if (key === 38) { // up
         gotoPreviousSlide();
         return false;
-    } else if (key === 39) { // right
+    } else if (key === 40) { // down
         gotoNextSlide();
         return false;
     } else if (key === 82) { // r
@@ -126,7 +126,7 @@ $(document).on('keydown', function (e) {
         });
     } else if (key === 90) { // z
         T.toggle('zoom');
-    } else if (key === 32 || key === 40) { // space or down
+    } else if (key === 32) { // space or down
         if (!T('slideFullyRevealed.' + T('slideNumber')) && T('reveal.' + T('slideNumber')) != null) {
             T.increment('reveal.' + T('slideNumber'));
         } else if (key === 32) {
@@ -153,12 +153,12 @@ tbone.createView('preso', function () {
             height: height
         });
         self.$el.css({
-            width: T('slides.length') * width,
-            height: height
+            height: T('slides.length') * height,
+            width: width
         });
         T(function () {
             var slideNumber = T('slideNumber') || 0;
-            self.$el.css('left', -width * slideNumber);
+            self.$el.css('top', -height * slideNumber);
         });
     });
     _.defer(function () {
