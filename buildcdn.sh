@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-: ${TBONECDN_S3?"Set TBONECDN_S3 to TBone's CDN S3 bucket"}
-
 set -e
 rm -rf _cdn/
 mkdir -p _cdn/
@@ -29,13 +27,21 @@ for ref in `git ls-remote origin | grep ".*refs/[^p]" | sed "s/.*\///" | sort -r
     elif [ -f "gulpfile.js" ]; then
         # echo "Using gulp build method..."
         npm install
+        gulp clean
         gulp
         cp dist/tbone.js ../_cdn/tbone-$ref.js
         cp dist/tbone.min.js ../_cdn/tbone-$ref.min.js
         cp dist/tbone.min.js.map ../_cdn/tbone-$ref.min.js.map
-        cp dist/tbone_legacy.js ../_cdn/tbone_legacy-$ref.js
-        cp dist/tbone_legacy.min.js ../_cdn/tbone_legacy-$ref.min.js
-        cp dist/tbone_legacy.min.js.map ../_cdn/tbone_legacy-$ref.min.js.map
+        if [ -f "dist/tbone_legacy.js" ]; then
+            cp dist/tbone_legacy.js ../_cdn/tbone_legacy-$ref.js
+            cp dist/tbone_legacy.min.js ../_cdn/tbone_legacy-$ref.min.js
+            cp dist/tbone_legacy.min.js.map ../_cdn/tbone_legacy-$ref.min.js.map
+        fi
+        if [ -f "dist/tbone_core.js" ]; then
+            cp dist/tbone_core.js ../_cdn/tbone_core-$ref.js
+            cp dist/tbone_core.min.js ../_cdn/tbone_core-$ref.min.js
+            cp dist/tbone_core.min.js.map ../_cdn/tbone_core-$ref.min.js.map
+        fi
     else
         # echo "Using dist/ build..."
         cp dist/tbone.js ../_cdn/tbone-$ref.js
@@ -64,12 +70,12 @@ for name in `ls *.js | sed s/\.js//`; do
     # for the non-gzip-encoded version to work right,
     # we shouldn't set Content-encoding: gzip on them.
     # cp $name.js $name.raw.js
-    gzip $name.js
+    gzip -9 $name.js
     mv $name.js.gz $name.js
 done
 cd ..
 
-echo "Syncing to s3://$TBONECDN_S3/..."
+echo "Syncing to s3://tbonejscdn/..."
 
 aws s3 sync \
     --cache-control "max-age=600" \

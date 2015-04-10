@@ -1,4 +1,6 @@
 build
+/_cdn
+/_tbone
 
 # From Node.gitignore:
 # Logs
