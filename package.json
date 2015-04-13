@@ -11,7 +11,7 @@
     "url": "https://github.com/tillberg/tbonejs.org.git"
   },
   "author": "Dan Tillberg",
-  "license": "ISC",
+  "license": "",
   "bugs": {
     "url": "https://github.com/tillberg/tbonejs.org/issues"
   },
@@ -26,12 +26,14 @@
     "gulp-less": "^3.0.2",
     "gulp-util": "^3.0.4",
     "lodash": "^3.6.0",
+    "moment": "2.3.x",
+    "reactify": "^1.1.0",
+    "tillberg-tbone": "2.0.2",
+    "typogr": "0.5.x",
+    "underscore": "1.4.x",
     "vinyl-source-stream": "^1.1.0",
     "wintersmith": "^2.1.0",
     "wintersmith-less": "^0.2.3",
-    "ws": "^0.7.1",
-    "moment": "2.3.x",
-    "underscore": "1.4.x",
-    "typogr": "0.5.x"
+    "ws": "^0.7.1"
   }
 }

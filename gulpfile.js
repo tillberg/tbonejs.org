@@ -57,7 +57,7 @@ gulp.task('less', ['do-less'], getReadyTask('css'));
 
 gulp.task('do-js-browserify', function() {
     var b = browserify();
-    b.add('wintersmith/contents/js/main.js');
+    b.add('./js/main.js');
     b.transform('reactify', {
         es6: true
     });
@@ -67,7 +67,7 @@ gulp.task('do-js-browserify', function() {
             this.emit('end');
         })
         .pipe(source('main-bundle.js'))
-        .pipe(gulp.dest('wintersmith/contents/build/'));
+        .pipe(gulp.dest(path.join(BUILD_PATH, 'js')));
 });
 
 gulp.task('js-browserify', ['do-js-browserify'], getReadyTask('browserify'));
@@ -119,7 +119,7 @@ gulp.task('do-build-wintersmith', function(cb) {
 
 gulp.task('build-wintersmith', ['do-build-wintersmith'], getReadyTask('html'));
 
-gulp.task('build', ['build-wintersmith', 'less']);
+gulp.task('build', ['build-wintersmith', 'js-browserify', 'less']);
 
 var notifyFn;
 gulp.task('serve', function() {
@@ -144,12 +144,16 @@ gulp.task('serve', function() {
 gulp.task('watch-files', function() {
     restartOnException();
     gulp.watch('less/**/*', ['less']);
+    gulp.watch('js/**/*', ['js-browserify']);
     gulp.watch('wintersmith/**/*', ['build-wintersmith']);
     gulp.watch(['./gulpfile.js', 'autoreload'], ['restart-gulp']);
 });
 
 gulp.task('clean', function(cb) {
-    del([BUILD_PATH], cb);
+    del([
+        BUILD_PATH,
+        'wintersmith/build/',
+    ], cb);
 });
 
 gulp.task('watch', ['serve', 'build', 'watch-files']);
