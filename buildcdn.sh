@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
-rm -rf _cdn/
+rm -r _cdn/
 mkdir -p _cdn/
 
 echo Fetching TBone...
@@ -66,12 +66,12 @@ git checkout -q master
 cd ..
 
 cd _cdn
-for name in `ls *.js | sed s/\.js//`; do
+for name in `ls *.map *.js`; do
     # for the non-gzip-encoded version to work right,
     # we shouldn't set Content-encoding: gzip on them.
     # cp $name.js $name.raw.js
-    gzip -9 $name.js
-    mv $name.js.gz $name.js
+    gzip -9 $name
+    mv $name.gz $name
 done
 cd ..
 
