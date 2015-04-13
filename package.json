@@ -19,12 +19,19 @@
   "dependencies": {
     "browserify": "^9.0.8",
     "del": "^1.1.1",
+    "express": "^4.12.3",
     "fs-extra": "^0.18.0",
     "gulp": "^3.8.11",
+    "gulp-autoprefixer": "^2.1.0",
+    "gulp-less": "^3.0.2",
     "gulp-util": "^3.0.4",
     "lodash": "^3.6.0",
     "vinyl-source-stream": "^1.1.0",
     "wintersmith": "^2.1.0",
-    "wintersmith-less": "^0.2.3"
+    "wintersmith-less": "^0.2.3",
+    "ws": "^0.7.1",
+    "moment": "2.3.x",
+    "underscore": "1.4.x",
+    "typogr": "0.5.x"
   }
 }

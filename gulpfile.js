@@ -5,15 +5,22 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 // var react = require('gulp-react');
 var del = require('del');
+var less = require('gulp-less');
+var prefix = require('gulp-autoprefixer');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var exec = require('child_process').exec;
 var spawn = require('child_process').spawn;
+var express = require('express');
 // var request = require('request');
 
 var fs = require('fs-extra');
+var path = require('path');
+var events = require('events');
+var http = require('http');
+var WebSocketServer = require('ws').Server;
 
-var BUILD_PATH = '_tbonejsorg';
+var BUILD_PATH = '_tbonejsorg/';
 
 try {
     fs.mkdirSync(BUILD_PATH);
@@ -31,15 +38,26 @@ function restartOnException() {
     });
 }
 
+var updateNotifier = new events.EventEmitter();
 function getReadyTask(type) {
     return function() {
-        console.log('dev-ready ' + type);
+        updateNotifier.emit('update', type);
     };
 }
 
+gulp.task('do-less', function() {
+    return gulp.src('less/**/*.less', {
+            base: 'less/'
+        })
+        .pipe(less({}))
+        .pipe(prefix('last 2 versions', '> 5%'))
+        .pipe(gulp.dest(path.join(BUILD_PATH, 'css')));
+});
+gulp.task('less', ['do-less'], getReadyTask('css'));
+
 gulp.task('do-js-browserify', function() {
     var b = browserify();
-    b.add('src/contents/js/main.js');
+    b.add('wintersmith/contents/js/main.js');
     b.transform('reactify', {
         es6: true
     });
@@ -49,14 +67,13 @@ gulp.task('do-js-browserify', function() {
             this.emit('end');
         })
         .pipe(source('main-bundle.js'))
-        .pipe(gulp.dest('src/contents/build/'));
+        .pipe(gulp.dest('wintersmith/contents/build/'));
 });
 
 gulp.task('js-browserify', ['do-js-browserify'], getReadyTask('browserify'));
 
 gulp.task('restart-gulp', function() {
     console.log('restarting gulp...');
-    restartServer();
     process.exit(0);
 });
 
@@ -67,7 +84,7 @@ var buildWintersmith = function() {
         var myCallbacks = buildCallbacks;
         buildCallbacks = [];
         var myProc = spawn('../node_modules/.bin/wintersmith', ['build'], {
-            cwd: 'src/',
+            cwd: 'wintersmith/',
             stdio: ['ignore', 'pipe', 'pipe'],
         });
         myProc.once('close', function() {
@@ -94,7 +111,7 @@ var buildWintersmith = function() {
 
 gulp.task('do-build-wintersmith', function(cb) {
     buildWintersmith(function() {
-        fs.copy('src/build/', BUILD_PATH, {
+        fs.copy('wintersmith/build/', BUILD_PATH, {
             clobber: true,
         }, cb);
     });
@@ -102,13 +119,33 @@ gulp.task('do-build-wintersmith', function(cb) {
 
 gulp.task('build-wintersmith', ['do-build-wintersmith'], getReadyTask('html'));
 
-gulp.task('build', ['build-wintersmith']);
+gulp.task('build', ['build-wintersmith', 'less']);
+
+var notifyFn;
+gulp.task('serve', function() {
+    var app = express();
+    var server = http.createServer(app);
+    fs.copySync('autoreload.js', path.join(BUILD_PATH, 'autoreload.js'));
+    app.use(express.static(BUILD_PATH));
+    var wss = new WebSocketServer({
+        server: server,
+        path: '/ws_autoreload',
+    });
+    wss.on('connection', function connection(ws) {
+        var transmit = ws.send.bind(ws);
+        updateNotifier.on('update', transmit);
+        ws.once('close', function() {
+            updateNotifier.removeListener('update', transmit);
+        });
+    });
+    server.listen(parseFloat(process.env.PORT) || 8080);
+});
 
 gulp.task('watch-files', function() {
     restartOnException();
-    gulp.watch('src/contents/css/', ['css-process-notify']);
-    // gulp.watch('src/', ['css-process-notify']);
-    gulp.watch(['./gulpfile.js'], ['restart-gulp']);
+    gulp.watch('less/**/*', ['less']);
+    gulp.watch('wintersmith/**/*', ['build-wintersmith']);
+    gulp.watch(['./gulpfile.js', 'autoreload'], ['restart-gulp']);
 });
 
 gulp.task('clean', function(cb) {
