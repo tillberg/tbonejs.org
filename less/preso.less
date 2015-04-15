@@ -8,7 +8,7 @@ html, body {
     width: 100%;
 }
 html {
-    overflow: hidden;
+    // overflow: hidden;
 }
 * {
     box-sizing: border-box;
@@ -57,7 +57,6 @@ body {
 }
 
 .slide {
-    float: left;
     overflow-x: hidden;
     overflow-y: auto;
     font-size: 20px;
@@ -153,15 +152,6 @@ body {
     }
 }
 
-.tbone-logo {
-    overflow: hidden;
-    text-indent: -9999px;
-    background-image: url(/img/8bit-bone.png);
-    background-repeat: no-repeat;
-    background-position: center 0;
-    height: 52px;
-    zoom: 2;
-}
 .first-slide-logos {
     margin-top: 4px;
     text-align: center;
@@ -171,6 +161,17 @@ body {
         background-repeat: no-repeat;
         display: inline-block;
         vertical-align: top;
+    }
+    .tbone-logo {
+        display: inline-block;
+        overflow: hidden;
+        text-indent: -9999px;
+        background-image: url(/img/8bit-bone.png);
+        background-repeat: no-repeat;
+        background-position: center 0;
+        height: 52px;
+        zoom: 2;
+        width: 64px;
     }
     .appneta-logo {
         background-image: url(/img/appneta-logo-new.png);

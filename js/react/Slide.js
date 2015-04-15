@@ -6,8 +6,12 @@ var Slide = React.createClass({
 
   render: function() {
     var {...other} = this.props;
+    var style = {
+      height: T('screen.height') + 'px',
+      width: T('screen.width') + 'px',
+    };
     return (
-      <div className="slide" {...other} />
+      <div className="slide" style={style} {...other} />
     );
   }
 

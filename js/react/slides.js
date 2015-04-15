@@ -8,19 +8,14 @@ module.exports = [
     return (
       <Slide>
         <br/>
-        <br/>
-        <a href="/" target="_blank">
-            <h1 className="tbone-logo">
-                TBone
-            </h1>
-        </a>
+        <div className="first-slide-logos">
+          <a className="tbone-logo" href="/" target="_blank"> TBone </a>
+        </div>
         <h1 className="tbone-title">
             <a href="/" target="_blank">TBone</a>
         </h1>
         <br/>
-        <h3>
-            Dataflow-oriented Programming for JavaScript
-        </h3>
+        <h3> Dataflow-oriented Programming for JavaScript </h3>
         <br/>
         <br/>
         <br/>
@@ -28,12 +23,8 @@ module.exports = [
             <a href="http://tillberg.us/about" target="_blank">Dan Tillberg</a>
         </h3>
         <div className="first-slide-logos">
-          <a className="appneta-logo" href="http://dev.appneta.com" target="_blank">
-            AppNeta
-          </a>
-          <a className="threatstack-logo" href="http://www.threatstack.com" target="_blank">
-            Threat Stack
-          </a>
+          <a className="appneta-logo" href="http://dev.appneta.com" target="_blank"> AppNeta </a>
+          <a className="threatstack-logo" href="http://www.threatstack.com" target="_blank"> Threat Stack </a>
         </div>
         <br/>
         <h5>
@@ -43,6 +34,21 @@ module.exports = [
     );
   },
   function () {
-
+    return (
+      <Slide>
+        <h1>
+            What is this thing?
+        </h1>
+        <h3>
+            TBone{"'"}s original purpose:
+        </h3>
+        <p className="reveal-1">
+            Provide live templates on top of Backbone.
+        </p>
+        <p className="reveal-2">
+            Because who doesn't need another live templating library?
+        </p>
+      </Slide>
+    );
   },
 ];
