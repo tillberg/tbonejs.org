@@ -15,24 +15,7 @@ html {
 }
 .transition-props(...) {
     @props: ~`"@{arguments}".replace(/[\[\]]/g, '')`;
-    -webkit-transition-property: @props;
-    -moz-transition-property: @props;
-    -o-transition-property: @props;
-    -ms-transition-property: @props;
     transition-property: @props;
-
-    -webkit-transition-duration: 0.4s;
-    -webkit-transition-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
-
-    -moz-transition-duration: 0.4s;
-    -moz-transition-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
-
-    -ms-transition-duration: 0.4s;
-    -ms-transition-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
-
-    -o-transition-duration: 0.4s;
-    -o-transition-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
-
     transition-duration: 0.4s;
     transition-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
 }
@@ -48,10 +31,6 @@ body {
     .transition-props(transform);
 
     &.zoom {
-        -moz-transform: scale(0.3);
-        -webkit-transform: scale(0.3);
-        -o-transform: scale(0.3);
-        -ms-transform: scale(0.3);
         transform: scale(0.3);
     }
 }
