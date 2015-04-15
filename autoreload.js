@@ -14,7 +14,7 @@
     ws.onmessage = function(ev) {
       var type = ev.data;
       console.log('type ' + type);
-      if (type === 'html' || type === 'all') {
+      if (type === 'html' || type === 'all' || type === 'js') {
         location.reload();
       } else if (type === 'css') {
         var links = document.querySelectorAll('link');

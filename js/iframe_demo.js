@@ -2,53 +2,53 @@
 
 window.demoCallbacks = {};
 
-tbone.createView('example', function () {
-    var self = this;
-    function updateFragmentHeaderStyle () {
-        var $this = $(this);
-        var height = $this.children('section').outerHeight();
-        var margin = (height / 2) - 13;// 13 is the width / 2
-        $this.children('h3').css({
-            width: height,
-            marginLeft: -margin - 9,
-            marginTop: margin
-        });
-    }
-    self.$('fragment').each(updateFragmentHeaderStyle);
-    self.query('reloadCount');
-    self.$el.off('click');
-    self.$el.on('click', 'a.update', function () {
-        self.query('reloadCount', (self.query('reloadCount') || 0) + 1);
-        return false;
-    });
-    self.$el.on('click', 'a.show_source', function () {
-        T.toggle('showSource.' + self.query('name_safe'));
-        return false;
-    });
-    T(function () {
-        self.$('iframe').css(self.query('iframecss') || {});
-        updateFragmentHeaderStyle.call(self.$('iframe').closest('fragment')[0]);
-    });
-    window.demoCallbacks[self.query('id')] = function (op, data) {
-        if (op === 'init') {
-            self.$('icon').removeClass('icon-refresh-animate');
-            return {
-                html: self.query('html'),
-                css: self.query('css'),
-                javascript: self.query('javascript'),
-                zoom: window.EXAMPLE_ZOOM || 1
-            };
-        } else if (op === 'setcss') {
-            self.query('iframecss', data);
-        }
-    };
-});
+// tbone.createView('example', function () {
+//     var self = this;
+//     function updateFragmentHeaderStyle () {
+//         var $this = $(this);
+//         var height = $this.children('section').outerHeight();
+//         var margin = (height / 2) - 13;// 13 is the width / 2
+//         $this.children('h3').css({
+//             width: height,
+//             marginLeft: -margin - 9,
+//             marginTop: margin
+//         });
+//     }
+//     self.$('fragment').each(updateFragmentHeaderStyle);
+//     self.query('reloadCount');
+//     self.$el.off('click');
+//     self.$el.on('click', 'a.update', function () {
+//         self.query('reloadCount', (self.query('reloadCount') || 0) + 1);
+//         return false;
+//     });
+//     self.$el.on('click', 'a.show_source', function () {
+//         T.toggle('showSource.' + self.query('name_safe'));
+//         return false;
+//     });
+//     T(function () {
+//         self.$('iframe').css(self.query('iframecss') || {});
+//         updateFragmentHeaderStyle.call(self.$('iframe').closest('fragment')[0]);
+//     });
+//     window.demoCallbacks[self.query('id')] = function (op, data) {
+//         if (op === 'init') {
+//             self.$('icon').removeClass('icon-refresh-animate');
+//             return {
+//                 html: self.query('html'),
+//                 css: self.query('css'),
+//                 javascript: self.query('javascript'),
+//                 zoom: window.EXAMPLE_ZOOM || 1
+//             };
+//         } else if (op === 'setcss') {
+//             self.query('iframecss', data);
+//         }
+//     };
+// });
 
-tbone.createView('demo', function () {
-    this.$el.off('click').on('click', 'a.full-version', function () {
-        T('showSource.' + T('currDemoSafeName'), true);
-    });
-});
+// tbone.createView('demo', function () {
+//     this.$el.off('click').on('click', 'a.full-version', function () {
+//         T('showSource.' + T('currDemoSafeName'), true);
+//     });
+// });
 
 T('showSource', tbone.models.localStorage.make({ key: 'showSource' }))
 

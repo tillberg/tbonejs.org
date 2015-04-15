@@ -1,5 +1,8 @@
 ;
 
+var _ = require('lodash');
+var $ = require('jquery');
+
 function gotoNextSlide () {
     var newSlideNumber = T('slideNumber') + 1;
     if (newSlideNumber < T('slides.length')) {
@@ -14,54 +17,54 @@ function gotoPreviousSlide () {
     }
 }
 
-(function () {
-    var baseSlideView = tbone.createView('slideBase', {
-        postReady: function () {
-            var self = this;
-            self.$el.addClass('slide-' + self.slideId);
-            self.$('pre').each(function(i, e) {
-                var $this = $(this);
-                var orig = _.trim($this.html()).replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-                var lang = $this.data('language') || 'javascript';
-                var highlighted = hljs.highlight(lang, orig).value;
-                highlighted = highlighted.replace(/&amp;/g, '&');
-                $this.empty();
-                $('<code>').html(highlighted).appendTo($this);
-            });
-            T(function () {
-                var reveal = T('reveal.' + self.slideId);
-                if (reveal != null) {
-                    var next = reveal + 1;
-                    T('slideFullyRevealed.' + self.slideId, self.$('.reveal-' + next).length === 0);
-                }
-            });
-        }
-    });
-    $('slide').each(function (i) {
-        var $this = $(this);
-        var src = _.trim($this.html());
-        var currType = 'html';
-        var name = 'slide_' + i;
-        var parts = {
-            id: i,
-            name: name
-        };
-        src.replace(/~(\w+)~|([^~]+)/g, function (all, newType, newContents) {
-            if (newType) {
-                currType = newType;
-            } else {
-                parts[currType] = _.trim(newContents).replace(/scrpt/g, 'script');
-            }
-        });
-        var readyFn = parts.javascript ? new Function(parts.javascript) : function () {};
-        tbone.createView(name, baseSlideView, {
-            slideId: i,
-            ready: readyFn
-        });
-        tbone.addTemplate(name, parts.html);
-        T.push('slides', parts);
-    }).remove();
-}());
+// (function () {
+//     var baseSlideView = tbone.createView('slideBase', {
+//         postReady: function () {
+//             var self = this;
+//             self.$el.addClass('slide-' + self.slideId);
+//             self.$('pre').each(function(i, e) {
+//                 var $this = $(this);
+//                 var orig = _.trim($this.html()).replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+//                 var lang = $this.data('language') || 'javascript';
+//                 var highlighted = hljs.highlight(lang, orig).value;
+//                 highlighted = highlighted.replace(/&amp;/g, '&');
+//                 $this.empty();
+//                 $('<code>').html(highlighted).appendTo($this);
+//             });
+//             T(function () {
+//                 var reveal = T('reveal.' + self.slideId);
+//                 if (reveal != null) {
+//                     var next = reveal + 1;
+//                     T('slideFullyRevealed.' + self.slideId, self.$('.reveal-' + next).length === 0);
+//                 }
+//             });
+//         }
+//     });
+//     $('slide').each(function (i) {
+//         var $this = $(this);
+//         var src = _.trim($this.html());
+//         var currType = 'html';
+//         var name = 'slide_' + i;
+//         var parts = {
+//             id: i,
+//             name: name
+//         };
+//         src.replace(/~(\w+)~|([^~]+)/g, function (all, newType, newContents) {
+//             if (newType) {
+//                 currType = newType;
+//             } else {
+//                 parts[currType] = _.trim(newContents).replace(/scrpt/g, 'script');
+//             }
+//         });
+//         var readyFn = parts.javascript ? new Function(parts.javascript) : function () {};
+//         tbone.createView(name, baseSlideView, {
+//             slideId: i,
+//             ready: readyFn
+//         });
+//         tbone.addTemplate(name, parts.html);
+//         T.push('slides', parts);
+//     }).remove();
+// }());
 
 T('slideNumber', function () {
     return parseFloat((T('location.hash') || '#0').replace(/^#/, ''));
@@ -142,29 +145,33 @@ $(document).on('keydown', function (e) {
     }
 });
 
-tbone.createView('preso', function () {
-    var self = this;
-    var $slides = self.$el.children();
-    T(function () {
-        var width = T('screen.width');
-        var height = T('screen.height');
-        $slides.css({
-            width: width,
-            height: height
-        });
-        self.$el.css({
-            height: T('slides.length') * height,
-            width: width
-        });
-        T(function () {
-            var slideNumber = T('slideNumber') || 0;
-            self.$el.css('top', -height * slideNumber);
-        });
-    });
-    _.defer(function () {
-        self.$el.addClass('anim');
-    });
-});
+// var Preso = require('./react/Preso');
+
+// React.render(<Preso />, $('#presentation')[0]);
+
+// tbone.createView('preso', function () {
+//     var self = this;
+//     var $slides = self.$el.children();
+//     T(function () {
+//         var width = T('screen.width');
+//         var height = T('screen.height');
+//         $slides.css({
+//             width: width,
+//             height: height
+//         });
+//         self.$el.css({
+//             height: T('slides.length') * height,
+//             width: width
+//         });
+//         T(function () {
+//             var slideNumber = T('slideNumber') || 0;
+//             self.$el.css('top', -height * slideNumber);
+//         });
+//     });
+//     _.defer(function () {
+//         self.$el.addClass('anim');
+//     });
+// });
 
 T(function () {
     $('body').toggleClass('zoom', !!T('zoom'));
@@ -185,4 +192,4 @@ T(function () {
 
 T('location', tbone.models.location.make());
 tbone.drain();
-tbone.render($('[tbone]'));
+// tbone.render($('[tbone]'));

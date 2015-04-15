@@ -70,13 +70,13 @@ gulp.task('do-js-browserify', function() {
         .pipe(source('main-bundle.js'))
         .pipe(buffer())
         .pipe(sourcemaps.init({loadMaps: true}))
-            .pipe(uglify())
+            // .pipe(uglify())
             .on('error', gutil.log)
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(path.join(BUILD_PATH, 'js')));
 });
 
-gulp.task('js-browserify', ['do-js-browserify'], getReadyTask('browserify'));
+gulp.task('js-browserify', ['do-js-browserify'], getReadyTask('js'));
 
 gulp.task('restart-gulp', function() {
     console.log('restarting gulp...');
