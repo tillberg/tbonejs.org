@@ -7,6 +7,9 @@ var gutil = require('gulp-util');
 var del = require('del');
 var less = require('gulp-less');
 var prefix = require('gulp-autoprefixer');
+var sourcemaps = require('gulp-sourcemaps');
+var uglify = require('gulp-uglify');
+var buffer = require('vinyl-buffer');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var exec = require('child_process').exec;
@@ -56,17 +59,20 @@ gulp.task('do-less', function() {
 gulp.task('less', ['do-less'], getReadyTask('css'));
 
 gulp.task('do-js-browserify', function() {
-    var b = browserify();
-    b.add('./js/main.js');
+    var b = browserify({
+        entries: './js/main.js',
+        debug: true,
+    });
     b.transform('reactify', {
-        es6: true
+        es6: true,
     });
     return b.bundle()
-        .on('error', function(err) {
-            gutil.log(err.message);
-            this.emit('end');
-        })
         .pipe(source('main-bundle.js'))
+        .pipe(buffer())
+        .pipe(sourcemaps.init({loadMaps: true}))
+            .pipe(uglify())
+            .on('error', gutil.log)
+        .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(path.join(BUILD_PATH, 'js')));
 });
 
