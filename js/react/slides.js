@@ -21,7 +21,7 @@ module.exports = [
           <a className="tbone-logo" href="/" target="_blank"> TBone </a>
         </div>
         <h1 className="tbone-title">
-            <a href="/" target="_blank">TBone</a>
+          <a href="/" target="_blank">TBone</a>
         </h1>
         <h3> Dataflow-oriented Programming for JavaScript </h3>
         <br/>
@@ -33,7 +33,7 @@ module.exports = [
         </div>
         <br/>
         <h5>
-            Follow along at <a href="http://tbonejs.org/preso" target="_blank">http://tbonejs.org/preso</a>
+          Follow along at <a href="http://tbonejs.org/preso" target="_blank">http://tbonejs.org/preso</a>
         </h5>
       </Slide>
     );
@@ -42,38 +42,21 @@ module.exports = [
     return (
       <Slide>
         <h1>
-            What is this thing?
+          Complex UIs Are Hard
         </h1>
-        <h3>
-            TBone{"'"}s original purpose:
-        </h3>
-        <p className="reveal-1">
-            Provide live templates on top of Backbone.
-        </p>
-        <p className="reveal-2">
-            Because who doesn{"'"}t need another live templating library?
-        </p>
-      </Slide>
-    );
-  },
-  function () {
-    return (
-      <Slide>
-        <h1>
-            What is this thing?
-        </h1>
-        <h3>
-            TBone{"'"}s second purpose:
-        </h3>
-        <p className="reveal-1">
-            Use the dependency graph of models to determine which models are actually used in the UI, and to <strong>put the others to sleep</strong>.  Out of 70 models in our app, only 10-20 typically are active on the page at any one time.
+        <p>
+          It would be easy if we could just load all data, then render the whole UI.
         </p>
         <p>
-            <img className="reveal-2 bedtime-1" src="/preso/tbone_bedtime_stories_figure_1.png"/>
-            <img className="reveal-3 bedtime-2" src="/preso/tbone_bedtime_stories_figure_2.png"/>
+          Then when we want to change anything, we load all the data again, and render
+          the whole UI again.
         </p>
-        <p className="reveal-4">
-            <img className="lots-of-models" src="/preso/lots_of_models_graph.png"/>
+        <p>
+          Instead, we want to render the UI as we load data.
+        </p>
+        <p>
+          And we want to be able update the UI continuously as we refresh or receive
+          new data.
         </p>
       </Slide>
     );
@@ -82,11 +65,68 @@ module.exports = [
     return (
       <Slide>
         <h1>
-            What is this thing?
+          The JQuery Way, ca. 2010
         </h1>
-        <h3>
-            TBone{"'"}s third (and now primary) purpose:
-        </h3>
+        <p>
+          In the JQuery style of web development, you{"'"}d fetch data via an ajax
+          request. You receive the data in a callback function, and then you write
+          the data to the DOM.
+        </p>
+        <p>
+          Request Data &rarr; Render DOM.
+        </p>
+        <p>
+          This is fine when you have one ajax call to make, but as you have more
+          data sources to query, things get complicated.
+        </p>
+        <p>
+          Worse yet, maybe you have four requests to make to render the header and seven
+          requests to render the body, but two of those requests are in common -- how
+          can you share this data? Maybe some sort of cache?
+        </p>
+        <p>
+          And when you want to get new data, what do you do? You probably just re-run
+          the whole render of the page, because it{"'"}s too much work to do anything
+          more fine-grained.
+        </p>
+      </Slide>
+    );
+  },
+  function () {
+    return (
+      <Slide>
+        <h1>
+          MV* to the Rescue
+        </h1>
+        <p>
+          In a "typical" MV* pattern, you define a set of data sources as Models,
+          and then you bind your Views to those Models.
+        </p>
+        <p>
+          One obvious advantage is that we can now easily re-use the two common ajax
+          requests in the previous slide. And it{"'"}s pretty easy to do partial data
+          updates by just telling one or two of the models to refresh their data from
+          the server; since the Views are bound to the models, things should Just Work.
+          Yay.
+        </p>
+        <p>
+          But what happens when we have a dozen different pages, or a bunch of
+          combinations of sections and tabs, etc, with different sets of data displayed
+          on each. There are 70 different data sources that we pull from, and 10~20 of
+          those are visible at any one time. How do we know what data we need to fetch?
+        </p>
+      </Slide>
+    );
+  },
+  function () {
+    return (
+      <Slide>
+        <h1>
+          TBone & Dataflow-oriented programming
+        </h1>
+        <p>
+
+        </p>
         <br/>
         <blockquote className="reveal-1">A simple, general-purpose reactive programming platform as a platform for applications and as plumbing for other JS libraries.</blockquote>
       </Slide>

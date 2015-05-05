@@ -15,6 +15,8 @@ var source = require('vinyl-source-stream');
 var exec = require('child_process').exec;
 var spawn = require('child_process').spawn;
 var express = require('express');
+var glob = require("glob");
+var async = require('async');
 // var request = require('request');
 
 var fs = require('fs-extra');
@@ -119,7 +121,17 @@ gulp.task('do-build-wintersmith', function(cb) {
     buildWintersmith(function() {
         fs.copy('wintersmith/build/', BUILD_PATH, {
             clobber: true,
-        }, cb);
+        }, function() {
+            // Make all the /AAA.html files also available at /AAA
+            glob(path.join(BUILD_PATH, '**/*.html'), {
+                ignore: '**/index.html',
+            }, function(err, matches) {
+                async.each(matches, function(match, done) {
+                    var newpath = match.replace(/\.html$/, '/index.html');
+                    fs.copy(match, newpath, { clobber: true }, done);
+                }, cb);
+            });
+        });
     });
 });
 

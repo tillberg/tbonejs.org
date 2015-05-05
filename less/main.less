@@ -4,16 +4,50 @@ h1, h2, h3, h4, h5, h6, p, body, a, img, ul, ol, blockquote, pre {
 }
 
 body {
-  font-family: 'Lora', serif;
-  font-size: 21px;
-  line-height: 1.52;
+  font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  // line-height: 1.52;
   background-color: #f8f8f8;
   text-rendering: optimizeLegibility;
+}
+
+.container {
+  margin: 0 auto;
+  width: 960px;
+}
+
+.sidenav {
+  width: 200px;
+  float: left;
+
+  h4 {
+    line-height: 2.6;
+  }
+
+  a {
+    display: block;
+    line-height: 1.6;
+  }
+
+  .hr {
+    margin: 1em 0 1em;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #eee;
+  }
+}
+
+.content {
+  width: 750px;
+  float: right;
 }
 
 .content-wrap {
   width: 34em;
   margin: 0 auto;
+}
+
+a {
+  text-decoration: none;
 }
 
 body, a {
@@ -22,7 +56,6 @@ body, a {
 
 a:hover {
   color: #ff8000;
-  text-decoration: underline;
 }
 
 p {
