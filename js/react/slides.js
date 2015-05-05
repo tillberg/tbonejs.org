@@ -2,26 +2,31 @@
 
 var React = require('react');
 var Slide = require('./Slide');
+var Code = require('./Code');
 
 module.exports = [
   function () {
+    var code = [
+      "> T('author.full', function () {",
+      "    return T('author.first') + ' ' + T('author.last');",
+      "  });",
+      "> T('author.first', 'Dan');",
+      "> T('author.last', 'Tillberg');",
+      "> T('author')",
+      'Object {full: "Dan Tillberg", first: "Dan", last: "Tillberg"}',
+    ].join('\n');
     return (
       <Slide>
-        <br/>
         <div className="first-slide-logos">
           <a className="tbone-logo" href="/" target="_blank"> TBone </a>
         </div>
         <h1 className="tbone-title">
             <a href="/" target="_blank">TBone</a>
         </h1>
-        <br/>
         <h3> Dataflow-oriented Programming for JavaScript </h3>
         <br/>
+        <Code style={{width:'38em'}} code={code} />
         <br/>
-        <br/>
-        <h3 className="author">
-            <a href="http://tillberg.us/about" target="_blank">Dan Tillberg</a>
-        </h3>
         <div className="first-slide-logos">
           <a className="appneta-logo" href="http://dev.appneta.com" target="_blank"> AppNeta </a>
           <a className="threatstack-logo" href="http://www.threatstack.com" target="_blank"> Threat Stack </a>
@@ -627,12 +632,6 @@ module.exports = [
         <p className="reveal-1">
             <img className="tbone-preso-bbvis" src="/preso/tbone_preso_bbvis.png"/>
         </p>
-      </Slide>
-    );
-  },
-  function () {
-    return (
-      <Slide>
       </Slide>
     );
   },
