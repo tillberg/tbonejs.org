@@ -7,15 +7,45 @@ block title
   != 'TBone | ' + page.title
 
 block body
+  .header
+    .container
+      a(href='/')
+        span.tbone-logo
+        span.tbone-title &nbsp;TBone
   .container
     .sidenav
       h4 Getting Started
       a(href='/', class='') Overview
       a(href='/todo') Todo App
       .hr
-      h4 More Stuff
-      a(href='/more1') More 1
-      a(href='/more2') More 2
+      h4 API Documentation
+      a(href='/404') base model
+      .indent
+        a(href='/404') query
+        a(href='/404') Base Model
+        a(href='/404') Base Model
+      a(href='/404') execlet
+      .indent
+        a(href='/404') auto-binding
+        a(href='/404') scheduler
+      a(href='/404') bound-value models
+      .indent
+        a(href='/404') bound
+        a(href='/404') async
+        .indent
+          a(href='/404') sleeping
+        a(href='/404') ajax
+      a(href='/404') collections
+      a(href='/404') utility models
+      .indent
+        a(href='/404') location
+        a(href='/404') localStorage
+      a(href='/404') React integration
+      .hr
+      a(href='https://github.com/appneta/tbone') Github
+      a(href='https://github.com/appneta/tbone/blob/master/LICENSE') MIT License
     .content
+      h1
+        != page.title
       != page.html
   script(src="/js/main-bundle.js")

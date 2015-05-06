@@ -12,3 +12,4 @@ tbone.patchReact(React);
 
 require('./preso');
 require('./iframe_demo');
+require('./autoreload');

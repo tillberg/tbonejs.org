@@ -7,6 +7,7 @@ var gutil = require('gulp-util');
 var del = require('del');
 var less = require('gulp-less');
 var prefix = require('gulp-autoprefixer');
+var minifyCss = require('gulp-minify-css');
 var sourcemaps = require('gulp-sourcemaps');
 var uglify = require('gulp-uglify');
 var buffer = require('vinyl-buffer');
@@ -25,7 +26,7 @@ var events = require('events');
 var http = require('http');
 var WebSocketServer = require('ws').Server;
 
-var COMPRESS = !!process.env.COMPRESS;
+var s3 = require('s3');
 
 var BUILD_PATH = '_tbonejsorg/';
 
@@ -58,29 +59,40 @@ gulp.task('do-less', function() {
         })
         .pipe(less({}))
         .pipe(prefix('last 2 versions', '> 5%'))
+        .pipe(minifyCss({
+            keepSpecialComments: 0
+        }))
         .pipe(gulp.dest(path.join(BUILD_PATH, 'css')));
 });
 gulp.task('less', ['do-less'], getReadyTask('css'));
 
-gulp.task('do-js-browserify', function() {
-    var b = browserify({
-        entries: './js/main.js',
-        debug: true,
-    });
-    b.transform('reactify', {
-        es6: true,
-    });
-    return b.bundle()
-        .pipe(source('main-bundle.js'))
-        .pipe(buffer())
-        .pipe(sourcemaps.init({loadMaps: true}))
-            .pipe(uglify(COMPRESS ? {} : { compress: false }))
-            .on('error', gutil.log)
-        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest(path.join(BUILD_PATH, 'js')));
-});
+function genBrowserifyTask(opts) {
+    return function() {
+        var b = browserify({
+            entries: './js/main.js',
+            debug: true,
+        });
+        b.transform('reactify', {
+            es6: true,
+        });
+        var b = b.bundle()
+            .pipe(source('main-bundle.js'))
+            .pipe(buffer());
+        if (opts.prod) {
+            b = b.pipe(uglify())
+        } else {
+            b = b.pipe(sourcemaps.init({loadMaps: true}))
+                .pipe(uglify({ compress: false }))
+                .pipe(sourcemaps.write('./'));
+        }
+        return b.on('error', gutil.log)
+            .pipe(gulp.dest(path.join(BUILD_PATH, 'js')));
+    };
+}
 
+gulp.task('do-js-browserify', genBrowserifyTask({ prod: false }));
 gulp.task('js-browserify', ['do-js-browserify'], getReadyTask('js'));
+gulp.task('js-browserify-prod', genBrowserifyTask({ prod: true }));
 
 gulp.task('restart-gulp', function() {
     console.log('restarting gulp...');
@@ -140,12 +152,12 @@ gulp.task('do-build-wintersmith', function(cb) {
 gulp.task('build-wintersmith', ['do-build-wintersmith'], getReadyTask('html'));
 
 gulp.task('build', ['build-wintersmith', 'js-browserify', 'less']);
+gulp.task('build-prod', ['build-wintersmith', 'js-browserify-prod', 'less']);
 
 var notifyFn;
 gulp.task('serve', function() {
     var app = express();
     var server = http.createServer(app);
-    fs.copySync('autoreload.js', path.join(BUILD_PATH, 'autoreload.js'));
     app.use(express.static(BUILD_PATH));
     var wss = new WebSocketServer({
         server: server,
@@ -165,7 +177,7 @@ gulp.task('watch-files', function() {
     restartOnException();
     gulp.watch('less/**/*', ['less']);
     gulp.watch('js/**/*', ['js-browserify']);
-    gulp.watch(['wintersmith/**/*', '-wintersmith/build'], ['build-wintersmith']);
+    gulp.watch(['wintersmith/**/*', '!wintersmith/build/**/*'], ['build-wintersmith']);
     gulp.watch(['./gulpfile.js', 'autoreload'], ['restart-gulp']);
 });
 
@@ -178,3 +190,27 @@ gulp.task('clean', function(cb) {
 
 gulp.task('watch', ['serve', 'build', 'watch-files']);
 gulp.task('default', ['build']);
+
+gulp.task('deploy', ['build-prod'], function(cb) {
+    var client = s3.createClient();
+    var params = {
+        localDir: BUILD_PATH,
+        deleteRemoved: false,
+        s3Params: {
+            Bucket: "tbonejs",
+            // Prefix: "",
+            CacheControl: "max-age=60",
+            ACL: 'public-read',
+        },
+    };
+    var uploader = client.uploadDir(params);
+    uploader.on('error', function(err) {
+        console.error("error during s3 upload:", err.stack);
+    });
+    uploader.on('progress', function() {
+        // console.log("progress", uploader.progressAmount, uploader.progressTotal);
+    });
+    uploader.on('end', function() {
+        cb();
+    });
+});
