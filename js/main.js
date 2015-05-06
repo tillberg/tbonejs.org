@@ -1,5 +1,7 @@
 'use strict';
 
+require('./docs');
+
 window._ = require('lodash');
 window.$ = require('jquery');
 require('./3rdparty/highlight');

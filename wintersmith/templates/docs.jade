@@ -1,5 +1,8 @@
 extends layout
 
+block headcss
+  link(rel='stylesheet', href='/css/main.css')
+
 block title
   != 'TBone | ' + page.title
 
@@ -7,7 +10,7 @@ block body
   .container
     .sidenav
       h4 Getting Started
-      a(href='/') Overview
+      a(href='/', class='') Overview
       a(href='/todo') Todo App
       .hr
       h4 More Stuff
@@ -15,4 +18,4 @@ block body
       a(href='/more2') More 2
     .content
       != page.html
-
+  script(src="/js/main-bundle.js")

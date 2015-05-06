@@ -1,3 +1,4 @@
+@import "common";
 
 h1, h2, h3, h4, h5, h6, p, body, a, img, ul, ol, blockquote, pre {
   margin: 0; padding: 0; border: 0;
@@ -46,16 +47,16 @@ body {
   margin: 0 auto;
 }
 
+@link_active: #f80;
+@link_normal: desaturate(darken(@link_active, 20%), 30%);
+
 a {
   text-decoration: none;
+  color: @link_normal;
 }
 
-body, a {
-  color: #171717;
-}
-
-a:hover {
-  color: #ff8000;
+a:hover, a.active {
+  color: @link_active;
 }
 
 p {

@@ -17,7 +17,7 @@ module.exports = [
     ].join('\n');
     return (
       <Slide>
-        <div className="first-slide-logos">
+        <div className="centered-logos">
           <a className="tbone-logo" href="/" target="_blank"> TBone </a>
         </div>
         <h1 className="tbone-title">
@@ -27,7 +27,7 @@ module.exports = [
         <br/>
         <Code style={{width:'38em'}} code={code} />
         <br/>
-        <div className="first-slide-logos">
+        <div className="centered-logos">
           <a className="appneta-logo" href="http://dev.appneta.com" target="_blank"> AppNeta </a>
           <a className="threatstack-logo" href="http://www.threatstack.com" target="_blank"> Threat Stack </a>
         </div>

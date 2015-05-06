@@ -25,6 +25,8 @@ var events = require('events');
 var http = require('http');
 var WebSocketServer = require('ws').Server;
 
+var COMPRESS = !!process.env.COMPRESS;
+
 var BUILD_PATH = '_tbonejsorg/';
 
 try {
@@ -72,7 +74,7 @@ gulp.task('do-js-browserify', function() {
         .pipe(source('main-bundle.js'))
         .pipe(buffer())
         .pipe(sourcemaps.init({loadMaps: true}))
-            // .pipe(uglify())
+            .pipe(uglify(COMPRESS ? {} : { compress: false }))
             .on('error', gutil.log)
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(path.join(BUILD_PATH, 'js')));
@@ -163,7 +165,7 @@ gulp.task('watch-files', function() {
     restartOnException();
     gulp.watch('less/**/*', ['less']);
     gulp.watch('js/**/*', ['js-browserify']);
-    gulp.watch('wintersmith/**/*', ['build-wintersmith']);
+    gulp.watch(['wintersmith/**/*', '-wintersmith/build'], ['build-wintersmith']);
     gulp.watch(['./gulpfile.js', 'autoreload'], ['restart-gulp']);
 });
 

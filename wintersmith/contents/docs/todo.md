@@ -1,6 +1,6 @@
 ---
 title: Todos
-template: content.jade
+template: docs.jade
 ---
 
 This is the sample app.

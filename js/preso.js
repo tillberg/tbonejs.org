@@ -146,9 +146,11 @@ $(document).on('keydown', function (e) {
     }
 });
 
-var Preso = require('./react/Preso');
-
-React.render(<Preso />, $('#presentation')[0]);
+var $presentationRoot = $('#presentation');
+if ($presentationRoot.length) {
+    var Preso = require('./react/Preso');
+    React.render(<Preso />, $presentationRoot[0]);
+}
 
 // tbone.createView('preso', function () {
 //     var self = this;

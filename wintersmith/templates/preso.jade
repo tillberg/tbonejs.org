@@ -1,10 +1,9 @@
 extends layout
 
-block head
-  meta(charset='utf-8')
-  meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-  meta(name='viewport', content='width=device-width')
-  title TBone Presentation
+block title
+  | TBone Presentation
+
+block headcss
   link(rel='stylesheet', href='/css/preso.css')
 
 block body
@@ -14,7 +13,6 @@ block body
   include templates.html
   include slides.html
 
-  script(src="/autoreload.js")
   // script(src="https://cdn.tbonejs.org/tbone-master.min.js")
   script
     | var WRAP_EXAMPLE_HTML = true;
