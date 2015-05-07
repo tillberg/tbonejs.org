@@ -1,6 +1,5 @@
 ---
 title: Overview
-template: docs.jade
 ---
 
 TBone is a JavaScript library that enables dataflow-oriented programming.

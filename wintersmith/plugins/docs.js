@@ -20,6 +20,7 @@ module.exports = function(env, cb) {
     //     callback(error, buffer);
     //   };
     // };
+    me.metadata.template = 'docs.jade';
     return me;
   }
 
