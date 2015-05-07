@@ -141,7 +141,7 @@ gulp.task('do-build-wintersmith', function(cb) {
                 ignore: '**/index.html',
             }, function(err, matches) {
                 async.each(matches, function(match, done) {
-                    var newpath = match.replace(/\.html$/, '/index.html');
+                    var newpath = match.replace(/\.html$/, '');
                     fs.copy(match, newpath, { clobber: true }, done);
                 }, cb);
             });
@@ -158,6 +158,7 @@ var notifyFn;
 gulp.task('serve', function() {
     var app = express();
     var server = http.createServer(app);
+    express.static.mime.default_type = "text/html";
     app.use(express.static(BUILD_PATH));
     var wss = new WebSocketServer({
         server: server,
@@ -195,10 +196,10 @@ gulp.task('deploy', ['build-prod'], function(cb) {
     var client = s3.createClient();
     var params = {
         localDir: BUILD_PATH,
-        deleteRemoved: false,
+        deleteRemoved: true,
+        defaultContentType: 'text/html',
         s3Params: {
-            Bucket: "tbonejs",
-            // Prefix: "",
+            Bucket: "www.tbonejs.org",
             CacheControl: "max-age=60",
             ACL: 'public-read',
         },
